@@ -1,11 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
 import React from 'react';
 import {
   SafeAreaView,
@@ -24,7 +16,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-const NotificationScreen = () => {
+const AppointmentScreen = () => {
   return (
     <>
       <StatusBar barStyle="dark-content" />
@@ -35,7 +27,7 @@ const NotificationScreen = () => {
           <Header />
           {global.HermesInternal == null ? null : (
             <View style={styles.engine}>
-              <Text style={styles.footer}>Notification</Text>
+              <Text style={styles.footer}>Appointment</Text>
             </View>
           )}
           <View style={styles.body}>
@@ -111,4 +103,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NotificationScreen;
+export default AppointmentScreen;

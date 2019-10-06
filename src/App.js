@@ -1,9 +1,12 @@
 import React from 'react';
-import Navigator from './navigator';
+import Navigator from './Navigator';
+import AppProvider from './AppProvider';
 
 const App = () => {
   return (
-    <Navigator/>
+    <AppProvider>
+      <Navigator/>
+    </AppProvider>
   );
 };
 

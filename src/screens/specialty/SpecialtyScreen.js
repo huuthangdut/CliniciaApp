@@ -1,25 +1,14 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
 import React, {useState} from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
   Text,
-  StatusBar,
   FlatList,
   TouchableOpacity,
 } from 'react-native';
 import {Icon} from 'react-native-elements';
 import theme from '../../styles/theme';
-import FlatListItemSeperator from '../../components/core/flat-list-item-seperator.component';
+import FlatListItemSeperator from '../../components/core/FlatListItemSeperator';
 
 const SpecialtyScreen = (props) => {
   const [categories, setCategories] = useState([
