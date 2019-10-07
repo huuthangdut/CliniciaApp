@@ -8,10 +8,12 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "clean-android": "cd android && gradlew clean && cd..\/",
-    "clean-ios": "cd ios && xcodebuild clean && cd..\/"
+    "clean:android": "cd android && gradlew clean && cd../",
+    "clean:ios": "cd ios && xcodebuild clean && cd../"
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^1.6.2",
+    "axios": "^0.19.0",
     "react": "16.9.0",
     "react-native": "0.61.2",
     "react-native-elements": "^1.2.5",
@@ -20,7 +22,8 @@
     "react-native-vector-icons": "^6.6.0",
     "react-navigation": "^4.0.10",
     "react-navigation-stack": "^1.9.3",
-    "react-navigation-tabs": "^2.5.5"
+    "react-navigation-tabs": "^2.5.5",
+    "styled-components": "^4.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",

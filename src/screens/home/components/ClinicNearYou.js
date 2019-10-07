@@ -26,7 +26,6 @@ const ClinicNearYou = props => {
     <View style={styles.container}>
       <View style={[styles.buttonGroup, styles.row]}>
         <TouchableOpacity
-          onPress={() => showPicker()}
           style={[styles.col, styles.center]}
           activeOpacity={0.5}>
           <View style={styles.row}>
