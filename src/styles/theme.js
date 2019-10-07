@@ -31,7 +31,21 @@ const theme = {
         red: '#FF3B30'
     },
     typography: {
-
+        body: {
+            fontSize: 17,
+            lineHeight: 20,
+            fontFamily: "SF-Pro-Text-Bold"
+        },
+        headline: {
+            fontSize: 17,
+            lineHeight: 22,
+            fontFamily: "SF-Pro-Text-Semibold"
+        },
+        title1: {
+            fontSize: 34,
+            lineHeight: 41,
+            fontFamily: "SF-Pro-Text-Bold"
+        },
     },
     styles: {
         shadow: {

@@ -8,6 +8,7 @@ import AppointmentScreen from './screens/appointment/AppointmentScreen';
 import NotificationScreen from './screens/notification/NotificationScreen';
 import AccountScreen from './screens/account/AccountScreen';
 import SpecialtyScreen from './screens/specialty/SpecialtyScreen';
+import LoginScreen from './screens/auth/LoginScreen';
 import {Image} from 'react-native';
 
 const HomeNavigator = createStackNavigator(
@@ -119,12 +120,11 @@ const TabNavigator = createBottomTabNavigator(
 );
 
 const AppSwitch = createSwitchNavigator(
+  { Login: LoginScreen },
+  { Tab: TabNavigator },
   {
-    Tab: TabNavigator,
-  },
-  {
-    initialRouteName: 'Tab',
-  },
+    initialRouteName: 'Login',
+  }
 );
 
 export default Navigator = createAppContainer(AppSwitch);
