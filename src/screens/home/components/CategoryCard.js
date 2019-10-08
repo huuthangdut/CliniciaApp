@@ -12,7 +12,7 @@ const CategoryCard = props => {
           Specialities
         </Text>
         <TouchableOpacity 
-          onPress={() => props.navigation.navigate('Speciality')}
+          onPress={() => props.navigation.navigate('Specialty')}
           style={[{flex: 1}, styles.alignRight, styles.row]}
           activeOpacity={0.7}>
           <Text style={styles.link}>See all</Text>

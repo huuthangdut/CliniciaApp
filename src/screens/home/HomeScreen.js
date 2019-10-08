@@ -92,7 +92,7 @@ const HomeScreen = props => {
         distance="0.31 mi away"
         speciality="Dentist"
       />
-      <CategoryCard items={categories} />
+      <CategoryCard items={categories} navigation={props.navigation}/>
       <ClinicNearYou items={clinics} />
     </View>
   );

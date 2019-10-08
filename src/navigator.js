@@ -14,7 +14,7 @@ import {Image} from 'react-native';
 const HomeNavigator = createStackNavigator(
   {
     Home: HomeScreen,
-    Specialty: SpecialtyScreen,
+    Specialty: SpecialtyScreen
   },
   {
     headerMode: 'none',
@@ -119,12 +119,11 @@ const TabNavigator = createBottomTabNavigator(
   },
 );
 
-const AppSwitch = createSwitchNavigator(
-  { Login: LoginScreen },
-  { Tab: TabNavigator },
-  {
-    initialRouteName: 'Login',
-  }
-);
+const AppSwitch = createSwitchNavigator({
+  Tab: TabNavigator,
+  Login: LoginScreen,
+}, {
+  initialRouteName: 'Tab'
+});
 
 export default Navigator = createAppContainer(AppSwitch);
