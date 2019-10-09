@@ -22,13 +22,14 @@ const tabIcons = {
 const theme = {
     colors: {
         primary: "#4486FF",
+        secondary: '#4CD964',
         black: "black",
         white: "white",
         transparent: "transparent",
         darkGray: '#666666',
         gray: "#8A8A8F",
         lightGray: "#EFEFF4",
-        red: '#FF3B30'
+        red: '#FF3B30',
     },
     typography: {
         body: {

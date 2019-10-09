@@ -1,105 +1,117 @@
-import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+import React, {useState} from 'react';
+import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {TabView, SceneMap} from 'react-native-tab-view';
+import theme from '../../styles/theme';
+import AppointmentList from './components/AppointmentList';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const AppointmentScreen = props => {
+  const [tabBarConfig, setTabBarConfig] = useState({
+    index: 0,
+    routes: [
+      {key: 'Upcoming', title: 'Upcoming'},
+      {key: 'Previous', title: 'Previous'},
+    ],
+  });
 
-const AppointmentScreen = () => {
+  const handleIndexChange = index => setTabBarConfig(...tabBarConfig, index);
+
+  const renderScene = ({ route }) => {
+    switch (route.key) {
+      case 'Upcoming':
+        return <AppointmentList type="Upcoming" navigation={props.navigation}/>;
+      case 'Previous':
+        return <AppointmentList type="Previous" navigation={props.navigation}/>;
+    }
+  };
+
+  const renderTabBar = props => {
+    return (
+      <View style={styles.tabBarContainer}>
+        <View style={styles.tabBar}>
+          {props.navigationState.routes.map((route, index) => {
+            const activeIndex = props.navigationState.index;
+            const color =
+              activeIndex === index ? theme.colors.black : theme.colors.gray;
+            const highlightColor =
+              activeIndex === index
+                ? theme.colors.primary
+                : theme.colors.lightGray;
+
+            return (
+              <TouchableOpacity
+                key={index}
+                activeOpacity={0.7}
+                style={styles.tabItem}
+                onPress={() => setTabBarConfig({...tabBarConfig, index})}>
+                <Text style={[{color}, styles.tabItemText]}>{route.title}</Text>
+                <View
+                  style={[
+                    {backgroundColor: highlightColor},
+                    styles.highlight,
+                  ]}></View>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+        <View style={styles.divider}></View>
+      </View>
+    );
+  };
+
   return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Appointment</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
+    <View style={styles.container}>
+      <Text style={styles.header}>Appointments</Text>
+      <TabView
+        lazy
+        navigationState={tabBarConfig}
+        renderScene={renderScene}
+        renderTabBar={renderTabBar}
+        onIndexChange={handleIndexChange}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: 'white',
+    paddingHorizontal: 20,
+    paddingTop: 5,
   },
-  engine: {
-    position: 'absolute',
-    right: 0,
+  header: {
+    fontSize: 34,
+    fontFamily: 'SF-Pro-Display-Bold',
   },
-  body: {
-    backgroundColor: Colors.white,
+  tabBarContainer: {
+    flexDirection: 'column',
+    marginVertical: 10,
   },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  tabBar: {
+    flexDirection: 'row',
+    height: 44,
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
+  tabItem: {
+    marginRight: 20,
+    paddingVertical: 5,
+    alignItems: 'flex-start',
   },
-  sectionDescription: {
-    marginTop: 8,
+  tabItemText: {
     fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
+    fontFamily: 'SF-Pro-Text-Regular',
   },
   highlight: {
-    fontWeight: '700',
+    width: '100%',
+    marginTop: 10,
+    height: 2,
   },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
+  divider: {
+    width: '100%',
+    height: 1,
+    marginTop: -2,
+    paddingHorizontal: 5,
+    backgroundColor: theme.colors.lightGray,
   },
 });
 

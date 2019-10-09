@@ -11,6 +11,7 @@ import SpecialtyScreen from './screens/specialty/SpecialtyScreen';
 import LoginScreen from './screens/auth/LoginScreen';
 import {Image} from 'react-native';
 import ClinicScreen from './screens/clinic/ClinicScreen';
+import AppointmentDetailsScreen from './screens/appointment/AppointmentDetailsScreen';
 
 const ClinicNavigator = createStackNavigator({
   Clinic: ClinicScreen
@@ -36,6 +37,7 @@ const HomeNavigator = createStackNavigator(
 const AppointmentNavigator = createStackNavigator(
   {
     Appointments: AppointmentScreen,
+    AppointmentDetails: AppointmentDetailsScreen
   },
   {
     // headerMode: 'none',

@@ -30,7 +30,7 @@ const CategoryCard = props => {
           horizontal={true}
           data={props.items}
           renderItem={({item}) => (
-            <TouchableOpacity style={styles.item} activeOpacity={0.7} onPress={props.navigation.navigate('Clinic')}>
+            <TouchableOpacity style={styles.item} activeOpacity={0.7} onPress={() => props.navigation.navigate('Clinic')}>
               <View style={styles.iconWrapper}>
                 <Icon
                   name="heartbeat"

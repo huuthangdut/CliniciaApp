@@ -14,7 +14,7 @@ const CustomButton = props => {
   } = props;
 
   let backgroundColor = primary ? theme.colors.primary : theme.colors.lightGray;
-  let type = primary ? 'solid' : 'outline';
+  let type = primary ? 'solid' : 'clear';
 
   return (
     <Button
