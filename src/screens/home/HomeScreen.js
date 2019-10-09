@@ -1,13 +1,11 @@
 import React, {useState} from 'react';
-import WithContext from '../../components/core/WithContext'
-import {
-  StyleSheet,
-  View,
-} from 'react-native';
+import WithContext from '../../components/core/WithContext';
+import {StyleSheet, View} from 'react-native';
 
 import AppointmentCard from './components/AppointmentCard';
 import CategoryCard from './components/CategoryCard';
 import ClinicNearYou from './components/ClinicNearYou';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const HomeScreen = props => {
   const [categories, setCategories] = useState([
@@ -92,7 +90,7 @@ const HomeScreen = props => {
         distance="0.31 mi away"
         speciality="Dentist"
       />
-      <CategoryCard items={categories} navigation={props.navigation}/>
+      <CategoryCard items={categories} navigation={props.navigation} />
       <ClinicNearYou items={clinics} />
     </View>
   );

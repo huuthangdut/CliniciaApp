@@ -10,14 +10,26 @@ import AccountScreen from './screens/account/AccountScreen';
 import SpecialtyScreen from './screens/specialty/SpecialtyScreen';
 import LoginScreen from './screens/auth/LoginScreen';
 import {Image} from 'react-native';
+import ClinicScreen from './screens/clinic/ClinicScreen';
+
+const ClinicNavigator = createStackNavigator({
+  Clinic: ClinicScreen
+}, {
+  // headerMode: 'none'
+});
+
+const SpecialtyNavigator = createStackNavigator({
+  Specialty: SpecialtyScreen
+}, {
+  // headerMode: 'none'
+});
 
 const HomeNavigator = createStackNavigator(
   {
     Home: HomeScreen,
-    Specialty: SpecialtyScreen
   },
   {
-    headerMode: 'none',
+    // headerMode: 'none',
   },
 );
 
@@ -26,7 +38,7 @@ const AppointmentNavigator = createStackNavigator(
     Appointments: AppointmentScreen,
   },
   {
-    headerMode: 'none',
+    // headerMode: 'none',
   },
 );
 
@@ -35,7 +47,7 @@ const NotificationNavigator = createStackNavigator(
     Notification: NotificationScreen,
   },
   {
-    headerMode: 'none',
+    // headerMode: 'none',
   },
 );
 
@@ -44,7 +56,7 @@ const AccountNavigator = createStackNavigator(
     Account: AccountScreen,
   },
   {
-    headerMode: 'none',
+    // headerMode: 'none',
   },
 );
 
@@ -116,14 +128,24 @@ const TabNavigator = createBottomTabNavigator(
       activeTintColor: theme.colors.primary,
       inactiveTintColor: theme.colors.gray,
     },
+    initialRouteName: 'Home'
   },
 );
 
-const AppSwitch = createSwitchNavigator({
+const AppNavigator = createStackNavigator({
   Tab: TabNavigator,
-  Login: LoginScreen,
+  Specialty: SpecialtyNavigator,
+  // Clinic: ClinicNavigator
 }, {
+  headerMode: 'none',
   initialRouteName: 'Tab'
+})
+
+const AppSwitch = createSwitchNavigator({
+  Login: LoginScreen,
+  App: AppNavigator
+}, {
+  initialRouteName: 'App'
 });
 
 export default Navigator = createAppContainer(AppSwitch);
