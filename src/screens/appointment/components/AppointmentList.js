@@ -5,7 +5,7 @@ import AppointmentItem from './AppointmentItem';
 
 const AppointmentList = props => {
     const [appointments, setAppointments] = useState([
-        {id: 1, image: '', date: 'Monday, October 24', time: '10:00 AM', doctor: 'Edward Janowski', clinic: 'Hoan My Hospital '},
+        {id: 1, image: '', date: 'Monday, October 24', time: '10:00 AM', doctor: 'Edward Janowski', clinic: 'Hoan My Hospital'},
         {id: 2, image: '', date: 'Monday, October 24', time: '10:00 AM', doctor: 'Edward Janowski', clinic: 'Hoan My Hospital'},
         {id: 3, image: '', date: 'Monday, October 24', time: '10:00 AM', doctor: 'Edward Janowski', clinic: 'Hoan My Hospital'},
         {id: 4, image: '', date: 'Monday, October 24', time: '10:00 AM', doctor: 'Edward Janowski', clinic: 'Hoan My Hospital'},
