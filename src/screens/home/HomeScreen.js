@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, Fragment} from 'react';
 import WithContext from '../../components/core/WithContext';
 import {StyleSheet, View} from 'react-native';
 
@@ -6,6 +6,8 @@ import AppointmentCard from './components/AppointmentCard';
 import CategoryCard from './components/CategoryCard';
 import ClinicNearYou from './components/ClinicNearYou';
 import {ScrollView} from 'react-native-gesture-handler';
+import Header from '../../components/core/Header';
+import { Icon } from 'react-native-elements';
 
 const HomeScreen = props => {
   const [categories, setCategories] = useState([
@@ -83,16 +85,19 @@ const HomeScreen = props => {
   ]);
 
   return (
-    <View style={styles.container}>
-      <AppointmentCard
-        scheduledTime="25 Apr 2018 - 9:30 AM"
-        doctor="Jessica Anderson"
-        distance="0.31 mi away"
-        speciality="Dentist"
-      />
-      <CategoryCard items={categories} navigation={props.navigation} />
-      <ClinicNearYou items={clinics} />
-    </View>
+    <Fragment>
+      <Header/>
+      <View style={styles.container}>
+        <AppointmentCard
+          scheduledTime="25 Apr 2018 - 9:30 AM"
+          doctor="Jessica Anderson"
+          distance="0.31 mi away"
+          speciality="Dentist"
+        />
+        <CategoryCard items={categories} navigation={props.navigation} />
+        <ClinicNearYou items={clinics} />
+      </View>
+    </Fragment>
   );
 };
 
