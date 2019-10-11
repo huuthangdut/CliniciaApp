@@ -8,6 +8,7 @@ import AppointmentScreen from './screens/appointment/AppointmentScreen';
 import NotificationScreen from './screens/notification/NotificationScreen';
 import AccountScreen from './screens/account/AccountScreen';
 import AppointmentDetailsScreen from './screens/appointment/AppointmentDetailsScreen';
+import FavoriteScreen from './screens/favorite/FavoriteScreen';
 import SpecialtyScreen from './screens/specialty/SpecialtyScreen';
 import LoginScreen from './screens/auth/LoginScreen';
 import {Image} from 'react-native';
@@ -18,6 +19,8 @@ import ReviewAppointmentScreen from './screens/booking/review-appointment/Review
 import BookingSuccessScreen from './screens/booking/booking-success/BookingSuccessScreen';
 import DoctorScreen from './screens/doctor/DoctorScreen';
 import DoctorDetailsScreen from './screens/doctor/DoctorDetailsScreen';
+import AppointmentDetailsScreen from './screens/appointment/AppointmentDetailsScreen';
+import ChangePasswordScreen from './screens/changepassword/ChangePasswordScreen';
 
 const DoctorNavigator = createStackNavigator({
   Doctor: DoctorScreen,
@@ -57,6 +60,7 @@ const SpecialtyNavigator = createStackNavigator(
 const HomeNavigator = createStackNavigator(
   {
     Home: HomeScreen,
+    Specialty: SpecialtyScreen,
   },
   {
     headerMode: 'none',
@@ -85,6 +89,8 @@ const NotificationNavigator = createStackNavigator(
 const AccountNavigator = createStackNavigator(
   {
     Account: AccountScreen,
+    Favorite: FavoriteScreen,
+    ChangePassword: ChangePasswordScreen
   },
   {
     headerMode: 'none',

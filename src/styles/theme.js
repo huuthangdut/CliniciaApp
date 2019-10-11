@@ -5,18 +5,21 @@ const appointment = require('../../assets/icons/ic_appointment.png')
 const notificationFocus = require('../../assets/icons/ic_notification_focus.png')
 const notification = require('../../assets/icons/ic_notification.png')
 const accountFocus = require('../../assets/icons/ic_account_focus.png')
-const account = require('../../assets/icons/ic_account.png');
 const mapMarker = require('../../assets/icons/ic_marker.png');
+const account = require('../../assets/icons/ic_account.png')
+const lock = require('../../assets/icons/ic-lock.png')
+const notificationSetting = require('../../assets/icons/ic-noticeSetting.png')
+const hand = require('../../assets/icons/ic-hand.png')
+const signOut = require('../../assets/icons/id-signout.png')
+const backArrow = require('../../assets/icons/ic-back-arrow.png')
+const filter = require('../../assets/icons/ic-filter.png')
+const sort = require('../../assets/icons/ic-sort.png')
+const star = require('../../assets/icons/ic-star.png')
 
 const tabIcons = {
-    searchFocus,
-    search,
-    appointmentFocus,
-    appointment,
-    notificationFocus,
-    notification,
-    accountFocus,
-    account
+    searchFocus, search, appointmentFocus, appointment, notificationFocus, notification,
+    accountFocus, account, lock, notificationSetting, hand, signOut, backArrow, filter,
+    sort, star
 };
 
 const icons = {
@@ -35,6 +38,10 @@ const theme = {
         gray: "#8A8A8F",
         lightGray: "#EFEFF4",
         red: '#FF3B30',
+        favorite: {
+            backgroundGray: '#F9F9F9',
+            borderHeartIcon: '#D8D8D8'
+        }
     },
     typography: {
         body: {
