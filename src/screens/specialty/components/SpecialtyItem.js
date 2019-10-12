@@ -4,10 +4,10 @@ import {Icon} from 'react-native-elements';
 import theme from '../../../styles/theme';
 
 const SpecialtyItem = props => {
-  const {item} = props;
+  const {item, navigation} = props;
 
   return (
-    <TouchableOpacity style={styles.item} activeOpacity={0.7}>
+    <TouchableOpacity style={styles.item} activeOpacity={0.7} onPress={() => navigation.navigate('Clinic')}>
       <View style={styles.row}>
         <View style={styles.imageWrapper}>
           <Icon

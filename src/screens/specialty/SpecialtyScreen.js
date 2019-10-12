@@ -21,7 +21,9 @@ const SpecialtyScreen = props => {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Specialities</Text>
-      <SpecialtyList items={categories} />
+      <View style={styles.list}>
+        <SpecialtyList items={categories} navigation={props.navigation}/>
+      </View>
     </View>
   );
 };
@@ -36,6 +38,9 @@ const styles = StyleSheet.create({
     fontSize: 34,
     fontFamily: 'SF-Pro-Display-Bold',
   },
+  list: {
+    flex: 1
+  }
 });
 
 export default SpecialtyScreen;

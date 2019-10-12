@@ -4,7 +4,7 @@ import FlatListItemSeperator from '../../../components/core/FlatListItemSeperato
 import SpecialtyItem from './SpecialtyItem';
 
 const SpecialtyList = props => {
-  const {items} = props;
+  const {items, navigation} = props;
 
   return (
     <FlatList
@@ -12,7 +12,7 @@ const SpecialtyList = props => {
       showsVerticalScrollIndicator={false}
       ItemSeparatorComponent={FlatListItemSeperator}
       data={items}
-      renderItem={({item}) => <SpecialtyItem item={item} />}
+      renderItem={({item}) => <SpecialtyItem item={item} navigation={navigation}/>}
       keyExtractor={item => item.id.toString()}
     />
   );
