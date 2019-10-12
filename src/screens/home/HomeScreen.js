@@ -2,12 +2,12 @@ import React, {useState, Fragment} from 'react';
 import WithContext from '../../components/core/WithContext';
 import {StyleSheet, View} from 'react-native';
 
-import AppointmentCard from './components/AppointmentCard';
-import CategoryCard from './components/CategoryCard';
-import ClinicNearYou from './components/ClinicNearYou';
+import Reminder from './components/Reminder';
+import Category from './components/Category';
 import {ScrollView} from 'react-native-gesture-handler';
 import Header from '../../components/core/Header';
-import { Icon } from 'react-native-elements';
+import Toolbar from './components/Toolbar';
+import ClinicListView from '../clinic/components/ClinicListView';
 
 const HomeScreen = props => {
   const [categories, setCategories] = useState([
@@ -66,37 +66,27 @@ const HomeScreen = props => {
       rating: 4,
       ratingCount: 69,
     },
-    {
-      id: 6,
-      name: 'Hoan My General Hospital',
-      address: '200 Nguyen Van Linh',
-      distance: '1.5km away',
-      rating: 5,
-      ratingCount: 69,
-    },
-    {
-      id: 7,
-      name: 'Hoan My General Hospital',
-      address: '200 Nguyen Van Linh',
-      distance: '1.5km away',
-      rating: 5,
-      ratingCount: 69,
-    },
   ]);
+
+  const [reminder, setReminder] = useState({
+    image: '',
+    scheduledTime: '25 Apr 2018 - 9:30 AM',
+    doctor: 'Jessica Anderson',
+    distance: '0.31 mi away',
+    specialty: 'Dentist',
+  });
 
   return (
     <Fragment>
-      <Header/>
-      <View style={styles.container}>
-        <AppointmentCard
-          scheduledTime="25 Apr 2018 - 9:30 AM"
-          doctor="Jessica Anderson"
-          distance="0.31 mi away"
-          speciality="Dentist"
-        />
-        <CategoryCard items={categories} navigation={props.navigation} />
-        <ClinicNearYou items={clinics} />
-      </View>
+      <Header />
+      <ScrollView nestedScrollEnabled={true} >
+        <View style={styles.container}>
+          <Reminder item={reminder} />
+          <Category items={categories} navigation={props.navigation} />
+          <Toolbar />
+          <ClinicListView items={clinics} />
+        </View>
+      </ScrollView>
     </Fragment>
   );
 };

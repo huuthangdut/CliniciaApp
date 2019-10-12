@@ -3,8 +3,9 @@ import {View, Text, StyleSheet, TouchableOpacity, FlatList, Alert} from 'react-n
 import theme from '../../../styles/theme';
 import {Icon} from 'react-native-elements';
 
-const CategoryCard = props => {
-  
+const Category = props => {
+  const {items, navigation} = props;
+
   return (
     <View style={styles.container}>
       <View style={styles.row}>
@@ -12,7 +13,7 @@ const CategoryCard = props => {
           Specialities
         </Text>
         <TouchableOpacity 
-          onPress={() => props.navigation.navigate('Specialty')}
+          onPress={() => navigation.navigate('Specialty')}
           style={[{flex: 1}, styles.alignRight, styles.row]}
           activeOpacity={0.7}>
           <Text style={styles.link}>See all</Text>
@@ -28,9 +29,9 @@ const CategoryCard = props => {
           style={styles.list}
           showsHorizontalScrollIndicator={false}
           horizontal={true}
-          data={props.items}
+          data={items}
           renderItem={({item}) => (
-            <TouchableOpacity style={styles.item} activeOpacity={0.7} onPress={() => props.navigation.navigate('Clinic')}>
+            <TouchableOpacity style={styles.item} activeOpacity={0.7} onPress={() => navigation.navigate('Clinic')}>
               <View style={styles.iconWrapper}>
                 <Icon
                   name="heartbeat"
@@ -104,4 +105,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default CategoryCard;
+export default Category;

@@ -3,23 +3,25 @@ import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import theme from '../../../styles/theme';
 import { Avatar } from 'react-native-elements'
 
-const AppointmentCard = props => {
+const Reminder = props => {
+  const {item} = props; 
+  
   return (
     <View style={styles.container}>
       <View style={styles.card}>
         <Avatar
           size="large"
-          source={props.image ? {uri: props.image} : undefined}
+          source={item.image ? {uri: item.image} : undefined}
           rounded
-          title={props.image ? '' : props.doctor.charAt(0)}
+          title={item.image ? '' : item.doctor.charAt(0)}
           activeOpacity={0.7}
         />
         <View style={styles.content}>
-          <Text style={styles.time}>{props.scheduledTime}</Text>
-          <Text numberOfLines={1} style={styles.doctor}>{props.doctor}</Text>
+          <Text style={styles.time}>{item.scheduledTime}</Text>
+          <Text numberOfLines={1} style={styles.doctor}>{item.doctor}</Text>
           <View style={styles.row}>
-            <Text style={styles.col}>{props.distance}</Text>
-            <Text style={styles.col}>{props.speciality}</Text>
+            <Text style={styles.col}>{item.distance}</Text>
+            <Text style={styles.col}>{item.specialty}</Text>
           </View>
           <TouchableOpacity style={styles.button} activeOpacity={0.7}>
             <Text style={styles.text}>View</Text>
@@ -83,4 +85,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AppointmentCard;
+export default Reminder;
