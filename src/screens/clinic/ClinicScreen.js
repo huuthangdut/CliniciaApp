@@ -1,9 +1,6 @@
 import React, {useState} from 'react';
 import WithContext from '../../components/core/WithContext';
-import {
-  StyleSheet,
-  View,
-} from 'react-native';
+import {StyleSheet, View, Text} from 'react-native';
 import ClinicListView from './components/ClinicListView';
 
 const ClinicScreen = props => {
@@ -68,13 +65,25 @@ const ClinicScreen = props => {
 
   return (
     <View style={styles.container}>
-        <ClinicListView items={clinics}/>
+      <Text style={styles.header}>Clinics</Text>
+      <View style={styles.list}>
+        <ClinicListView items={clinics} navigation={props.navigation}/>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    paddingHorizontal: 15,
+  },
+  header: {
+    fontSize: 34,
+    fontFamily: 'SF-Pro-Display-Bold',
+  },
+  list: {
+    marginTop: 10,
     flex: 1
   },
 });

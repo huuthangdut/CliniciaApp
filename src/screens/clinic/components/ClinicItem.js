@@ -4,8 +4,10 @@ import {Icon, Rating} from 'react-native-elements';
 import theme from '../../../styles/theme';
 
 const ClinicItem = props => {
+  const {navigation} = props;
+
   return (
-    <TouchableOpacity style={styles.item} activeOpacity={0.9}>
+    <TouchableOpacity style={styles.item} activeOpacity={0.9} onPress={() => navigation.navigate('ClinicDetails')}>
       <ImageBackground
         imageStyle={styles.image}
         style={styles.background}

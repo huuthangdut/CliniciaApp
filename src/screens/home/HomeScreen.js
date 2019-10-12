@@ -10,6 +10,8 @@ import Toolbar from './components/Toolbar';
 import ClinicListView from '../clinic/components/ClinicListView';
 
 const HomeScreen = props => {
+  const { navigation } = props;
+  
   const [categories, setCategories] = useState([
     {id: 1, icon: 'home', name: 'Dentist', numOfDoctors: 96},
     {id: 2, icon: 'home', name: 'Cardiology', numOfDoctors: 96},
@@ -79,14 +81,14 @@ const HomeScreen = props => {
   return (
     <Fragment>
       <Header />
-      <ScrollView nestedScrollEnabled={true} >
+      {/* <ScrollView nestedScrollEnabled={true} > */}
         <View style={styles.container}>
           <Reminder item={reminder} />
-          <Category items={categories} navigation={props.navigation} />
+          <Category items={categories} navigation={navigation} />
           <Toolbar />
-          <ClinicListView items={clinics} />
+          <ClinicListView items={clinics} navigation={navigation}/>
         </View>
-      </ScrollView>
+      {/* </ScrollView> */}
     </Fragment>
   );
 };
