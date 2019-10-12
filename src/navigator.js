@@ -7,14 +7,16 @@ import HomeScreen from './screens/home/HomeScreen';
 import AppointmentScreen from './screens/appointment/AppointmentScreen';
 import NotificationScreen from './screens/notification/NotificationScreen';
 import AccountScreen from './screens/account/AccountScreen';
+import AppointmentDetailsScreen from './screens/appointment/AppointmentDetailsScreen';
 import SpecialtyScreen from './screens/specialty/SpecialtyScreen';
 import LoginScreen from './screens/auth/LoginScreen';
 import {Image} from 'react-native';
 import ClinicScreen from './screens/clinic/ClinicScreen';
-import AppointmentDetailsScreen from './screens/appointment/AppointmentDetailsScreen';
+import ClinicDetailsScreen from './screens/clinic/ClinicDetailsScreen';
 
 const ClinicNavigator = createStackNavigator({
-  Clinic: ClinicScreen
+  Clinic: ClinicScreen,
+  ClinicDetails: ClinicDetailsScreen
 }, {
   // headerMode: 'none'
 });
@@ -30,7 +32,7 @@ const HomeNavigator = createStackNavigator(
     Home: HomeScreen,
   },
   {
-    // headerMode: 'none',
+    headerMode: 'none',
   },
 );
 
@@ -137,7 +139,7 @@ const TabNavigator = createBottomTabNavigator(
 const AppNavigator = createStackNavigator({
   Tab: TabNavigator,
   Specialty: SpecialtyNavigator,
-  // Clinic: ClinicNavigator
+  Clinic: ClinicNavigator
 }, {
   headerMode: 'none',
   initialRouteName: 'Tab'
