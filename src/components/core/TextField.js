@@ -7,7 +7,7 @@ const TextField = forwardRef((props, ref) => {
         <TextInput 
             ref={ref}
             placeholderTextColor={theme.colors.gray}
-            style={styles.textInput}
+            style={[styles.textInput, props.containerStyle]}
             {...props}
         />
     );
