@@ -16,6 +16,8 @@ import Button from '../../../components/core/Button';
 const getDateString = date => date.toISOString().split('T')[0];
 
 const MakeAppointmentScreen = props => {
+  const {navigation} = props;
+
   const [selectedConsulationType, setSelectedConsulationType] = useState('');
   const [selectedDate, setSelectedDate] = useState(getDateString(new Date()));
   const [availableTimes, setAvailableTimes] = useState([
@@ -169,7 +171,7 @@ const MakeAppointmentScreen = props => {
             containerStyle={styles.textInput}
           />
         </View>
-        <Button primary title="Next" />
+        <Button primary title="Next" onPress={() => navigation.navigate('ReviewAppointment')}/>
       </View>
     </ScrollView>
   );

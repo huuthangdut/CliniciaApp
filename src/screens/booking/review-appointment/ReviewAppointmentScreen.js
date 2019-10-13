@@ -5,6 +5,8 @@ import {Divider, Avatar} from 'react-native-elements';
 import Button from '../../../components/core/Button';
 
 const ReviewAppointmentScreen = props => {
+  const {navigation} = props;
+
   return (
     <View style={styles.container}>
       <View style={styles.content}>
@@ -57,7 +59,7 @@ const ReviewAppointmentScreen = props => {
           </View>
         </View>
       </View>
-      <Button primary title="Confirm" style={styles.button} />
+      <Button primary title="Confirm" style={styles.button} onPress={() => navigation.navigate('BookingSuccess')}/>
     </View>
   );
 };

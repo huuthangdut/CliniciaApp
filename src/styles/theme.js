@@ -55,6 +55,13 @@ const theme = {
             shadowOpacity: 0.4,
             shadowRadius: 5,
             elevation: 9
+        },
+        shadow2: {
+            shadowColor: '#000',
+            shadowOffset: { width: 2, height: 4},
+            shadowOpacity: 0.4,
+            shadowRadius: 2,
+            elevation: 5
         }
     },
     tabIcons
