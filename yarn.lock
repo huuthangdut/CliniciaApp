@@ -5316,6 +5316,15 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
+react-native-calendars@^1.212.0:
+  version "1.212.0"
+  resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.212.0.tgz#6070ae37c7a446da5a6fb1c24b71feda5021aafd"
+  integrity sha512-FrWabRJlUeTjCF8qx8cYAId4SbCMmVmO5eE791ykQaTG2/jvQJz2O3MF5QRjJHyaS/QdeEilKf9w/Mk43bM42Q==
+  dependencies:
+    lodash "^4.0.0"
+    prop-types "^15.5.10"
+    xdate "^0.8.0"
+
 react-native-elements@^1.2.5:
   version "1.2.5"
   resolved "https://registry.yarnpkg.com/react-native-elements/-/react-native-elements-1.2.5.tgz#f806af1d6c8df56f84ef4e2c8db4c84207ede25a"
@@ -6782,6 +6791,11 @@ xcode@^2.0.0:
   dependencies:
     simple-plist "^1.0.0"
     uuid "^3.3.2"
+
+xdate@^0.8.0:
+  version "0.8.2"
+  resolved "https://registry.yarnpkg.com/xdate/-/xdate-0.8.2.tgz#d7b033c00485d02695baf0044f4eacda3fc961a3"
+  integrity sha1-17AzwASF0CaVuvAET06s2j/JYaM=
 
 xml-name-validator@^3.0.0:
   version "3.0.0"
