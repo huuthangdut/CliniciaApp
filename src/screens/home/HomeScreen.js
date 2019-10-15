@@ -5,13 +5,13 @@ import {StyleSheet, View} from 'react-native';
 import Reminder from './components/Reminder';
 import Category from './components/Category';
 import {ScrollView} from 'react-native-gesture-handler';
-import Header from '../../components/core/Header';
+import HomeHeader from './components/HomeHeader';
 import Toolbar from './components/Toolbar';
-import ClinicListView from '../clinic/components/ClinicListView';
+import DoctorList from '../doctor/components/DoctorList';
 
 const HomeScreen = props => {
-  const { navigation } = props;
-  
+  const {navigation} = props;
+
   const [categories, setCategories] = useState([
     {id: 1, icon: 'home', name: 'Dentist', numOfDoctors: 96},
     {id: 2, icon: 'home', name: 'Cardiology', numOfDoctors: 96},
@@ -27,46 +27,56 @@ const HomeScreen = props => {
     {id: 12, icon: 'home', name: 'Dentist', numOfDoctors: 96},
   ]);
 
-  const [clinics, setClinics] = useState([
+  const [doctors, setDoctors] = useState([
     {
       id: 1,
-      name: 'Hoan My General Hospital',
-      address: '200 Nguyen Van Linh',
-      distance: '1.5km away',
+      image: '',
+      name: 'Barbara Michelle',
+      specialty: 'Pediatric',
+      pricePerHour: '48',
       rating: 5,
-      ratingCount: 69,
+      ratingCount: 58,
+      distance: 15,
     },
     {
       id: 2,
-      name: 'Hoan My General Hospital',
-      address: '200 Nguyen Van Linh',
-      distance: '1.5km away',
-      rating: 3,
-      ratingCount: 69,
+      image: '',
+      name: 'Barbara Michelle',
+      specialty: 'Pediatric',
+      pricePerHour: '48',
+      rating: 5,
+      ratingCount: 58,
+      distance: 15,
     },
     {
       id: 3,
-      name: 'Hoan My General Hospital',
-      address: '200 Nguyen Van Linh',
-      distance: '1.5km away',
-      rating: 4,
-      ratingCount: 69,
+      image: '',
+      name: 'Barbara Michelle',
+      specialty: 'Pediatric',
+      pricePerHour: '48',
+      rating: 5,
+      ratingCount: 58,
+      distance: 15,
     },
     {
       id: 4,
-      name: 'Hoan My General Hospital',
-      address: '200 Nguyen Van Linh',
-      distance: '1.5km away',
-      rating: 2,
-      ratingCount: 69,
+      image: '',
+      name: 'Barbara Michelle',
+      specialty: 'Pediatric',
+      pricePerHour: '48',
+      rating: 5,
+      ratingCount: 58,
+      distance: 15,
     },
     {
       id: 5,
-      name: 'Hoan My General Hospital',
-      address: '200 Nguyen Van Linh',
-      distance: '1.5km away',
-      rating: 4,
-      ratingCount: 69,
+      image: '',
+      name: 'Barbara Michelle',
+      specialty: 'Pediatric',
+      pricePerHour: '48',
+      rating: 5,
+      ratingCount: 58,
+      distance: 15,
     },
   ]);
 
@@ -80,15 +90,15 @@ const HomeScreen = props => {
 
   return (
     <Fragment>
-      <Header />
-      {/* <ScrollView nestedScrollEnabled={true} > */}
+      <HomeHeader />
+      <ScrollView nestedScrollEnabled={true}>
         <View style={styles.container}>
           <Reminder item={reminder} />
           <Category items={categories} navigation={navigation} />
           <Toolbar />
-          <ClinicListView items={clinics} navigation={navigation}/>
+          <DoctorList items={doctors} navigation={navigation} />
         </View>
-      {/* </ScrollView> */}
+      </ScrollView>
     </Fragment>
   );
 };
