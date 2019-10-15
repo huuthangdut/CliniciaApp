@@ -1,8 +1,11 @@
-import React, {useState} from 'react';
+import React, {useState, Fragment} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import SpecialtyList from './components/SpecialtyList';
+import SpecialtyHeader from './components/SpecialtyHeader';
 
 const SpecialtyScreen = props => {
+  const {navigation} = props;
+
   const [categories, setCategories] = useState([
     {id: 1, icon: 'home', name: 'Dentist', numOfDoctors: 96},
     {id: 2, icon: 'home', name: 'Cardiology', numOfDoctors: 96},
@@ -19,12 +22,15 @@ const SpecialtyScreen = props => {
   ]);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Specialities</Text>
-      <View style={styles.list}>
-        <SpecialtyList items={categories} navigation={props.navigation}/>
+    <Fragment>
+      <SpecialtyHeader/>
+      <View style={styles.container}>
+        <Text style={styles.header}>Specialities</Text>
+        <View style={styles.list}>
+          <SpecialtyList items={categories} navigation={props.navigation} />
+        </View>
       </View>
-    </View>
+    </Fragment>
   );
 };
 
@@ -39,8 +45,9 @@ const styles = StyleSheet.create({
     fontFamily: 'SF-Pro-Display-Bold',
   },
   list: {
-    flex: 1
-  }
+    flex: 1,
+    marginTop: 16
+  },
 });
 
 export default SpecialtyScreen;

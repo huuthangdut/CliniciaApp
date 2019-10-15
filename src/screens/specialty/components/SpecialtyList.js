@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, FlatList} from 'react-native';
+import {FlatList} from 'react-native';
 import FlatListItemSeperator from '../../../components/core/FlatListItemSeperator';
 import SpecialtyItem from './SpecialtyItem';
 
@@ -8,7 +8,6 @@ const SpecialtyList = props => {
 
   return (
     <FlatList
-      style={styles.list}
       showsVerticalScrollIndicator={false}
       ItemSeparatorComponent={FlatListItemSeperator}
       data={items}
@@ -17,11 +16,5 @@ const SpecialtyList = props => {
     />
   );
 };
-
-const styles = StyleSheet.create({
-  list: {
-    marginTop: 10
-  },
-});
 
 export default SpecialtyList;
