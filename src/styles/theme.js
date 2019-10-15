@@ -6,6 +6,7 @@ const notificationFocus = require('../../assets/icons/ic_notification_focus.png'
 const notification = require('../../assets/icons/ic_notification.png')
 const accountFocus = require('../../assets/icons/ic_account_focus.png')
 const account = require('../../assets/icons/ic_account.png');
+const mapMarker = require('../../assets/icons/ic_marker.png');
 
 const tabIcons = {
     searchFocus,
@@ -17,6 +18,10 @@ const tabIcons = {
     accountFocus,
     account
 };
+
+const icons = {
+    mapMarker
+}
 
 
 const theme = {
@@ -64,7 +69,8 @@ const theme = {
             elevation: 5
         }
     },
-    tabIcons
+    tabIcons,
+    icons
 }
 
 export default theme;
