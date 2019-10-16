@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, Fragment} from 'react';
 import {
   Text,
   View,
@@ -12,6 +12,7 @@ import {Calendar} from 'react-native-calendars';
 import {Divider, CheckBox, Icon} from 'react-native-elements';
 import TextField from '../../../components/core/TextField';
 import Button from '../../../components/core/Button';
+import Header from '../../../components/core/Header';
 
 const getDateString = date => date.toISOString().split('T')[0];
 
@@ -49,131 +50,138 @@ const MakeAppointmentScreen = props => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <Calendar
-        onDayPress={day => onDayPress(day)}
-        markedDates={{
-          [selectedDate]: {selected: true, disableTouchEvent: true},
-        }}
-        minDate={minDate}
-        style={styles.calendar}
-        theme={{
-          arrowColor: theme.colors.darkGray,
-          backgroundColor: theme.colors.white,
-          calendarBackground: theme.colors.white,
-          dayTextColor: theme.colors.black,
-          monthTextColor: theme.colors.black,
-          selectedDayBackgroundColor: theme.colors.primary,
-          selectedDayTextColor: theme.colors.white,
-          textDayFontFamily: 'SF-Pro-Text-Regular',
-          textDayFontSize: 17,
-          textDayHeaderFontFamily: 'SF-Pro-Text-Regular',
-          textDayHeaderFontSize: 12,
-          textDisabledColor: '#C8C7CC',
-          textMonthFontFamily: 'SF-Pro-Display-Bold',
-          textMonthFontSize: 32,
-          textSectionTitleColor: theme.colors.darkGray,
-          todayTextColor: theme.colors.primary,
-        }}
-      />
-      <View style={styles.mainContent}>
-        <View style={styles.availableTime}>
-          <Text style={styles.title}>Available Time</Text>
-          <FlatList
-            style={styles.timeList}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            data={availableTimes}
-            renderItem={({item, index}) => {
-              const wrapperStyles = [styles.timeSlot];
-              const textStyles = [styles.time];
-              if (item.isSlotFull) {
-                wrapperStyles.push(styles.timeSlotFull);
-                textStyles.push(styles.timeFull);
-              } else if (item.selected) {
-                wrapperStyles.push(styles.timeSlotSelected);
-                textStyles.push(styles.timeSelected);
-              }
+    <Fragment>
+      <Header/>
+      <ScrollView style={styles.container}>
+        <Calendar
+          onDayPress={day => onDayPress(day)}
+          markedDates={{
+            [selectedDate]: {selected: true, disableTouchEvent: true},
+          }}
+          minDate={minDate}
+          style={styles.calendar}
+          theme={{
+            arrowColor: theme.colors.darkGray,
+            backgroundColor: theme.colors.white,
+            calendarBackground: theme.colors.white,
+            dayTextColor: theme.colors.black,
+            monthTextColor: theme.colors.black,
+            selectedDayBackgroundColor: theme.colors.primary,
+            selectedDayTextColor: theme.colors.white,
+            textDayFontFamily: 'SF-Pro-Text-Regular',
+            textDayFontSize: 17,
+            textDayHeaderFontFamily: 'SF-Pro-Text-Regular',
+            textDayHeaderFontSize: 12,
+            textDisabledColor: '#C8C7CC',
+            textMonthFontFamily: 'SF-Pro-Display-Bold',
+            textMonthFontSize: 32,
+            textSectionTitleColor: theme.colors.darkGray,
+            todayTextColor: theme.colors.primary,
+          }}
+        />
+        <View style={styles.mainContent}>
+          <View style={styles.availableTime}>
+            <Text style={styles.title}>Available Time</Text>
+            <FlatList
+              style={styles.timeList}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              data={availableTimes}
+              renderItem={({item, index}) => {
+                const wrapperStyles = [styles.timeSlot];
+                const textStyles = [styles.time];
+                if (item.isSlotFull) {
+                  wrapperStyles.push(styles.timeSlotFull);
+                  textStyles.push(styles.timeFull);
+                } else if (item.selected) {
+                  wrapperStyles.push(styles.timeSlotSelected);
+                  textStyles.push(styles.timeSelected);
+                }
 
-              return (
-                <TouchableOpacity
-                  disabled={item.isSlotFull}
-                  style={wrapperStyles}
-                  onPress={() => onTimeSlotSelected(item, index)}>
-                  <Text style={textStyles}>{item.time}</Text>
-                </TouchableOpacity>
-              );
-            }}
-            keyExtractor={(item, index) => index}
-          />
-          <Divider style={styles.divider} />
-        </View>
-        <View style={styles.consulation}>
-          <Text style={styles.title}>What Do You Need</Text>
-          <View style={styles.selectWrapper}>
-            <TouchableOpacity
-              style={styles.listItem}
-              onPress={() => setSelectedConsulationType('consulation')}>
-              <Text style={styles.body}>Consulation</Text>
-              <CheckBox
-                containerStyle={styles.checkBox}
-                checkedColor={theme.colors.secondary}
-                checkedIcon="checkbox-marked-circle"
-                iconType="material-community"
-                size={22}
-                right
-                uncheckedIcon="checkbox-blank-circle-outline"
-                checked={selectedConsulationType === 'consulation'}
-              />
-            </TouchableOpacity>
+                return (
+                  <TouchableOpacity
+                    disabled={item.isSlotFull}
+                    style={wrapperStyles}
+                    onPress={() => onTimeSlotSelected(item, index)}>
+                    <Text style={textStyles}>{item.time}</Text>
+                  </TouchableOpacity>
+                );
+              }}
+              keyExtractor={(item, index) => index}
+            />
             <Divider style={styles.divider} />
           </View>
-          <View style={styles.selectWrapper}>
-            <TouchableOpacity
-              style={styles.listItem}
-              onPress={() => setSelectedConsulationType('treatment')}>
-              <Text style={styles.body}>Treatment</Text>
-              <CheckBox
-                containerStyle={styles.checkBox}
-                checkedColor={theme.colors.secondary}
-                checkedIcon="checkbox-marked-circle"
-                iconType="material-community"
-                size={22}
-                right
-                uncheckedIcon="checkbox-blank-circle-outline"
-                checked={selectedConsulationType === 'treatment'}
-              />
-            </TouchableOpacity>
-            <Divider style={styles.divider} />
-          </View>
-        </View>
-        <View style={styles.reminder}>
-          <Text style={styles.title}>Reminder</Text>
-          <TouchableOpacity style={styles.listItem}>
-            <Text style={styles.body}>Select alert</Text>
-            <View style={styles.alert}>
-              <Text style={styles.alertText}>30 minutes before</Text>
-              <Icon
-                name="chevron-right"
-                type="entypo"
-                size={18}
-                style={styles.alertIcon}
-                color={theme.colors.gray}></Icon>
+          <View style={styles.consulation}>
+            <Text style={styles.title}>What Do You Need</Text>
+            <View style={styles.selectWrapper}>
+              <TouchableOpacity
+                style={styles.listItem}
+                onPress={() => setSelectedConsulationType('consulation')}>
+                <Text style={styles.body}>Consulation</Text>
+                <CheckBox
+                  containerStyle={styles.checkBox}
+                  checkedColor={theme.colors.secondary}
+                  checkedIcon="checkbox-marked-circle"
+                  iconType="material-community"
+                  size={22}
+                  right
+                  uncheckedIcon="checkbox-blank-circle-outline"
+                  checked={selectedConsulationType === 'consulation'}
+                />
+              </TouchableOpacity>
+              <Divider style={styles.divider} />
             </View>
-          </TouchableOpacity>
-          <Divider style={styles.divider} />
-        </View>
-        <View style={styles.description}>
-          <TextField
-            placeholder="Message"
-            multiline={true}
-            numberOfLines={2}
-            containerStyle={styles.textInput}
+            <View style={styles.selectWrapper}>
+              <TouchableOpacity
+                style={styles.listItem}
+                onPress={() => setSelectedConsulationType('treatment')}>
+                <Text style={styles.body}>Treatment</Text>
+                <CheckBox
+                  containerStyle={styles.checkBox}
+                  checkedColor={theme.colors.secondary}
+                  checkedIcon="checkbox-marked-circle"
+                  iconType="material-community"
+                  size={22}
+                  right
+                  uncheckedIcon="checkbox-blank-circle-outline"
+                  checked={selectedConsulationType === 'treatment'}
+                />
+              </TouchableOpacity>
+              <Divider style={styles.divider} />
+            </View>
+          </View>
+          <View style={styles.reminder}>
+            <Text style={styles.title}>Reminder</Text>
+            <TouchableOpacity style={styles.listItem}>
+              <Text style={styles.body}>Select alert</Text>
+              <View style={styles.alert}>
+                <Text style={styles.alertText}>30 minutes before</Text>
+                <Icon
+                  name="chevron-right"
+                  type="entypo"
+                  size={18}
+                  style={styles.alertIcon}
+                  color={theme.colors.gray}></Icon>
+              </View>
+            </TouchableOpacity>
+            <Divider style={styles.divider} />
+          </View>
+          <View style={styles.description}>
+            <TextField
+              placeholder="Message"
+              multiline={true}
+              numberOfLines={2}
+              containerStyle={styles.textInput}
+            />
+          </View>
+          <Button
+            primary
+            title="Next"
+            onPress={() => navigation.navigate('ReviewAppointment')}
           />
         </View>
-        <Button primary title="Next" onPress={() => navigation.navigate('ReviewAppointment')}/>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </Fragment>
   );
 };
 
@@ -184,8 +192,7 @@ const styles = StyleSheet.create({
   },
   calendar: {
     marginHorizontal: 5,
-    marginBottom: 20,
-    marginTop: 5,
+    marginBottom: 20
   },
   title: {
     fontSize: 17,

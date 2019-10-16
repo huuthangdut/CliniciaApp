@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, {Fragment, useState} from 'react';
 import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {TabView, SceneMap} from 'react-native-tab-view';
 import theme from '../../styles/theme';
 import AppointmentList from './components/AppointmentList';
+import Header from '../../components/core/Header';
 
 const AppointmentScreen = props => {
   const [tabBarConfig, setTabBarConfig] = useState({
@@ -15,12 +16,16 @@ const AppointmentScreen = props => {
 
   const handleIndexChange = index => setTabBarConfig(...tabBarConfig, index);
 
-  const renderScene = ({ route }) => {
+  const renderScene = ({route}) => {
     switch (route.key) {
       case 'Upcoming':
-        return <AppointmentList type="Upcoming" navigation={props.navigation}/>;
+        return (
+          <AppointmentList type="Upcoming" navigation={props.navigation} />
+        );
       case 'Previous':
-        return <AppointmentList type="Previous" navigation={props.navigation}/>;
+        return (
+          <AppointmentList type="Previous" navigation={props.navigation} />
+        );
     }
   };
 
@@ -59,16 +64,19 @@ const AppointmentScreen = props => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Appointments</Text>
-      <TabView
-        lazy
-        navigationState={tabBarConfig}
-        renderScene={renderScene}
-        renderTabBar={renderTabBar}
-        onIndexChange={handleIndexChange}
-      />
-    </View>
+    <Fragment>
+      <Header hasBackIcon={false} hasRightMenu={true}/>
+      <View style={styles.container}>
+        <Text style={styles.header}>Appointments</Text>
+        <TabView
+          lazy
+          navigationState={tabBarConfig}
+          renderScene={renderScene}
+          renderTabBar={renderTabBar}
+          onIndexChange={handleIndexChange}
+        />
+      </View>
+    </Fragment>
   );
 };
 
@@ -77,8 +85,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     backgroundColor: 'white',
-    paddingHorizontal: 20,
-    paddingTop: 5,
+    paddingHorizontal: 20
   },
   header: {
     fontSize: 34,

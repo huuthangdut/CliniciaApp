@@ -1,12 +1,12 @@
 import React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import {Text, View, StyleSheet, ScrollView} from 'react-native';
 import theme from '../../../styles/theme';
 import {Icon, Avatar} from 'react-native-elements';
 import Button from '../../../components/core/Button';
 
 const BookingSuccessScreen = props => {
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.textWrapper}>
         <Icon
           name="checkbox-marked-circle"
@@ -37,7 +37,7 @@ const BookingSuccessScreen = props => {
             <Text style={styles.specialty}>Accident and Emergency</Text>
           </View>
           <View style={styles.row}>
-            <Text style={styles.title}>Edward Janowski</Text>
+            <Text style={styles.title}>Date & Time</Text>
             <Text style={styles.body}>Monday, October 24</Text>
             <Text style={styles.subTitle}>10:00 AM</Text>
           </View>
@@ -48,9 +48,9 @@ const BookingSuccessScreen = props => {
             <Text style={styles.subTitle}>0.31 mi away</Text>
           </View>
         </View>
-        <Button primary title="Check details" style={styles.button} />
+        <Button primary title="Check details" style={styles.button}/>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F9F9F9',
     paddingHorizontal: 15,
+    paddingVertical: 30
   },
   textWrapper: {
     marginVertical: 10,
@@ -92,15 +93,15 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   row: {
-    marginVertical: 10,
+    marginVertical: 8,
   },
   avatar: {
     alignItems: 'center',
-    marginVertical: 8,
+    marginVertical: 2,
   },
   body: {
     fontSize: 17,
-    fontFamily: 'SF-Pro-Text-Bold',
+    fontFamily: 'SF-Pro-Text-Semibold',
     textAlign: 'center',
     lineHeight: 25,
   },

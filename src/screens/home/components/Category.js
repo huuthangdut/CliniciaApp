@@ -31,7 +31,7 @@ const Category = props => {
           horizontal={true}
           data={items}
           renderItem={({item}) => (
-            <TouchableOpacity style={styles.item} activeOpacity={0.7} onPress={() => navigation.navigate('Clinic')}>
+            <TouchableOpacity style={styles.item} activeOpacity={0.7} onPress={() => navigation.navigate('Doctor')}>
               <View style={styles.iconWrapper}>
                 <Icon
                   name="heartbeat"

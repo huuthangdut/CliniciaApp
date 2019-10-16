@@ -7,7 +7,7 @@ const DoctorItem = props => {
   const {item, navigation} = props;
 
   return (
-    <TouchableOpacity style={styles.item}>
+    <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('DoctorDetails')}>
       <View style={styles.image}>
         <Avatar
           size={80}

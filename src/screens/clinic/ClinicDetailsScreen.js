@@ -1,11 +1,66 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View, Text, ScrollView} from 'react-native';
 import theme from '../../styles/theme';
 import {Avatar, Rating} from 'react-native-elements';
+import DoctorList from '../doctor/components/DoctorList';
 
 const ClinicDetailsScreen = props => {
+  const {navigation} = props;
+  const [doctors, setDoctors] = useState([
+    {
+      id: 1,
+      image: '',
+      name: 'Barbara Michelle',
+      specialty: 'Pediatric',
+      pricePerHour: '48',
+      rating: 5,
+      ratingCount: 58,
+      distance: 15,
+    },
+    {
+      id: 2,
+      image: '',
+      name: 'Barbara Michelle',
+      specialty: 'Pediatric',
+      pricePerHour: '48',
+      rating: 5,
+      ratingCount: 58,
+      distance: 15,
+    },
+    {
+      id: 3,
+      image: '',
+      name: 'Barbara Michelle',
+      specialty: 'Pediatric',
+      pricePerHour: '48',
+      rating: 5,
+      ratingCount: 58,
+      distance: 15,
+    },
+    {
+      id: 4,
+      image: '',
+      name: 'Barbara Michelle',
+      specialty: 'Pediatric',
+      pricePerHour: '48',
+      rating: 5,
+      ratingCount: 58,
+      distance: 15,
+    },
+    {
+      id: 5,
+      image: '',
+      name: 'Barbara Michelle',
+      specialty: 'Pediatric',
+      pricePerHour: '48',
+      rating: 5,
+      ratingCount: 58,
+      distance: 15,
+    }
+  ]);
+
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.profile}>
         <Avatar
           size="large"
@@ -37,11 +92,14 @@ const ClinicDetailsScreen = props => {
             <Text style={styles.text}>Patients</Text>
           </View>
         </View>
-        <View style={styles.location}>
-
+      </View>
+      <View style={styles.content}>
+        <View style={styles.location}></View>
+        <View style={styles.doctorList}>
+          <Text style={styles.ourDoctor}>Our doctors</Text>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -63,13 +121,13 @@ const styles = StyleSheet.create({
   },
   rating: {
     flexDirection: 'row',
-    marginTop: 5
+    marginTop: 5,
   },
   textWrapper: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   number: {
     fontSize: 17,
@@ -79,8 +137,16 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: 'SF-Pro-Text-Regular',
   },
-  location: {
-      
+  content: {
+    paddingHorizontal: 16
+  },
+  location: {},
+  doctorList: {
+    marginTop: 10
+  },
+  ourDoctor: {
+    fontSize: 17,
+    fontFamily: 'SF-Pro-Text-Bold'
   }
 });
 

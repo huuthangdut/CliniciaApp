@@ -1,79 +1,88 @@
-import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import React, {Fragment} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import {Avatar, Icon} from 'react-native-elements';
 import AppointmentStatus from './components/AppointmentStatus';
 import Button from '../../components/core/Button';
 import theme from '../../styles/theme';
-import {ScrollView} from 'react-native-gesture-handler';
+import Header from '../../components/core/Header';
 
 const AppointmentDetailsScreen = props => {
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={styles.container}>
-        <View style={styles.headerInfo}>
-          <View style={styles.image}>
-            <Avatar
-              size={60}
-              rounded
-              source={{
-                uri:
-                  'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-              }}
-            />
+    <Fragment>
+      <Header/>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.container}>
+          <View style={styles.headerInfo}>
+            <View style={styles.image}>
+              <Avatar
+                size={60}
+                rounded
+                source={{
+                  uri:
+                    'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
+                }}
+              />
+            </View>
+            <View style={styles.headerTextWrapper}>
+              <Text style={styles.headerText}>Kristina Clark</Text>
+              <AppointmentStatus type="confirmed" />
+            </View>
+            <View style={styles.contact}>
+              <TouchableOpacity style={styles.iconWrapper}>
+                <Icon
+                  iconStyle={styles.icon}
+                  size={25}
+                  name="message-circle"
+                  type="feather"></Icon>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.iconWrapper}>
+                <Icon
+                  iconStyle={styles.icon}
+                  size={25}
+                  name="phone"
+                  type="font-awesome"></Icon>
+              </TouchableOpacity>
+            </View>
           </View>
-          <View style={styles.headerTextWrapper}>
-            <Text style={styles.headerText}>Kristina Clark</Text>
-            <AppointmentStatus type="confirmed" />
-          </View>
-          <View style={styles.contact}>
-            <TouchableOpacity style={styles.iconWrapper}>
-              <Icon
-                iconStyle={styles.icon}
-                size={25}
-                name="message-circle"
-                type="feather"></Icon>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.iconWrapper}>
-              <Icon
-                iconStyle={styles.icon}
-                size={25}
-                name="phone"
-                type="font-awesome"></Icon>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={styles.divider}></View>
+          <View style={styles.divider}></View>
 
-        <View style={styles.content}>
-          <View style={styles.itemRow}>
-            <Text style={styles.smText}>Date & Time</Text>
-            <Text style={styles.lgText}>Monday, October 24</Text>
-            <Text style={styles.smText}>8:00 AM</Text>
+          <View style={styles.content}>
+            <View style={styles.itemRow}>
+              <Text style={styles.smText}>Date & Time</Text>
+              <Text style={styles.lgText}>Monday, October 24</Text>
+              <Text style={styles.smText}>8:00 AM</Text>
+            </View>
+            <View style={styles.itemRow}>
+              <Text style={styles.smText}>Address</Text>
+              <Text style={styles.lgText}>San Francisco, California</Text>
+              <Text style={styles.smText}>Hoan My Hospital</Text>
+              <Text style={styles.smText}>0.31 mi away</Text>
+            </View>
+            <View style={styles.itemRow}>
+              <Text style={styles.smText}>Fee</Text>
+              <Text style={styles.lgText}>$75</Text>
+              <Text style={styles.smText}>For 30 minutes</Text>
+            </View>
+            <View style={styles.itemRow}>
+              <Text style={styles.smText}>Need</Text>
+              <Text style={styles.lgText}>Treatment</Text>
+              <Text style={styles.smText}>Any kind of treatment</Text>
+            </View>
+            <View style={styles.itemRow}>
+              <Text style={styles.smText}>Reminder</Text>
+              <Text style={styles.lgText}>30 minutes before</Text>
+            </View>
           </View>
-          <View style={styles.itemRow}>
-            <Text style={styles.smText}>Address</Text>
-            <Text style={styles.lgText}>San Francisco, California</Text>
-            <Text style={styles.smText}>Hoan My Hospital</Text>
-            <Text style={styles.smText}>0.31 mi away</Text>
-          </View>
-          <View style={styles.itemRow}>
-            <Text style={styles.smText}>Fee</Text>
-            <Text style={styles.lgText}>$75</Text>
-            <Text style={styles.smText}>For 30 minutes</Text>
-          </View>
-          <View style={styles.itemRow}>
-            <Text style={styles.smText}>Need</Text>
-            <Text style={styles.lgText}>Treatment</Text>
-            <Text style={styles.smText}>Any kind of treatment</Text>
-          </View>
-          <View style={styles.itemRow}>
-            <Text style={styles.smText}>Reminder</Text>
-            <Text style={styles.lgText}>30 minutes before</Text>
-          </View>
+          <Button title="Cancel" secondary disabled style={styles.button} />
         </View>
-        <Button title="Cancel" secondary disabled style={styles.button}/>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </Fragment>
   );
 };
 
@@ -82,7 +91,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     backgroundColor: 'white',
-    padding: 20,
+    paddingHorizontal: 20
   },
   headerInfo: {
     width: '100%',
@@ -147,8 +156,8 @@ const styles = StyleSheet.create({
     lineHeight: 30,
   },
   button: {
-      marginVertical: 5
-  }
+    marginVertical: 5,
+  },
 });
 
 export default AppointmentDetailsScreen;

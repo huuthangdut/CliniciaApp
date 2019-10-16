@@ -1,7 +1,7 @@
 import React, {useState, Fragment} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import SpecialtyList from './components/SpecialtyList';
-import SpecialtyHeader from './components/SpecialtyHeader';
+import Header from '../../components/core/Header';
 
 const SpecialtyScreen = props => {
   const {navigation} = props;
@@ -23,7 +23,7 @@ const SpecialtyScreen = props => {
 
   return (
     <Fragment>
-      <SpecialtyHeader/>
+      <Header/>
       <View style={styles.container}>
         <Text style={styles.header}>Specialities</Text>
         <View style={styles.list}>

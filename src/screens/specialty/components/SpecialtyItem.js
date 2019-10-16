@@ -7,7 +7,7 @@ const SpecialtyItem = props => {
   const {item, navigation} = props;
 
   return (
-    <TouchableOpacity style={styles.item} activeOpacity={0.7} onPress={() => navigation.navigate('Clinic')}>
+    <TouchableOpacity style={styles.item} activeOpacity={0.7} onPress={() => navigation.navigate('Doctor')}>
       <View style={styles.row}>
         <View style={styles.imageWrapper}>
           <Icon
@@ -36,11 +36,13 @@ const styles = StyleSheet.create({
   item: {
     width: '100%',
     height: 80,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginVertical: 2
   },
   title: {
     fontSize: 17,
     fontFamily: 'SF-Pro-Text-Bold',
+    lineHeight: 28
   },
   text: {
     fontSize: 14,
