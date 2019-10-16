@@ -6,7 +6,7 @@ import Header from '../../components/core/Header';
 const NotificationScreen = props => {
   return (
     <Fragment>
-      <Header hasRightMenu={true}/>
+      <Header hasBackIcon={false} hasRightMenu={true}/>
       <View style={styles.container}>
         <Text style={styles.header}>Notifications</Text>
         <NotificationList />
