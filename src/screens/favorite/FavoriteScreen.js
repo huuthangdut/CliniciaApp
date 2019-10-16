@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import { 
   ScrollView, 
   StyleSheet,
-  View
+  View,
+  Text
 } from "react-native"
 import FavoriteList from './components/FavoriteList'
 import Header from './components/Header'
@@ -14,8 +15,8 @@ const FavoriteScreen = () => {
   ])
 
   return (
-    <View>
-      <Header/>
+    <View style={styles.container}>
+      <Text style={styles.title}>Favorite</Text>
       <Toolbar/>
       <FavoriteList/>
     </View>
@@ -23,7 +24,17 @@ const FavoriteScreen = () => {
 }
 
 const styles = StyleSheet.create({
-  
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+    flexDirection: 'column'
+  },
+  title: {
+    fontSize: 34,
+    fontFamily: 'SF-Pro-Display-Bold',
+    paddingVertical: 20,
+    paddingHorizontal: 15
+  }
 })
 
 export default FavoriteScreen

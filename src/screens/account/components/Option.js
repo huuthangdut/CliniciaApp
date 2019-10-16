@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   option: {
   },
   headerLabel: {
-    paddingLeft: 10,
+    paddingLeft: 15,
     fontSize: 16,
     fontFamily: theme.colors.black,
     backgroundColor: theme.colors.lightGray,

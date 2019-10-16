@@ -15,11 +15,12 @@ const backArrow = require('../../assets/icons/ic-back-arrow.png')
 const filter = require('../../assets/icons/ic-filter.png')
 const sort = require('../../assets/icons/ic-sort.png')
 const star = require('../../assets/icons/ic-star.png')
+const marker = require('../../assets/icons/ic-location.png')
 
 const tabIcons = {
     searchFocus, search, appointmentFocus, appointment, notificationFocus, notification,
     accountFocus, account, lock, notificationSetting, hand, signOut, backArrow, filter,
-    sort, star
+    sort, star, marker
 };
 
 const icons = {

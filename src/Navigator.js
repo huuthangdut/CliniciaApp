@@ -21,6 +21,7 @@ import DoctorScreen from './screens/doctor/DoctorScreen';
 import DoctorDetailsScreen from './screens/doctor/DoctorDetailsScreen';
 import AppointmentDetailsScreen from './screens/appointment/AppointmentDetailsScreen';
 import ChangePasswordScreen from './screens/changepassword/ChangePasswordScreen';
+import InitLocationScreen from './screens/location/InitLocationScreen'
 
 const DoctorNavigator = createStackNavigator({
   Doctor: DoctorScreen,
@@ -169,6 +170,7 @@ const TabNavigator = createBottomTabNavigator(
   },
 );
 
+<<<<<<< HEAD
 const AppNavigator = createStackNavigator(
   {
     Tab: TabNavigator,
@@ -182,6 +184,17 @@ const AppNavigator = createStackNavigator(
     initialRouteName: 'Tab',
   },
 );
+=======
+const AppNavigator = createStackNavigator({
+  Tab: TabNavigator,
+  Specialty: SpecialtyNavigator,
+  // Clinic: ClinicNavigator,
+  InitLocation: InitLocationScreen
+}, {
+  headerMode: 'none',
+  initialRouteName: 'Tab'
+})
+>>>>>>> location screen
 
 const AppSwitch = createSwitchNavigator(
   {

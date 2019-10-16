@@ -15,14 +15,17 @@ const Setting = (props) => {
       title: 'Change Password',
       icon: theme.tabIcons.lock,
       onPress: () => props.navigation.navigate('ChangePassword'),
+      name: 'lock'
     },
     {
       title: 'Notifications',
-      icon: theme.tabIcons.notificationSetting
+      icon: theme.tabIcons.notificationSetting,
+      name: 'bell'
     },
     {
       title: 'Sign Out',
-      icon: theme.tabIcons.signOut
+      icon: theme.tabIcons.signOut,
+      name: 'sign-out'
     },
   ]
 
@@ -40,11 +43,19 @@ const Setting = (props) => {
                     title={item.title}
                     bottomDivider
                     chevron
-                    leftElement={
-                      <View style={styles.leftIconContainer}>
-                        <Image style={styles.leftIcon} source={item.icon} />
-                      </View>
-                    }
+                    leftIcon={{
+                      type: 'font-awesome',
+                      name: item.name,
+                      color: theme.colors.white,
+                      size: 20,
+                      containerStyle: {
+                        backgroundColor: theme.colors.primary,
+                        width: 30,
+                        height: 30,
+                        justifyContent: 'center',
+                        borderRadius: 6
+                      }
+                    }}
                     onPress={item.onPress}
                   />
                 </View>
@@ -67,21 +78,12 @@ const styles = StyleSheet.create({
   settingList: {
   },
   headerLabel: {
-    paddingLeft: 10,
     fontSize: 16,
+    paddingLeft: 15,
     fontFamily: theme.colors.black,
     backgroundColor: theme.colors.lightGray,
     color: theme.colors.darkGray,
     lineHeight: 40
-  },
-  leftIconContainer: {
-    width: 29,
-    height: 29,
-    backgroundColor: theme.colors.primary,
-    borderRadius: 6,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
   },
   leftIcon: {
     width: 11,

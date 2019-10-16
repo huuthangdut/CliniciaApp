@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState ,} from 'react'
 import {
   StyleSheet,
   View,
@@ -16,7 +16,7 @@ const Address = () => {
     },
     {
       type: 'Company',
-      address: '140 Nguyễn Giản Thanh, Thanh Khê, Đà Nẵng'
+      address: '140 Nguyễn Giản Thanh ,quận Thanh Khê, Đà Nẵng'
     },
   ])
 
@@ -76,20 +76,20 @@ const Address = () => {
 
 const styles = StyleSheet.create({
   headerLabel: {
-    paddingLeft: 10,
     fontSize: 16,
+    paddingLeft: 15,
     fontFamily: theme.colors.black,
     backgroundColor: theme.colors.lightGray,
     color: theme.colors.darkGray,
     lineHeight: 40
   },
   addressTypeText: {
+    paddingLeft: 15,
     fontSize: 13,
     fontFamily: 'SF-Pro-Text-Regular',
     color: theme.colors.darkGray,
-    paddingLeft: 15,
     paddingTop: 15,
-    marginBottom:0
+    marginBottom:0,
   }
 })
 

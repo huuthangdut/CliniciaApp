@@ -10,11 +10,7 @@ import theme from '../../../styles/theme'
 const Header = props => {
   return (
     <View style={styles.header}>
-      <Image 
-        source={theme.tabIcons.backArrow} 
-        style={styles.backIcon}
-      />
-      <Text style={styles.title}>Favorite</Text>
+      
     </View>
   )
 }

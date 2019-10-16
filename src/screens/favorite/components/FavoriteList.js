@@ -23,34 +23,37 @@ const FavoriteList = props => {
   return (
     <View style={styles.MainContainer}>
       <FlatList
+        style = {styles.list}
         showsVerticalScrollIndicator={false}
         data={dataSource}
         renderItem={({ item }) => (
-          <View style={styles.elementContainer}>
-            <Avatar
-              rounded
-              size={64}
-              showEditButton
-              editButton={{
-                name: 'heart',
-                type: 'font-awesome',
-                color: 'red',
-                size: 14,
-                containerStyle: {
-                  backgroundColor: theme.colors.white,
-                  width: 22,
-                  height: 22,
-                  justifyContent: 'center',
-                  borderRadius: 11,
-                  borderColor: theme.colors.favorite.borderHeartIcon,
-                  borderWidth: 1
-                }
-              }}
-            />
-            <Text style={styles.name}>Phúc Trần</Text>
-            <View style={styles.rating}>
-              <Image source={theme.tabIcons.star} />
-              <Text>3.5</Text>
+          <View style={styles.itemWrapper}>
+            <View style={styles.item}>
+              <Avatar
+                rounded
+                size={64}
+                showEditButton
+                editButton={{
+                  name: 'heart',
+                  type: 'font-awesome',
+                  color: 'red',
+                  size: 14,
+                  containerStyle: {
+                    backgroundColor: theme.colors.white,
+                    width: 22,
+                    height: 22,
+                    justifyContent: 'center',
+                    borderRadius: 11,
+                    borderColor: theme.colors.favorite.borderHeartIcon,
+                    borderWidth: 1
+                  }
+                }}
+              />
+              <Text style={styles.name}>Phúc Trần</Text>
+              <View style={styles.rating}>
+                <Image source={theme.tabIcons.star} />
+                <Text>3.5</Text>
+              </View>
             </View>
           </View>
         )}
@@ -61,27 +64,35 @@ const FavoriteList = props => {
   )
 }
 
-const elementWidth = (Dimensions.get('window').width - 60) / 3
-const contentHeight = Dimensions.get('window').height - (49 + 44 + 96)
+// const elementWidth = (Dimensions.get('window').width - 60) / 3
+// const contentHeight = Dimensions.get('window').height - (49 + 44 + 96)
 
 const styles = StyleSheet.create({
   MainContainer: {
-    paddingBottom: 25,
-    paddingLeft: 15,
-    backgroundColor: theme.colors.favorite.backgroundGray,
-    height: contentHeight
-  },
-  elementContainer: {
+    flex: 1,
+    // marginHorizontal: 15,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 15,
-    marginRight: 15,
-    width: elementWidth,
-    height: 158,
+    // backgroundColor: 'blue'
+  },
+  list: {
+    // backgroundColor: 'red',
+  },
+  itemWrapper: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 8,
+    marginTop: 16
+  },
+  item: {
     borderRadius: 8,
     borderWidth: 1,
-    backgroundColor: theme.colors.white,
-    borderColor: theme.colors.lightGray
+    backgroundColor: theme.colors.favorite.backgroundGray,
+    borderColor: theme.colors.lightGray,
+    height: 158,
+    width: 104,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   name: {
     fontSize: 13,

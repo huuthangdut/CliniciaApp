@@ -30,9 +30,8 @@ const styles = StyleSheet.create({
   info: {
     backgroundColor: '#F9F9F9',
     flexDirection: 'row',
-    height: 154,
-    paddingTop: 52,
-    paddingLeft: 16
+    paddingVertical: 20,
+    paddingHorizontal: 15
   },
   avatar: {
     paddingLeft: 16,

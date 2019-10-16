@@ -24,7 +24,8 @@ const AccountScreen = props => {
 }
 
 const styles = StyleSheet.create({
-  
+  container: {
+  }
 })
 
 export default WithContext(AccountScreen)
