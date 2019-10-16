@@ -22,6 +22,12 @@ import DoctorDetailsScreen from './screens/doctor/DoctorDetailsScreen';
 import ChangePasswordScreen from './screens/changepassword/ChangePasswordScreen';
 import InitLocationScreen from './screens/location/InitLocationScreen'
 
+const FavoriteNavigator = createStackNavigator({
+  Favorite: FavoriteScreen
+}, {
+  headerMode: 'none'
+})
+
 const DoctorNavigator = createStackNavigator({
   Doctor: DoctorScreen,
   DoctorDetails: DoctorDetailsScreen
@@ -41,7 +47,7 @@ const BookingNavigator = createStackNavigator({
 const ClinicNavigator = createStackNavigator(
   {
     Clinic: ClinicScreen,
-    ClinicDetails: ClinicDetailsScreen,
+    ClinicDetails: ClinicDetailsScreen
   },
   {
     headerMode: 'none'
@@ -59,8 +65,7 @@ const SpecialtyNavigator = createStackNavigator(
 
 const HomeNavigator = createStackNavigator(
   {
-    Home: HomeScreen,
-    Specialty: SpecialtyScreen,
+    Home: HomeScreen
   },
   {
     headerMode: 'none',
@@ -70,7 +75,7 @@ const HomeNavigator = createStackNavigator(
 const AppointmentNavigator = createStackNavigator(
   {
     Appointments: AppointmentScreen,
-    AppointmentDetails: AppointmentDetailsScreen,
+    AppointmentDetails: AppointmentDetailsScreen
   },
   {
     headerMode: 'none',
@@ -79,7 +84,7 @@ const AppointmentNavigator = createStackNavigator(
 
 const NotificationNavigator = createStackNavigator(
   {
-    Notification: NotificationScreen,
+    Notification: NotificationScreen
   },
   {
     headerMode: 'none',
@@ -89,7 +94,6 @@ const NotificationNavigator = createStackNavigator(
 const AccountNavigator = createStackNavigator(
   {
     Account: AccountScreen,
-    Favorite: FavoriteScreen,
     ChangePassword: ChangePasswordScreen
   },
   {
@@ -175,7 +179,8 @@ const AppNavigator = createStackNavigator(
     Specialty: SpecialtyNavigator,
     Clinic: ClinicNavigator,
     Booking: BookingNavigator,
-    Doctor: DoctorNavigator
+    Doctor: DoctorNavigator,
+    Favorite: FavoriteNavigator
   },
   {
     headerMode: 'none',

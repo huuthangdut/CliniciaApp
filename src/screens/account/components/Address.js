@@ -45,7 +45,6 @@ const Address = () => {
                     }}
                     bottomDivider
                     chevron
-                  // onPress= {}
                   />
                 </View>
               </View>

@@ -1,33 +1,26 @@
-import React, { useState, useEffect } from 'react'
-import {
-  View,
-  StyleSheet,
-  Image,
-  Dimensions,
-  Text
-} from "react-native"
-import theme from '../../../styles/theme'
-import { FlatList } from 'react-native-gesture-handler'
-import { Avatar } from 'react-native-elements'
+import React, {useState, useEffect} from 'react';
+import {View, StyleSheet, Image, Text, Dimensions} from 'react-native';
+import theme from '../../../styles/theme';
+import {FlatList} from 'react-native-gesture-handler';
+import {Avatar} from 'react-native-elements';
 
 const FavoriteList = props => {
   const [dataSource, setDataSource] = useState({});
 
   useEffect(() => {
     let items = Array.apply(null, Array(20)).map((v, i) => {
-      return { id: i, src: 'http://placehold.it/200x200?text=' + (i + 1) }
-    })
-    setDataSource(items)
-  }, [])
+      return {id: i, src: 'http://placehold.it/200x200?text=' + (i + 1)};
+    });
+    setDataSource(items);
+  }, []);
 
   return (
-    <View style={styles.MainContainer}>
+    <View style={styles.container}>
       <FlatList
-        style = {styles.list}
         showsVerticalScrollIndicator={false}
         data={dataSource}
-        renderItem={({ item }) => (
-          <View style={styles.itemWrapper}>
+        renderItem={({item}) => (
+          <View style={styles.itemContainer}>
             <View style={styles.item}>
               <Avatar
                 rounded
@@ -38,21 +31,17 @@ const FavoriteList = props => {
                   type: 'font-awesome',
                   color: 'red',
                   size: 14,
-                  containerStyle: {
-                    backgroundColor: theme.colors.white,
-                    width: 22,
-                    height: 22,
-                    justifyContent: 'center',
-                    borderRadius: 11,
-                    borderColor: theme.colors.favorite.borderHeartIcon,
-                    borderWidth: 1
-                  }
+                  containerStyle: styles.loveIcon,
                 }}
               />
-              <Text style={styles.name}>Phúc Trần</Text>
+              <Text numberOfLines={2} style={styles.name}>
+                Edward Janowski
+              </Text>
               <View style={styles.rating}>
-                <Image source={theme.tabIcons.star} />
-                <Text>3.5</Text>
+                <View style={styles.starWrapper}>
+                  <Image style={styles.starIcon} source={theme.tabIcons.star} />
+                </View>
+                <Text style={styles.ratingText}>3.5</Text>
               </View>
             </View>
           </View>
@@ -61,46 +50,68 @@ const FavoriteList = props => {
         keyExtractor={(item, index) => index.toString()}
       />
     </View>
-  )
-}
-
-// const elementWidth = (Dimensions.get('window').width - 60) / 3
-// const contentHeight = Dimensions.get('window').height - (49 + 44 + 96)
+  );
+};
 
 const styles = StyleSheet.create({
-  MainContainer: {
+  container: {
     flex: 1,
-    // marginHorizontal: 15,
+    marginTop: 16,
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: 'blue'
   },
-  list: {
-    // backgroundColor: 'red',
-  },
-  itemWrapper: {
+  itemContainer: {
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 8,
-    marginTop: 16
+    marginBottom: 16,
   },
   item: {
     borderRadius: 8,
     borderWidth: 1,
+    padding: 5,
     backgroundColor: theme.colors.favorite.backgroundGray,
     borderColor: theme.colors.lightGray,
     height: 158,
-    width: 104,
+    width: Dimensions.get('screen').width / 3.6,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   name: {
     fontSize: 13,
-    marginTop: 4
+    fontFamily: 'SF-Pro-Text-Regular',
+    textAlign: 'center',
+    lineHeight: 20,
+    marginTop: 5
   },
   rating: {
-    flexDirection: 'row'
-  }
-})
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignContent: 'center',
+  },
+  ratingText: {
+    fontSize: 13,
+    fontFamily: 'SF-Pro-Text-Regular',
+    color: theme.colors.darkGray,
+  },
+  starWrapper: {
+    justifyContent: 'center',
+    alignContent: 'center',
+  },
+  starIcon: {
+    width: 12,
+    height: 12,
+    marginRight: 4,
+  },
+  loveIcon: {
+    backgroundColor: theme.colors.white,
+    width: 22,
+    height: 22,
+    justifyContent: 'center',
+    borderRadius: 11,
+    borderColor: theme.colors.favorite.borderHeartIcon,
+    borderWidth: 1,
+  },
+});
 
-export default FavoriteList
+export default FavoriteList;

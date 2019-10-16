@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {
   StyleSheet,
   View,
@@ -13,23 +13,22 @@ const Option = props => {
 
   const listOption = [
     {
-      title: 'Favorite',
+      title: 'Favorites',
       screen: 'Favorite'
     }
   ]
 
   return (
     <View style={styles.option}>
-      <Text style={styles.headerLabel}>Options</Text>
+      <Text style={styles.headerLabel}>List</Text>
       {
         listOption.map((item, i) => (
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate(item.screen)}>
             <ListItem
               key={i}
               title={item.title}
               bottomDivider
               chevron
-              onPress={() => props.navigation.navigate(item.screen)}
               badge={{
                 value: '+' + 33,
                 textStyle: { color: theme.colors.darkGray },
@@ -46,8 +45,6 @@ const Option = props => {
 }
 
 const styles = StyleSheet.create({
-  option: {
-  },
   headerLabel: {
     paddingLeft: 15,
     fontSize: 16,
@@ -55,7 +52,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.lightGray,
     color: theme.colors.darkGray,
     lineHeight: 40
-  },
+  }
 });
 
-export default Option
+export default Option;

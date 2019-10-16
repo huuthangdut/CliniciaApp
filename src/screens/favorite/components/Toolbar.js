@@ -1,78 +1,58 @@
-import React, { useState } from 'react'
+import React from 'react';
 import {
   View,
   StyleSheet,
   Image,
   Text,
-  TouchableNativeFeedback
-} from "react-native"
-import { ButtonGroup } from 'react-native-elements'
-import theme from '../../../styles/theme'
+  TouchableNativeFeedback,
+  TouchableOpacity
+} from 'react-native';
+import theme from '../../../styles/theme';
 
 const Toolbar = props => {
   return (
-    <View style= {styles.container}>
-      <TouchableNativeFeedback >
-        <View style= {styles.filter}>
-        <Image style= {styles.icon} source={theme.tabIcons.filter}/>
-        <Text style= {styles.text}>Filter</Text>
-        </View>
-      </TouchableNativeFeedback>
-      <TouchableNativeFeedback >
-        <View style= {styles.sort}>
-        <Image style= {styles.icon} source={theme.tabIcons.sort}/>
-        <Text style= {styles.text}>Sort</Text>
-        </View>
-      </TouchableNativeFeedback>
+    <View style={styles.container}>
+      <TouchableOpacity style={styles.tab}>
+          <Image style={styles.icon} source={theme.tabIcons.filter} />
+          <Text style={styles.text}>Filter</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.tab}>
+          <Image style={styles.icon} source={theme.tabIcons.sort} />
+          <Text style={styles.text}>Sort</Text>
+      </TouchableOpacity>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
+    height: 44
   },
-  filter: {
+  tab: {
     flexDirection: 'row',
-    height: 44,
-    flex : 1,
+    flex: 1,
     justifyContent: 'center',
-    display: 'flex',
     alignItems: 'center',
     borderWidth: 1,
     borderTopColor: '#EFEFF4',
     borderBottomColor: '#EFEFF4',
     borderRightColor: '#EFEFF4',
-    borderLeftWidth : 0,
+    borderLeftWidth: 0,
     fontFamily: 'SF-Pro-Text-Regular',
     fontSize: 15,
     color: '#666666'
   },
-  sort: {
-    flexDirection: 'row',
-    height: 44,
-    flex : 1,
-    justifyContent: 'center',
-    display: 'flex',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderTopColor: '#EFEFF4',
-    borderBottomColor: '#EFEFF4',
-    borderRightColor: '#EFEFF4',
-    borderLeftWidth : 0,
-    borderRightWidth : 0,
-  },
   text: {
     fontFamily: 'SF-Pro-Text-Regular',
     fontSize: 15,
-    color: theme.colors.darkGray,
-    marginLeft: 8
+    color: theme.colors.darkGray
   },
   icon: {
-    width: 14,
-    height: 17
-  }
-})
+    width: 12,
+    height: 12,
+    marginRight: 8
+  },
+});
 
-export default Toolbar
+export default Toolbar;

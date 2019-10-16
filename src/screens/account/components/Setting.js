@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import {
   StyleSheet,
   View,
   Text,
-  TouchableOpacity,
-  Image,
+  TouchableOpacity
 } from 'react-native'
 import { ListItem } from 'react-native-elements'
 import theme from '../../../styles/theme'
@@ -31,7 +30,7 @@ const Setting = (props) => {
 
   return (
     <View style={styles.setting}>
-      <Text style={styles.headerLabel}>Setting</Text>
+      <Text style={styles.headerLabel}>Settings</Text>
       <View style={styles.settingList}>
         {
           listSetting.map((item, i) => (
