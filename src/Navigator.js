@@ -8,6 +8,7 @@ import AppointmentScreen from './screens/appointment/AppointmentScreen';
 import NotificationScreen from './screens/notification/NotificationScreen';
 import AccountScreen from './screens/account/AccountScreen';
 import AppointmentDetailsScreen from './screens/appointment/AppointmentDetailsScreen';
+import FavoriteScreen from './screens/favorite/FavoriteScreen';
 import SpecialtyScreen from './screens/specialty/SpecialtyScreen';
 import LoginScreen from './screens/auth/LoginScreen';
 import {Image} from 'react-native';
@@ -18,6 +19,14 @@ import ReviewAppointmentScreen from './screens/booking/review-appointment/Review
 import BookingSuccessScreen from './screens/booking/booking-success/BookingSuccessScreen';
 import DoctorScreen from './screens/doctor/DoctorScreen';
 import DoctorDetailsScreen from './screens/doctor/DoctorDetailsScreen';
+import ChangePasswordScreen from './screens/changepassword/ChangePasswordScreen';
+import InitLocationScreen from './screens/location/InitLocationScreen'
+
+const FavoriteNavigator = createStackNavigator({
+  Favorite: FavoriteScreen
+}, {
+  headerMode: 'none'
+})
 
 const DoctorNavigator = createStackNavigator({
   Doctor: DoctorScreen,
@@ -38,7 +47,7 @@ const BookingNavigator = createStackNavigator({
 const ClinicNavigator = createStackNavigator(
   {
     Clinic: ClinicScreen,
-    ClinicDetails: ClinicDetailsScreen,
+    ClinicDetails: ClinicDetailsScreen
   },
   {
     headerMode: 'none'
@@ -56,7 +65,7 @@ const SpecialtyNavigator = createStackNavigator(
 
 const HomeNavigator = createStackNavigator(
   {
-    Home: HomeScreen,
+    Home: HomeScreen
   },
   {
     headerMode: 'none',
@@ -66,7 +75,7 @@ const HomeNavigator = createStackNavigator(
 const AppointmentNavigator = createStackNavigator(
   {
     Appointments: AppointmentScreen,
-    AppointmentDetails: AppointmentDetailsScreen,
+    AppointmentDetails: AppointmentDetailsScreen
   },
   {
     headerMode: 'none',
@@ -75,7 +84,7 @@ const AppointmentNavigator = createStackNavigator(
 
 const NotificationNavigator = createStackNavigator(
   {
-    Notification: NotificationScreen,
+    Notification: NotificationScreen
   },
   {
     headerMode: 'none',
@@ -85,6 +94,7 @@ const NotificationNavigator = createStackNavigator(
 const AccountNavigator = createStackNavigator(
   {
     Account: AccountScreen,
+    ChangePassword: ChangePasswordScreen
   },
   {
     headerMode: 'none',
@@ -169,7 +179,8 @@ const AppNavigator = createStackNavigator(
     Specialty: SpecialtyNavigator,
     Clinic: ClinicNavigator,
     Booking: BookingNavigator,
-    Doctor: DoctorNavigator
+    Doctor: DoctorNavigator,
+    Favorite: FavoriteNavigator
   },
   {
     headerMode: 'none',
