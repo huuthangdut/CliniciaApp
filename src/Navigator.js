@@ -21,6 +21,7 @@ import DoctorScreen from './screens/doctor/DoctorScreen';
 import DoctorDetailsScreen from './screens/doctor/DoctorDetailsScreen';
 import ChangePasswordScreen from './screens/changepassword/ChangePasswordScreen';
 import InitLocationScreen from './screens/location/InitLocationScreen'
+import FilterScreen from './screens/doctor/FilterScreen'
 
 const FavoriteNavigator = createStackNavigator({
   Favorite: FavoriteScreen
@@ -30,7 +31,8 @@ const FavoriteNavigator = createStackNavigator({
 
 const DoctorNavigator = createStackNavigator({
   Doctor: DoctorScreen,
-  DoctorDetails: DoctorDetailsScreen
+  DoctorDetails: DoctorDetailsScreen,
+  Filter: FilterScreen
 }, {
   headerMode: 'none',
   initialRouteName: 'Doctor'
@@ -180,7 +182,7 @@ const AppNavigator = createStackNavigator(
     Clinic: ClinicNavigator,
     Booking: BookingNavigator,
     Doctor: DoctorNavigator,
-    Favorite: FavoriteNavigator
+    Favorite: FavoriteNavigator,
   },
   {
     headerMode: 'none',
