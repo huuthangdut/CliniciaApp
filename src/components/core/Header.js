@@ -33,7 +33,14 @@ const CustomHeader = props => {
           />
         </TouchableOpacity>
       ) : (
-        <View style={styles.icon}></View>
+        <View style={styles.icon}>
+          <Icon
+            name="shopping-cart"
+            type="font-awesome"
+            size={25}
+            color={color}
+          />
+        </View>
       )}
     </View>
   );
