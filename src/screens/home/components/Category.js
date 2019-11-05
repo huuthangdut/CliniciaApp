@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, FlatList, Alert} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, FlatList, Image} from 'react-native';
 import theme from '../../../styles/theme';
 import {Icon} from 'react-native-elements';
 
@@ -33,11 +33,7 @@ const Category = props => {
           renderItem={({item}) => (
             <TouchableOpacity style={styles.item} activeOpacity={0.7} onPress={() => navigation.navigate('Doctor')}>
               <View style={styles.iconWrapper}>
-                <Icon
-                  name="heartbeat"
-                  type="font-awesome"
-                  size={40}
-                  color="#fff"></Icon>
+                <Image style={{width: 60, height: 60}} source={{uri: item.image}} />
               </View>
               <View style={styles.center}>
                 <Text style={styles.doctor}>{item.name}</Text>

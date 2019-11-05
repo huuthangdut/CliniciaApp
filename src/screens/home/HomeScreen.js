@@ -1,4 +1,4 @@
-import React, {useState, Fragment} from 'react';
+import React, {useState, useEffect, Fragment} from 'react';
 import WithContext from '../../components/core/WithContext';
 import {StyleSheet, View} from 'react-native';
 
@@ -8,24 +8,12 @@ import {ScrollView} from 'react-native-gesture-handler';
 import HomeHeader from './components/HomeHeader';
 import Toolbar from './components/Toolbar';
 import DoctorList from '../doctor/components/DoctorList';
+import {SpecialtyService} from '../../services/SpeicaltyService';
 
 const HomeScreen = props => {
   const {navigation} = props;
 
-  const [categories, setCategories] = useState([
-    {id: 1, icon: 'home', name: 'Dentist', numOfDoctors: 96},
-    {id: 2, icon: 'home', name: 'Cardiology', numOfDoctors: 96},
-    {id: 3, icon: 'home', name: 'Physician', numOfDoctors: 96},
-    {id: 4, icon: 'home', name: 'Dentist', numOfDoctors: 96},
-    {id: 5, icon: 'home', name: 'Dentist', numOfDoctors: 96},
-    {id: 6, icon: 'home', name: 'Dentist', numOfDoctorss: 96},
-    {id: 7, icon: 'home', name: 'Dentist', numOfDoctors: 96},
-    {id: 8, icon: 'home', name: 'Dentist', numOfDoctors: 96},
-    {id: 9, icon: 'home', name: 'Dentist', numOfDoctors: 96},
-    {id: 10, icon: 'home', name: 'Dentist', numOfDoctors: 96},
-    {id: 11, icon: 'home', name: 'Dentist', numOfDoctors: 96},
-    {id: 12, icon: 'home', name: 'Dentist', numOfDoctors: 96},
-  ]);
+  const [specialties, setSpecialties] = useState([]);
 
   const [doctors, setDoctors] = useState([
     {
@@ -88,13 +76,29 @@ const HomeScreen = props => {
     specialty: 'Dentist',
   });
 
+  const loadSpecialties = () => {
+    SpecialtyService.getSpecialties(0, 10)
+      .then(result => {
+        listSpecialties = result.items;
+        setSpecialties(listSpecialties);
+        
+        console.log(result);
+      })
+      .catch(e => {
+      });
+  };
+
+  useEffect(() => {
+    loadSpecialties();
+  }, []);
+
   return (
     <Fragment>
       <HomeHeader />
       <ScrollView nestedScrollEnabled={true}>
         <View style={styles.container}>
           <Reminder item={reminder} />
-          <Category items={categories} navigation={navigation} />
+          <Category items={specialties} navigation={navigation} />
           <Toolbar />
           <DoctorList items={doctors} navigation={navigation} />
         </View>

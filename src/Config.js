@@ -3,6 +3,7 @@ export const CONFIG = {
     API_VERSION: '1.0',
     API_URL: {
         LOGIN: 'account/login',
-        REGISTER: 'account/register'
+        REGISTER: 'account/register',
+        SPECIALTIES: 'specialties'
     }
 }
