@@ -13,13 +13,12 @@ const DoctorItem = props => {
           size={80}
           rounded
           source={{
-            uri:
-              'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
+            uri: item.imageProfile
           }}
         />
       </View>
       <View style={styles.content}>
-        <Text style={styles.name}>{item.name}</Text>
+        <Text style={styles.name}>{item.firstName + ' ' + item.lastName}</Text>
         <View style={styles.row}>
           <Icon
             name="map-marker"
@@ -27,9 +26,9 @@ const DoctorItem = props => {
             size={12}
             color="#C8C7CC"
           />
-          <Text style={styles.text}>{item.distance} km away</Text>
+          <Text style={styles.text}>{item.distanceFromPatient} km away</Text>
           <Icon name="dot-single" type="entypo" size={12} color="#C8C7CC" />
-          <Text style={styles.text}>{item.specialty}</Text>
+          <Text style={styles.text}>{item.specialty.name}</Text>
         </View>
         <View style={styles.row}>
           <Rating
@@ -40,7 +39,7 @@ const DoctorItem = props => {
           />
           <Text style={styles.text}>{item.ratingCount}</Text>
           <Icon name="dot-single" type="entypo" size={12} color="#C8C7CC" />
-          <Text>${item.pricePerHour}/hour</Text>
+          <Text>${item.price}/hour</Text>
         </View>
       </View>
       <View style={styles.likeWrapper}>

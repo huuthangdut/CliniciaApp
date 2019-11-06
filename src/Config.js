@@ -4,6 +4,7 @@ export const CONFIG = {
     API_URL: {
         LOGIN: 'account/login',
         REGISTER: 'account/register',
-        SPECIALTIES: 'specialties'
+        SPECIALTIES: 'specialties',
+        DOCTORS: 'doctors'
     }
 }

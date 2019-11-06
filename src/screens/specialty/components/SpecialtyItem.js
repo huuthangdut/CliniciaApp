@@ -16,7 +16,7 @@ const SpecialtyItem = props => {
     <TouchableOpacity
       style={styles.item}
       activeOpacity={0.7}
-      onPress={() => navigation.navigate('Doctor')}>
+      onPress={() => navigation.navigate('Doctor', { specialtyId: item.id })}>
       <View style={styles.row}>
         <View style={styles.imageWrapper}>
           <Image style={{width: 60, height: 60}} source={{uri: item.image}} />

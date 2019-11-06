@@ -81,8 +81,6 @@ const HomeScreen = props => {
       .then(result => {
         listSpecialties = result.items;
         setSpecialties(listSpecialties);
-        
-        console.log(result);
       })
       .catch(e => {
       });
