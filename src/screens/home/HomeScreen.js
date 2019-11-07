@@ -8,7 +8,7 @@ import {ScrollView} from 'react-native-gesture-handler';
 import HomeHeader from './components/HomeHeader';
 import Toolbar from './components/Toolbar';
 import DoctorList from '../doctor/components/DoctorList';
-import {SpecialtyService} from '../../services/SpeicaltyService';
+import {SpecialtyService} from '../../services/SpecialtyService';
 
 const HomeScreen = props => {
   const {navigation} = props;

@@ -5,6 +5,7 @@ export const CONFIG = {
         LOGIN: 'account/login',
         REGISTER: 'account/register',
         SPECIALTIES: 'specialties',
-        DOCTORS: 'doctors'
+        DOCTORS: 'doctors',
+        DOCTOR: (id) => `doctors/${id}`
     }
 }

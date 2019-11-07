@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
 
 import {AppError} from '../common/app-error';
-import {ApiErrorCode, AppErrorCode} from '../common/enums';
+import {AppErrorCode} from '../common/enums';
 
 export class Api {
   constructor() {}

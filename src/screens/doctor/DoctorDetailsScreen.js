@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, Fragment} from 'react';
 import {
   StyleSheet,
   View,
@@ -6,107 +6,130 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import theme from '../../styles/theme';
 import {Rating, Icon, Button, Divider} from 'react-native-elements';
 import Header from '../../components/core/Header';
+import {DoctorService} from '../../services/DoctorService';
 
 const DoctorDetailsScreen = props => {
   const {navigation} = props;
-  const [doctor, setDoctor] = useState({
-    id: 1,
-    image: '',
-    name: 'Barbara Michelle',
-    specialty: 'Pediatric',
-    pricePerHour: '48',
-    rating: 5,
-    ratingCount: 58,
-    distance: 15,
-  });
+  const doctorId = navigation.getParam('id');
+  const [doctor, setDoctor] = useState({});
+  const [loading, setLoading] = useState(false);
+
+  const loadDoctor = id => {
+    setLoading(true);
+    DoctorService.getDoctor(id)
+      .then(result => {
+        setDoctor(result);
+        console.log(result);
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    loadDoctor(doctorId);
+  }, []);
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.headerContainer}>
-        <Header title="Profile" color="white" />
-        <View style={styles.card}>
-          <View style={styles.row}>
-            <Image
-              resizeMode="cover"
-              style={styles.avatar}
-              source={{
-                uri:
-                  'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-              }}
-            />
-            <View style={styles.basicInfo}>
-              <Text style={styles.name}>Edward Janowski</Text>
-              <Text style={styles.specialty}>Accident and Emergency</Text>
-              <View style={styles.rating}>
-                <Rating imageSize={10} readonly startingValue={4} />
-                <Text style={styles.ratingCount}>12</Text>
+    <Fragment>
+      {loading ? (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <ActivityIndicator size={40} style={{color: '#000'}} />
+        </View>
+      ) : (
+        <ScrollView style={styles.container}>
+          <View style={styles.headerContainer}>
+            <Header title="Profile" color="white" />
+            <View style={styles.card}>
+              <View style={styles.row}>
+                <Image
+                  resizeMode="cover"
+                  style={styles.avatar}
+                  source={{
+                    uri: doctor.imageProfile,
+                  }}
+                />
+                <View style={styles.basicInfo}>
+                  <Text style={styles.name}>
+                    {doctor.firstName + ' ' + doctor.lastName}
+                  </Text>
+                  {/* <Text style={styles.specialty}>{doctor.specialty.name}</Text> */}
+                  <View style={styles.rating}>
+                    <Rating
+                      imageSize={10}
+                      readonly
+                      startingValue={doctor.rating}
+                    />
+                    <Text style={styles.ratingCount}>{doctor.ratingCount}</Text>
+                  </View>
+                </View>
+              </View>
+              <View style={styles.rowInfo}>
+                <View style={styles.col}>
+                  <Text style={styles.cardText}>${doctor.price}</Text>
+                  <Text style={styles.subText}>Hourly</Text>
+                </View>
+                <View style={styles.divider}></View>
+                <View style={styles.col}>
+                  <Text style={styles.cardText}>{doctor.yearExperience}</Text>
+                  <Text style={styles.subText}>Year experiences</Text>
+                </View>
+                <View style={styles.divider}></View>
+                <View style={styles.col}>
+                  <Text style={styles.cardText}>{doctor.numberOfPatients}</Text>
+                  <Text style={styles.subText}>Patients</Text>
+                </View>
+              </View>
+              <View style={styles.rowInfo}>
+                <View style={styles.buttonContainer}>
+                  <Button
+                    TouchableComponent={TouchableOpacity}
+                    onPress={() => navigation.navigate('Booking')}
+                    title="Book Appointment"
+                    type="solid"
+                    titleStyle={styles.buttonText}
+                    buttonStyle={styles.button}
+                  />
+                </View>
+                <TouchableOpacity style={styles.loveContainer}>
+                  <Icon
+                    name="heart"
+                    type="antdesign"
+                    size={22}
+                    iconStyle={styles.loveIcon}
+                  />
+                </TouchableOpacity>
               </View>
             </View>
           </View>
-          <View style={styles.rowInfo}>
-            <View style={styles.col}>
-              <Text style={styles.cardText}>$60</Text>
-              <Text style={styles.subText}>Hourly</Text>
+          <View style={styles.content}>
+            <View style={styles.address}>
+              <Text style={styles.subText}>Location</Text>
+              <Text style={styles.body} numberOfLines={2}>
+                {doctor.location}
+              </Text>
             </View>
-            <View style={styles.divider}></View>
-            <View style={styles.col}>
-              <Text style={styles.cardText}>92</Text>
-              <Text style={styles.subText}>Reviews</Text>
+            <Divider style={styles.horizontalDivider} />
+            <View>
+              <Text style={styles.subText}>Education</Text>
+              <Text style={styles.body}>{doctor.medicalSchool}</Text>
             </View>
-            <View style={styles.divider}></View>
-            <View style={styles.col}>
-              <Text style={styles.cardText}>739</Text>
-              <Text style={styles.subText}>Patients</Text>
+            <Divider style={styles.horizontalDivider} />
+            <View>
+              <Text style={styles.subText}>Awards</Text>
+              <Text style={styles.body}>{doctor.awards}</Text>
             </View>
+            <Divider style={styles.horizontalDivider} />
           </View>
-          <View style={styles.rowInfo}>
-            <View style={styles.buttonContainer}>
-              <Button
-                TouchableComponent={TouchableOpacity}
-                onPress={() => navigation.navigate('Booking')}
-                title="Book Appointment"
-                type="solid"
-                titleStyle={styles.buttonText}
-                buttonStyle={styles.button}
-              />
-            </View>
-            <TouchableOpacity style={styles.loveContainer}>
-              <Icon
-                name="heart"
-                type="antdesign"
-                size={22}
-                iconStyle={styles.loveIcon}
-              />
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-      <View style={styles.content}>
-        <View style={styles.address}>
-          <Text style={styles.subText}>Location</Text>
-          <Text style={styles.body} numberOfLines={2}>
-            43 Bourke Street, Newbridge NSW 837 Raffles Place, Boat Band M83
-          </Text>
-        </View>
-        <Divider style={styles.horizontalDivider} />
-        <View>
-          <Text style={styles.subText}>Education</Text>
-          <Text style={styles.body}>UCL, MIT, Stanford University</Text>
-        </View>
-        <Divider style={styles.horizontalDivider} />
-        <View>
-          <Text style={styles.subText}>Awards</Text>
-          <Text style={styles.body}>
-            CMS Stage 1 EHR (2013), AAD Fellow (2016)
-          </Text>
-        </View>
-        <Divider style={styles.horizontalDivider} />
-      </View>
-    </ScrollView>
+        </ScrollView>
+      )}
+    </Fragment>
   );
 };
 
@@ -119,7 +142,7 @@ const styles = StyleSheet.create({
     height: 320,
     marginBottom: 50,
     width: '100%',
-    backgroundColor: theme.colors.primary
+    backgroundColor: theme.colors.primary,
   },
   card: {
     marginTop: 8,

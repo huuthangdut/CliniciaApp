@@ -2,7 +2,7 @@ import React, {useState, Fragment, useEffect} from 'react';
 import {StyleSheet, View, Text, ActivityIndicator} from 'react-native';
 import SpecialtyList from './components/SpecialtyList';
 import Header from '../../components/core/Header';
-import {SpecialtyService} from '../../services/SpeicaltyService';
+import {SpecialtyService} from '../../services/SpecialtyService';
 
 const SpecialtyScreen = props => {
   const {navigation} = props;
