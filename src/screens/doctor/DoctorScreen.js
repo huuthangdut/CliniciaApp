@@ -59,7 +59,7 @@ const DoctorScreen = props => {
     <Fragment>
       <Header />
       <View style={styles.container}>
-        <Text style={styles.header}>Doctors</Text>
+        <Text style={styles.header}>Bác sĩ</Text>
         <View style={styles.list}>
           {loading && page == 0 ? (
             <View

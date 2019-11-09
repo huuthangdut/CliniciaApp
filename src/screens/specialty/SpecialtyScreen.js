@@ -53,7 +53,7 @@ const SpecialtyScreen = props => {
     <Fragment>
       <Header />
       <View style={styles.container}>
-        <Text style={styles.header}>Specialities</Text>
+        <Text style={styles.header}>Chuyên khoa</Text>
         <View style={styles.list}>
           {loading && page == 0 ? (
             <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>

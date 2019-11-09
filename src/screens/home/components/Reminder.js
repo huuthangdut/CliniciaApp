@@ -24,7 +24,7 @@ const Reminder = props => {
             <Text style={styles.col}>{item.specialty}</Text>
           </View>
           <TouchableOpacity style={styles.button} activeOpacity={0.7}>
-            <Text style={styles.text}>View</Text>
+            <Text style={styles.text}>Xem chi tiết</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   },
   button: {
     height: 24,
-    width: 60,
+    width: 100,
     backgroundColor: '#FF9500',
     borderRadius: 30,
     marginTop: 10,

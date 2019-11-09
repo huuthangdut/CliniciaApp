@@ -70,10 +70,10 @@ const HomeScreen = props => {
 
   const [reminder, setReminder] = useState({
     image: '',
-    scheduledTime: '25 Apr 2018 - 9:30 AM',
-    doctor: 'Jessica Anderson',
-    distance: '0.31 mi away',
-    specialty: 'Dentist',
+    scheduledTime: '23/10/2019 - 9:30',
+    doctor: 'Bs. Tiến Minh',
+    distance: '18 Đống Đa',
+    specialty: 'Nha khoa',
   });
 
   const loadSpecialties = () => {

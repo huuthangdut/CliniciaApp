@@ -11,18 +11,18 @@ import theme from '../../../styles/theme'
 const Setting = (props) => {
   const listSetting = [
     {
-      title: 'Change Password',
+      title: 'Đổi mật khẩu',
       icon: theme.tabIcons.lock,
       onPress: () => props.navigation.navigate('ChangePassword'),
       name: 'lock'
     },
     {
-      title: 'Notifications',
+      title: 'Thông báo',
       icon: theme.tabIcons.notificationSetting,
       name: 'bell'
     },
     {
-      title: 'Sign Out',
+      title: 'Đăng xuất',
       icon: theme.tabIcons.signOut,
       name: 'sign-out'
     },
@@ -30,7 +30,7 @@ const Setting = (props) => {
 
   return (
     <View style={styles.setting}>
-      <Text style={styles.headerLabel}>Settings</Text>
+      <Text style={styles.headerLabel}>Cài đặt</Text>
       <View style={styles.settingList}>
         {
           listSetting.map((item, i) => (

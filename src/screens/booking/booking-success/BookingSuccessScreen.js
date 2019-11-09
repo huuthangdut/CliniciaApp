@@ -14,10 +14,12 @@ const BookingSuccessScreen = props => {
           size={45}
           style={styles.alertIcon}
           color={theme.colors.secondary}></Icon>
-        <Text style={styles.header}>Success!</Text>
+        <Text style={styles.header}>Đặt lịch thành công!</Text>
         <Text style={styles.subHeader}>
-          Thank you for choosing our service and trust our doctors to take care
-          your health
+          Bạn đã đặt lịch hẹn thành công với bác sĩ.
+        </Text>
+        <Text style={styles.subHeader}>
+          Cám ơn bạn đã sử dụng dịch vụ của chúng tôi.
         </Text>
       </View>
       <View style={styles.content}>
@@ -34,21 +36,21 @@ const BookingSuccessScreen = props => {
           </View>
           <View style={styles.row}>
             <Text style={styles.body}>Edward Janowski</Text>
-            <Text style={styles.specialty}>Accident and Emergency</Text>
+            <Text style={styles.specialty}>Nha khoa</Text>
           </View>
           <View style={styles.row}>
-            <Text style={styles.title}>Date & Time</Text>
-            <Text style={styles.body}>Monday, October 24</Text>
-            <Text style={styles.subTitle}>10:00 AM</Text>
+            <Text style={styles.title}>Thời gian</Text>
+            <Text style={styles.body}>Thứ 2, 24 tháng 10</Text>
+            <Text style={styles.subTitle}>10:00</Text>
           </View>
           <View style={styles.row}>
-            <Text style={styles.title}>Address</Text>
+            <Text style={styles.title}>Địa chỉ</Text>
             <Text style={styles.body}>Hoan my Clinic Saigon</Text>
             <Text style={styles.subTitle}>San Francisco, California</Text>
-            <Text style={styles.subTitle}>0.31 mi away</Text>
+            {/* <Text style={styles.subTitle}>Cách vị trí của bạn 3km</Text> */}
           </View>
         </View>
-        <Button primary title="Check details" style={styles.button}/>
+        <Button primary title="Xem chi tiết" style={styles.button}/>
       </View>
     </ScrollView>
   );
@@ -71,10 +73,11 @@ const styles = StyleSheet.create({
   },
   subHeader: {
     textAlign: 'center',
-    fontSize: 17,
+    fontSize: 16,
     fontFamily: 'SF-Pro-Text-Regular',
     color: theme.colors.darkGray,
-    lineHeight: 23,
+    lineHeight: 20,
+    marginTop: 5
   },
   content: {
     marginHorizontal: 10,

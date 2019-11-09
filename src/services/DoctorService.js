@@ -36,7 +36,18 @@ const getDoctor = id => {
   );
 };
 
+const getWorkingTime = (doctorId, date) => {
+  return Api.get(
+    `${CONFIG.API_ROOT}/v${CONFIG.API_VERSION}/${CONFIG.API_URL.DOCTOR_WORKING_TIME(doctorId)}`,
+    {
+      date
+    },
+    false,
+  )
+}
+
 export const DoctorService = {
   getDoctors,
-  getDoctor
+  getDoctor,
+  getWorkingTime
 };

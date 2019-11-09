@@ -6,6 +6,7 @@ export const CONFIG = {
         REGISTER: 'account/register',
         SPECIALTIES: 'specialties',
         DOCTORS: 'doctors',
-        DOCTOR: (id) => `doctors/${id}`
+        DOCTOR: (id) => `doctors/${id}`,
+        DOCTOR_WORKING_TIME: (doctorId) => `doctors/${doctorId}/workingTime`
     }
 }

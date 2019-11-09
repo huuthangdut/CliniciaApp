@@ -13,20 +13,20 @@ const ReviewAppointmentScreen = props => {
       <Header />
       <ScrollView style={styles.container}>
         <View style={styles.content}>
-          <Text style={styles.header}>Review</Text>
+          <Text style={styles.header}>Xác nhận lịch đặt</Text>
           <View style={styles.list}>
             <View style={styles.listItem}>
-              <Text style={styles.text}>Date & Time</Text>
-              <Text style={styles.body}>Monday, October 24</Text>
-              <Text style={styles.text}>10:00 AM</Text>
+              <Text style={styles.text}>Thời gian</Text>
+              <Text style={styles.body}>Thứ 2, 24 tháng 10</Text>
+              <Text style={styles.text}>10:00</Text>
               <Divider style={styles.divider} />
             </View>
             <View style={styles.listItem}>
               <View style={styles.row}>
                 <View style={{flex: 1}}>
-                  <Text style={styles.text}>Doctor</Text>
+                  <Text style={styles.text}>Bác sĩ</Text>
                   <Text style={styles.body}>Barbara Michelle</Text>
-                  <Text style={styles.text}>Dermatology</Text>
+                  <Text style={styles.text}>Nha khoa</Text>
                 </View>
                 <View style={styles.avatar}>
                   <Avatar
@@ -42,29 +42,29 @@ const ReviewAppointmentScreen = props => {
               <Divider style={styles.divider} />
             </View>
             <View style={styles.listItem}>
-              <Text style={styles.text}>Address</Text>
+              <Text style={styles.text}>Địa chỉ</Text>
               <Text style={styles.body}>Hoan my Clinic Saigon</Text>
               <Text style={styles.text}>San Francisco, California</Text>
-              <Text style={styles.text}>0.31 mi away</Text>
+              {/* <Text style={styles.text}>Cách vị trí của bạn 3km</Text> */}
               <Divider style={styles.divider} />
             </View>
             <View style={styles.listItem}>
-              <Text style={styles.text}>Need</Text>
-              <Text style={styles.body}>Treatment</Text>
-              <Text style={styles.text}>Any kind of treatment</Text>
+              <Text style={styles.text}>Loại</Text>
+              <Text style={styles.body}>Tư vấn</Text>
+              {/* <Text style={styles.text}>Any kind of treatment</Text> */}
               <Divider style={styles.divider} />
             </View>
             <View style={styles.listItem}>
-              <Text style={styles.text}>Fee</Text>
-              <Text style={styles.body}>$75</Text>
-              <Text style={styles.text}>$75/hour</Text>
+              <Text style={styles.text}>Phí khám</Text>
+              <Text style={styles.body}>75000 đ</Text>
+              <Text style={styles.text}>60 phút</Text>
               <Divider style={styles.divider} />
             </View>
           </View>
         </View>
         <Button
           primary
-          title="Confirm"
+          title="Xác nhận"
           style={styles.button}
           onPress={() => navigation.navigate('BookingSuccess')}
         />

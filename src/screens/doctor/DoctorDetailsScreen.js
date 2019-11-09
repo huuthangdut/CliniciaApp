@@ -45,7 +45,7 @@ const DoctorDetailsScreen = props => {
       ) : (
         <ScrollView style={styles.container}>
           <View style={styles.headerContainer}>
-            <Header title="Profile" color="white" />
+            <Header title="Thông tin bác sĩ" color="white" />
             <View style={styles.card}>
               <View style={styles.row}>
                 <Image
@@ -59,7 +59,7 @@ const DoctorDetailsScreen = props => {
                   <Text style={styles.name}>
                     {doctor.firstName + ' ' + doctor.lastName}
                   </Text>
-                  {/* <Text style={styles.specialty}>{doctor.specialty.name}</Text> */}
+                  <Text style={styles.specialty}>{doctor.specialty ? doctor.specialty.name : '...'}</Text>
                   <View style={styles.rating}>
                     <Rating
                       imageSize={10}
@@ -72,26 +72,26 @@ const DoctorDetailsScreen = props => {
               </View>
               <View style={styles.rowInfo}>
                 <View style={styles.col}>
-                  <Text style={styles.cardText}>${doctor.price}</Text>
-                  <Text style={styles.subText}>Hourly</Text>
+                  <Text style={styles.cardText}>{doctor.price} đ</Text>
+                  <Text style={styles.subText}>60 phút</Text>
                 </View>
                 <View style={styles.divider}></View>
                 <View style={styles.col}>
-                  <Text style={styles.cardText}>{doctor.yearExperience}</Text>
-                  <Text style={styles.subText}>Year experiences</Text>
+                  <Text style={styles.cardText}>{doctor.yearExperience} năm</Text>
+                  <Text style={styles.subText}>Kinh nghiệm</Text>
                 </View>
                 <View style={styles.divider}></View>
                 <View style={styles.col}>
                   <Text style={styles.cardText}>{doctor.numberOfPatients}</Text>
-                  <Text style={styles.subText}>Patients</Text>
+                  <Text style={styles.subText}>Bệnh nhân</Text>
                 </View>
               </View>
               <View style={styles.rowInfo}>
                 <View style={styles.buttonContainer}>
                   <Button
                     TouchableComponent={TouchableOpacity}
-                    onPress={() => navigation.navigate('Booking')}
-                    title="Book Appointment"
+                    onPress={() => navigation.navigate('Booking', { doctorId: doctorId, price: doctor.price })}
+                    title="Đặt lịch"
                     type="solid"
                     titleStyle={styles.buttonText}
                     buttonStyle={styles.button}
@@ -110,7 +110,7 @@ const DoctorDetailsScreen = props => {
           </View>
           <View style={styles.content}>
             <View style={styles.address}>
-              <Text style={styles.subText}>Location</Text>
+              <Text style={styles.subText}>Địa chỉ</Text>
               <Text style={styles.body} numberOfLines={2}>
                 {doctor.location}
               </Text>

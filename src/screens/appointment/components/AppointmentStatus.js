@@ -8,11 +8,11 @@ const AppointmentStatus = props => {
   let backgroundColor = '';
   switch (props.type) {
     case 'confirmed':
-      statusText = 'Confirmed';
+      statusText = 'Đã xác nhận';
       backgroundColor = theme.colors.secondary;
       break;
     case 'cancelled':
-      statusText = 'Cancelled';
+      statusText = 'Đã huỷ';
       backgroundColor = '#707070';
       break;
   }

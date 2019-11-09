@@ -15,8 +15,8 @@ const HomeHeader = props => {
           />
         </View>
         <View style={styles.headerTextContainer}>
-          <Text style={styles.yourLocation}>Your Location</Text>
-          <Text style={styles.locationText}>Da Nang</Text>
+          <Text style={styles.yourLocation}>Vị trí của bạn</Text>
+          <Text style={styles.locationText}>16 Lý Thường Kiệt, Đà Nẵng</Text>
         </View>
       </TouchableOpacity>
       <View style={{flex: 1}}></View>

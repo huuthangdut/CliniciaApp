@@ -14,11 +14,11 @@ const Toolbar = props => {
     <View style={styles.container}>
       <TouchableOpacity style={styles.tab}>
           <Image style={styles.icon} source={theme.tabIcons.filter} />
-          <Text style={styles.text}>Filter</Text>
+          <Text style={styles.text}>Lọc</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.tab}>
           <Image style={styles.icon} source={theme.tabIcons.sort} />
-          <Text style={styles.text}>Sort</Text>
+          <Text style={styles.text}>Sắp xếp</Text>
       </TouchableOpacity>
     </View>
   );

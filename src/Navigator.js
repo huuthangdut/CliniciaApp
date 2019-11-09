@@ -108,7 +108,7 @@ const TabNavigator = createBottomTabNavigator(
     Home: {
       screen: HomeNavigator,
       navigationOptions: {
-        tabBarLabel: 'Browser',
+        tabBarLabel: 'Tìm kiếm',
         tabBarIcon: ({focused}) => (
           <Image
             style={{width: 24, height: 24}}
@@ -122,7 +122,7 @@ const TabNavigator = createBottomTabNavigator(
     Appointment: {
       screen: AppointmentNavigator,
       navigationOptions: {
-        tabBarLabel: 'Appointments',
+        tabBarLabel: 'Lịch hẹn',
         tabBarIcon: ({focused}) => (
           <Image
             style={{width: 24, height: 24}}
@@ -138,7 +138,7 @@ const TabNavigator = createBottomTabNavigator(
     Notification: {
       screen: NotificationNavigator,
       navigationOptions: {
-        tabBarLabel: 'Notifications',
+        tabBarLabel: 'Thông báo',
         tabBarIcon: ({focused}) => (
           <Image
             style={{width: 24, height: 24}}
@@ -154,7 +154,7 @@ const TabNavigator = createBottomTabNavigator(
     Account: {
       screen: AccountNavigator,
       navigationOptions: {
-        tabBarLabel: 'Account',
+        tabBarLabel: 'Tài khoản',
         tabBarIcon: ({focused}) => (
           <Image
             style={{width: 24, height: 24}}

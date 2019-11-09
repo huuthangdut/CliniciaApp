@@ -23,7 +23,7 @@ const SpecialtyItem = props => {
         </View>
         <View style={styles.textWrapper}>
           <Text style={styles.title}>{item.name}</Text>
-          <Text style={styles.text}>{item.numberOfDoctors} doctors</Text>
+          <Text style={styles.text}>{item.numberOfDoctors} bác sĩ</Text>
         </View>
         <View style={styles.iconWrapper}>
           <Icon

@@ -11,8 +11,8 @@ const FavoriteScreen = () => {
     <Fragment>
       <View style={styles.container}>
         <Header />
-        <Text style={styles.title}>Favorites</Text>
-        <Toolbar />
+        <Text style={styles.title}>Yêu thích</Text>
+        {/* <Toolbar /> */}
         <FavoriteList />
       </View>
     </Fragment>

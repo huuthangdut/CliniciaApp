@@ -16,8 +16,8 @@ const Toolbar = props => {
             style={[{flex: 1, marginLeft: 5}, styles.buttonText]}
             itemStyle={styles.buttonText}
             onValueChange={(itemValue, itemIndex) => setSortBy(itemValue)}>
-            <Picker.Item label="Top rated" value="top" />
-            <Picker.Item label="Nearest" value="nearest" />
+            <Picker.Item label="Xếp hạng cao" value="top" />
+            <Picker.Item label="Gần đây" value="nearest" />
           </Picker>
         </View>
       </TouchableOpacity>
@@ -29,7 +29,7 @@ const Toolbar = props => {
             name="map"
             type="entypo"
             size={15}></Icon>
-          <Text style={styles.buttonText}>Map</Text>
+          <Text style={styles.buttonText}>Bản đồ</Text>
         </View>
       </TouchableOpacity>
     </View>

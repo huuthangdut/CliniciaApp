@@ -9,6 +9,15 @@ class AppProvider extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      // booking
+      appointment: {
+        date: null,
+        duration: 0,
+        price: 0,
+        description: 0,
+        type: 0,
+        doctorId: null
+      },
 
       isAuthenticated: async () => {
         const token = await AsyncStorage.getItem('@access_token');
@@ -28,7 +37,7 @@ class AppProvider extends React.PureComponent {
       },
       logout: async () => {
         await AsyncStorage.removeItem('@access_token');
-      }
+      },
     };
   }
   

@@ -10,13 +10,13 @@ const Category = props => {
     <View style={styles.container}>
       <View style={styles.row}>
         <Text style={[{flex: 3}, styles.alignLeft, styles.title]}>
-          Specialities
+          Chuyên khoa
         </Text>
         <TouchableOpacity 
           onPress={() => navigation.navigate('Specialty')}
           style={[{flex: 1}, styles.alignRight, styles.row]}
           activeOpacity={0.7}>
-          <Text style={styles.link}>See all</Text>
+          <Text style={styles.link}>Xem tất cả</Text>
           <Icon
             name='chevron-right'
             type='evilIcons'

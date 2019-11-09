@@ -22,7 +22,7 @@ const Address = () => {
 
   return (
     <View style={styles.setting}>
-      <Text style={styles.headerLabel}>Address</Text>
+      <Text style={styles.headerLabel}>Địa chỉ</Text>
       <View style={styles.addressList}>
         {
           addresses.map((item, i) => (
@@ -54,7 +54,7 @@ const Address = () => {
         <TouchableOpacity>
           <ListItem
             key='add'
-            title='Add a new address'
+            title='Thêm địa chỉ mới'
             titleStyle={{
               color: theme.colors.primary,
             }}

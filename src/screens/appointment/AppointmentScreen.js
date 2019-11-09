@@ -9,8 +9,8 @@ const AppointmentScreen = props => {
   const [tabBarConfig, setTabBarConfig] = useState({
     index: 0,
     routes: [
-      {key: 'Upcoming', title: 'Upcoming'},
-      {key: 'Previous', title: 'Previous'},
+      {key: 'Upcoming', title: 'Sắp tới'},
+      {key: 'Previous', title: 'Lịch sử'},
     ],
   });
 
@@ -67,7 +67,7 @@ const AppointmentScreen = props => {
     <Fragment>
       <Header hasBackIcon={false} hasRightMenu={true}/>
       <View style={styles.container}>
-        <Text style={styles.header}>Appointments</Text>
+        <Text style={styles.header}>Lịch hẹn</Text>
         <TabView
           lazy
           navigationState={tabBarConfig}

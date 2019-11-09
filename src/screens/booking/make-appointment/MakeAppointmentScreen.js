@@ -1,4 +1,4 @@
-import React, {useState, Fragment} from 'react';
+import React, {useState, Fragment, useEffect} from 'react';
 import {
   Text,
   View,
@@ -8,40 +8,33 @@ import {
   FlatList,
 } from 'react-native';
 import theme from '../../../styles/theme';
-import {Calendar} from 'react-native-calendars';
+import {Calendar, LocaleConfig} from 'react-native-calendars';
 import {Divider, CheckBox, Icon} from 'react-native-elements';
 import TextField from '../../../components/core/TextField';
 import Button from '../../../components/core/Button';
 import Header from '../../../components/core/Header';
+import {DoctorService} from '../../../services/DoctorService';
+import {DateTime} from '../../../utilities/date-time';
+import WithContext from '../../../components/core/WithContext';
 
 const getDateString = date => date.toISOString().split('T')[0];
 
 const MakeAppointmentScreen = props => {
   const {navigation} = props;
+  const doctorId = navigation.getParam('doctorId');
+  const price = navigation.getParam('price');
 
   const [selectedConsulationType, setSelectedConsulationType] = useState('');
   const [selectedDate, setSelectedDate] = useState(getDateString(new Date()));
-  const [availableTimes, setAvailableTimes] = useState([
-    {time: '10:00', selected: false, isSlotFull: false},
-    {time: '11:00', selected: false, isSlotFull: false},
-    {time: '12:00', selected: false, isSlotFull: false},
-    {time: '13:00', selected: false, isSlotFull: true},
-    {time: '14:00', selected: false, isSlotFull: false},
-    {time: '15:00', selected: false, isSlotFull: false},
-    {time: '16:00', selected: true, isSlotFull: true},
-    {time: '17:00', selected: false, isSlotFull: false},
-    {time: '18:00', selected: false, isSlotFull: false},
-    {time: '19:00', selected: false, isSlotFull: true},
-    {time: '20:00', selected: false, isSlotFull: false},
-    {time: '21:00', selected: false, isSlotFull: false},
-  ]);
+  const [availableTimes, setAvailableTimes] = useState([]);
+  const [description, setDescription] = useState('');
   const minDate = getDateString(new Date());
 
-  onDayPress = day => {
+  const onDayPress = day => {
     setSelectedDate(day.dateString);
   };
 
-  onTimeSlotSelected = (time, index) => {
+  const onTimeSlotSelected = (time, index) => {
     const times = availableTimes.map(i =>
       i.selected ? {...i, selected: false} : i,
     );
@@ -49,9 +42,51 @@ const MakeAppointmentScreen = props => {
     setAvailableTimes(times);
   };
 
+  const loadWorkingTime = (doctorId, date) => {
+    DoctorService.getWorkingTime(doctorId, date).then(result => {
+      const workingTimes = result.workingTimes.map(time => ({
+        time: time,
+        selected: false
+      }));
+      setAvailableTimes(workingTimes);
+    });
+  };
+
+  const handleNext = () => {
+    console.log("next");
+    console.log(selectedDate);
+    console.log(availableTimes.find(i => i.selected).time);
+    console.log(selectedConsulationType);
+    console.log(description);
+    props.context.appointment = {
+      date: selectedDate + ' ' + availableTimes.find(i => i.selected).time,
+      duration: 30,
+      price: price,
+      description: 0,
+      type: selectedConsulationType,
+      doctorId: doctorId
+    };
+
+    console.log(props.context);
+    navigation.navigate('ReviewAppointment');
+  };
+
+  useEffect(() => {
+    loadWorkingTime(doctorId, DateTime.toUnixTimestamp(selectedDate));
+  }, [selectedDate]);
+
+  LocaleConfig.locales['vi'] = {
+    monthNames: ['Tháng 1','Tháng 2','Tháng 3','Tháng 4','Tháng 5','Tháng 6','Tháng 7','Tháng 8','Tháng 9','Tháng 10','Tháng 11','Tháng 12'],
+    monthNamesShort: ['Th.1','Th.2','Th.3','Th.4','Th.5','Th.6','Th.7','Th.8','Th.9','Th.10','Th.11','Th.12'],
+    dayNames: ['Chủ nhật','Thứ 2','Thứ 3','Thứ 4','Thứ 5','Thứ 6','Thứ 7'],
+    dayNamesShort: ['CN','T2','T3','T4','T5','T6','T7'],
+    today: 'Hôm nay'
+  };
+  LocaleConfig.defaultLocale = 'vi';
+
   return (
     <Fragment>
-      <Header/>
+      <Header />
       <ScrollView style={styles.container}>
         <Calendar
           onDayPress={day => onDayPress(day)}
@@ -81,43 +116,43 @@ const MakeAppointmentScreen = props => {
         />
         <View style={styles.mainContent}>
           <View style={styles.availableTime}>
-            <Text style={styles.title}>Available Time</Text>
-            <FlatList
-              style={styles.timeList}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              data={availableTimes}
-              renderItem={({item, index}) => {
-                const wrapperStyles = [styles.timeSlot];
-                const textStyles = [styles.time];
-                if (item.isSlotFull) {
-                  wrapperStyles.push(styles.timeSlotFull);
-                  textStyles.push(styles.timeFull);
-                } else if (item.selected) {
-                  wrapperStyles.push(styles.timeSlotSelected);
-                  textStyles.push(styles.timeSelected);
-                }
+            <Text style={styles.title}>Chọn thời gian</Text>
+            {availableTimes.length > 0 && (
+              <FlatList
+                style={styles.timeList}
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                data={availableTimes}
+                renderItem={({item, index}) => {
+                  const wrapperStyles = [styles.timeSlot];
+                  const textStyles = [styles.time];
+                  if (item.selected) {
+                    wrapperStyles.push(styles.timeSlotSelected);
+                    textStyles.push(styles.timeSelected);
+                  }
 
-                return (
-                  <TouchableOpacity
-                    disabled={item.isSlotFull}
-                    style={wrapperStyles}
-                    onPress={() => onTimeSlotSelected(item, index)}>
-                    <Text style={textStyles}>{item.time}</Text>
-                  </TouchableOpacity>
-                );
-              }}
-              keyExtractor={(item, index) => index}
-            />
+                  return (
+                    <TouchableOpacity
+                      disabled={item.isSlotFull}
+                      style={wrapperStyles}
+                      onPress={() => onTimeSlotSelected(item, index)}>
+                      <Text style={textStyles}>{item.time}</Text>
+                    </TouchableOpacity>
+                  );
+                }}
+                keyExtractor={(item, index) => index}
+              />
+            )}
+
             <Divider style={styles.divider} />
           </View>
           <View style={styles.consulation}>
-            <Text style={styles.title}>What Do You Need</Text>
+            <Text style={styles.title}>Bạn muốn</Text>
             <View style={styles.selectWrapper}>
               <TouchableOpacity
                 style={styles.listItem}
                 onPress={() => setSelectedConsulationType('consulation')}>
-                <Text style={styles.body}>Consulation</Text>
+                <Text style={styles.body}>Tư vấn</Text>
                 <CheckBox
                   containerStyle={styles.checkBox}
                   checkedColor={theme.colors.secondary}
@@ -127,6 +162,7 @@ const MakeAppointmentScreen = props => {
                   right
                   uncheckedIcon="checkbox-blank-circle-outline"
                   checked={selectedConsulationType === 'consulation'}
+                  onPress={() => setSelectedConsulationType('consulation')}
                 />
               </TouchableOpacity>
               <Divider style={styles.divider} />
@@ -135,7 +171,7 @@ const MakeAppointmentScreen = props => {
               <TouchableOpacity
                 style={styles.listItem}
                 onPress={() => setSelectedConsulationType('treatment')}>
-                <Text style={styles.body}>Treatment</Text>
+                <Text style={styles.body}>Điều trị</Text>
                 <CheckBox
                   containerStyle={styles.checkBox}
                   checkedColor={theme.colors.secondary}
@@ -145,17 +181,18 @@ const MakeAppointmentScreen = props => {
                   right
                   uncheckedIcon="checkbox-blank-circle-outline"
                   checked={selectedConsulationType === 'treatment'}
+                  onPress={() => setSelectedConsulationType('treatment')}
                 />
               </TouchableOpacity>
               <Divider style={styles.divider} />
             </View>
           </View>
           <View style={styles.reminder}>
-            <Text style={styles.title}>Reminder</Text>
+            <Text style={styles.title}>Nhắc nhở tôi</Text>
             <TouchableOpacity style={styles.listItem}>
-              <Text style={styles.body}>Select alert</Text>
+              <Text style={styles.body}>Thời gian</Text>
               <View style={styles.alert}>
-                <Text style={styles.alertText}>30 minutes before</Text>
+                <Text style={styles.alertText}>30 phút trước đó</Text>
                 <Icon
                   name="chevron-right"
                   type="entypo"
@@ -168,16 +205,17 @@ const MakeAppointmentScreen = props => {
           </View>
           <View style={styles.description}>
             <TextField
-              placeholder="Message"
+              placeholder="Để lại lời nhắn cho bác sĩ"
               multiline={true}
               numberOfLines={2}
               containerStyle={styles.textInput}
+              onChangeText={(value) => setDescription(value)}
             />
           </View>
           <Button
             primary
-            title="Next"
-            onPress={() => navigation.navigate('ReviewAppointment')}
+            title="Tiếp tục"
+            onPress={() => handleNext()}
           />
         </View>
       </ScrollView>
@@ -192,7 +230,7 @@ const styles = StyleSheet.create({
   },
   calendar: {
     marginHorizontal: 5,
-    marginBottom: 20
+    marginBottom: 20,
   },
   title: {
     fontSize: 17,
@@ -288,4 +326,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MakeAppointmentScreen;
+export default WithContext(MakeAppointmentScreen);

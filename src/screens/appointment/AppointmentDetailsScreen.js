@@ -76,7 +76,7 @@ const AppointmentDetailsScreen = props => {
             </View>
             <View style={styles.itemRow}>
               <Text style={styles.smText}>Reminder</Text>
-              <Text style={styles.lgText}>30 minutes before</Text>
+              <Text style={styles.lgText}>30 phút trước</Text>
             </View>
           </View>
           <Button title="Cancel" secondary disabled style={styles.button} />
