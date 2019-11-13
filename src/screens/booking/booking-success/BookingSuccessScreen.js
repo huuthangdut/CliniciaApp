@@ -5,8 +5,9 @@ import {Icon, Avatar} from 'react-native-elements';
 import Button from '../../../components/core/Button';
 
 const BookingSuccessScreen = props => {
+  const { navigation } = props;
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.textWrapper}>
         <Icon
           name="checkbox-marked-circle"
@@ -23,8 +24,8 @@ const BookingSuccessScreen = props => {
         </Text>
       </View>
       <View style={styles.content}>
-        <View style={styles.card}>
-          <View style={styles.avatar}>
+        {/* <View style={styles.card}> */}
+          {/* <View style={styles.avatar}>
             <Avatar
               size="medium"
               rounded
@@ -43,16 +44,16 @@ const BookingSuccessScreen = props => {
             <Text style={styles.body}>Thứ 2, 24 tháng 10</Text>
             <Text style={styles.subTitle}>10:00</Text>
           </View>
-          <View style={styles.row}>
-            <Text style={styles.title}>Địa chỉ</Text>
+          <View style={styles.row}> */}
+            {/* <Text style={styles.title}>Địa chỉ</Text>
             <Text style={styles.body}>Hoan my Clinic Saigon</Text>
             <Text style={styles.subTitle}>San Francisco, California</Text>
-            {/* <Text style={styles.subTitle}>Cách vị trí của bạn 3km</Text> */}
-          </View>
-        </View>
-        <Button primary title="Xem chi tiết" style={styles.button}/>
+            <Text style={styles.subTitle}>Cách vị trí của bạn 3km</Text>
+          </View> */}
+        {/* </View> */}
+        <Button primary title="Hoàn thành" onPress={() => navigation.navigate('Appointments')} style={styles.button}/>
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
@@ -61,7 +62,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F9F9F9',
     paddingHorizontal: 15,
-    paddingVertical: 30
+    paddingVertical: 30,
+    justifyContent: 'center'
   },
   textWrapper: {
     marginVertical: 10,
@@ -70,6 +72,7 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 40,
     fontFamily: 'SF-Pro-Display-Bold',
+    marginBottom: 10
   },
   subHeader: {
     textAlign: 'center',
@@ -77,7 +80,7 @@ const styles = StyleSheet.create({
     fontFamily: 'SF-Pro-Text-Regular',
     color: theme.colors.darkGray,
     lineHeight: 20,
-    marginTop: 5
+    marginTop: 6
   },
   content: {
     marginHorizontal: 10,
@@ -127,7 +130,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   button: {
-    marginTop: 15,
+    marginTop: 50,
     marginBottom: 5,
   },
 });

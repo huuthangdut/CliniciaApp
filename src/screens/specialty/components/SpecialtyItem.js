@@ -19,7 +19,7 @@ const SpecialtyItem = props => {
       onPress={() => navigation.navigate('Doctor', { specialtyId: item.id })}>
       <View style={styles.row}>
         <View style={styles.imageWrapper}>
-          <Image style={{width: 60, height: 60}} source={{uri: item.image}} />
+          <Image style={{width: 40, height: 40}} resizeMode="contain" source={{uri: item.image}} />
         </View>
         <View style={styles.textWrapper}>
           <Text style={styles.title}>{item.name}</Text>

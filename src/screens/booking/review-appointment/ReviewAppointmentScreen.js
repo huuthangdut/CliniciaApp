@@ -4,9 +4,30 @@ import theme from '../../../styles/theme';
 import {Divider, Avatar} from 'react-native-elements';
 import Button from '../../../components/core/Button';
 import Header from '../../../components/core/Header';
+import WithContext from '../../../components/core/WithContext';
+import {DateTime} from '../../../utilities/date-time';
+import {AppointmentService} from '../../../services/AppointmentService';
 
 const ReviewAppointmentScreen = props => {
   const {navigation} = props;
+  const {appointment} = props.context;
+
+  const getAppointmentModel = () => {
+    return {
+      appointmentDate: DateTime.toDateString(appointment.date + ' ' + appointment.time),
+      totalMinutes: appointment.checkingService.durationInMinutes,
+      totalPrice: appointment.checkingService.price,
+      doctorId: appointment.doctor.id,
+      checkingServiceId: appointment.checkingService.id
+    };
+  };
+
+  const handleNext = () => {
+    AppointmentService.addAppointment(getAppointmentModel()).then(() => {
+      navigation.replace('BookingSuccess');
+    }).catch(e => console.log(e));
+    
+  };
 
   return (
     <Fragment>
@@ -17,24 +38,29 @@ const ReviewAppointmentScreen = props => {
           <View style={styles.list}>
             <View style={styles.listItem}>
               <Text style={styles.text}>Thời gian</Text>
-              <Text style={styles.body}>Thứ 2, 24 tháng 10</Text>
-              <Text style={styles.text}>10:00</Text>
+              <Text style={styles.body}>{appointment.date}</Text>
+              <Text style={styles.text}>{appointment.time}</Text>
               <Divider style={styles.divider} />
             </View>
             <View style={styles.listItem}>
               <View style={styles.row}>
                 <View style={{flex: 1}}>
                   <Text style={styles.text}>Bác sĩ</Text>
-                  <Text style={styles.body}>Barbara Michelle</Text>
-                  <Text style={styles.text}>Nha khoa</Text>
+                  <Text style={styles.body}>
+                    {appointment.doctor.firstName +
+                      ' ' +
+                      appointment.doctor.lastName}
+                  </Text>
+                  <Text style={styles.text}>
+                    {appointment.doctor.specialty.name}
+                  </Text>
                 </View>
                 <View style={styles.avatar}>
                   <Avatar
                     size="medium"
                     rounded
                     source={{
-                      uri:
-                        'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
+                      uri: appointment.doctor.imageProfile,
                     }}
                   />
                 </View>
@@ -43,21 +69,29 @@ const ReviewAppointmentScreen = props => {
             </View>
             <View style={styles.listItem}>
               <Text style={styles.text}>Địa chỉ</Text>
-              <Text style={styles.body}>Hoan my Clinic Saigon</Text>
-              <Text style={styles.text}>San Francisco, California</Text>
-              {/* <Text style={styles.text}>Cách vị trí của bạn 3km</Text> */}
+              <Text style={styles.body}>{appointment.doctor.clinic}</Text>
+              <Text style={styles.text}>
+                {appointment.doctor.location.address}
+              </Text>
+            </View>
+            <Divider style={styles.divider} />
+            <View style={styles.listItem}>
+              <Text style={styles.text}>Dịch vụ khám</Text>
+              <Text style={styles.body}>
+                {appointment.checkingService.name}
+              </Text>
+              <Text style={styles.text}>
+                {appointment.checkingService.description}
+              </Text>
               <Divider style={styles.divider} />
             </View>
             <View style={styles.listItem}>
-              <Text style={styles.text}>Loại</Text>
-              <Text style={styles.body}>Tư vấn</Text>
-              {/* <Text style={styles.text}>Any kind of treatment</Text> */}
-              <Divider style={styles.divider} />
-            </View>
-            <View style={styles.listItem}>
-              <Text style={styles.text}>Phí khám</Text>
-              <Text style={styles.body}>75000 đ</Text>
-              <Text style={styles.text}>60 phút</Text>
+              <Text style={styles.text}>Giá khám</Text>
+              <Text style={styles.body}>
+                {appointment.checkingService.price
+                  ? appointment.checkingService.price
+                  : 'Miễn phí'}
+              </Text>
               <Divider style={styles.divider} />
             </View>
           </View>
@@ -66,7 +100,7 @@ const ReviewAppointmentScreen = props => {
           primary
           title="Xác nhận"
           style={styles.button}
-          onPress={() => navigation.navigate('BookingSuccess')}
+          onPress={() => handleNext()}
         />
       </ScrollView>
     </Fragment>
@@ -121,4 +155,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ReviewAppointmentScreen;
+export default WithContext(ReviewAppointmentScreen);

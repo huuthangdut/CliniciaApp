@@ -33,7 +33,7 @@ const Category = props => {
           renderItem={({item}) => (
             <TouchableOpacity style={styles.item} activeOpacity={0.7} onPress={() => navigation.navigate('Doctor')}>
               <View style={styles.iconWrapper}>
-                <Image style={{width: 60, height: 60}} source={{uri: item.image}} />
+                <Image style={{width: 40, height: 40}} resizeMode="contain" source={{uri: item.image}} />
               </View>
               <View style={styles.center}>
                 <Text style={styles.doctor}>{item.name}</Text>

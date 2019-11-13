@@ -46,8 +46,17 @@ const getWorkingTime = (doctorId, date) => {
   )
 }
 
+const getCheckingServices = (doctorId) => {
+  return Api.get(
+    `${CONFIG.API_ROOT}/v${CONFIG.API_VERSION}/${CONFIG.API_URL.DOCTOR_CHECKING_SERVICES(doctorId)}`,
+    null,
+    false,
+  )
+}
+
 export const DoctorService = {
   getDoctors,
   getDoctor,
-  getWorkingTime
+  getWorkingTime,
+  getCheckingServices
 };

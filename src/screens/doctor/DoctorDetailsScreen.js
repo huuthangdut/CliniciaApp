@@ -90,7 +90,7 @@ const DoctorDetailsScreen = props => {
                 <View style={styles.buttonContainer}>
                   <Button
                     TouchableComponent={TouchableOpacity}
-                    onPress={() => navigation.navigate('Booking', { doctorId: doctorId, price: doctor.price })}
+                    onPress={() => navigation.navigate('Booking', { doctor: doctor })}
                     title="Đặt lịch"
                     type="solid"
                     titleStyle={styles.buttonText}
@@ -112,7 +112,7 @@ const DoctorDetailsScreen = props => {
             <View style={styles.address}>
               <Text style={styles.subText}>Địa chỉ</Text>
               <Text style={styles.body} numberOfLines={2}>
-                {doctor.location}
+                {/* {doctor.location.address} */}
               </Text>
             </View>
             <Divider style={styles.horizontalDivider} />

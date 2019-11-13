@@ -7,6 +7,9 @@ export const CONFIG = {
         SPECIALTIES: 'specialties',
         DOCTORS: 'doctors',
         DOCTOR: (id) => `doctors/${id}`,
-        DOCTOR_WORKING_TIME: (doctorId) => `doctors/${doctorId}/workingTime`
+        DOCTOR_WORKING_TIME: (doctorId) => `doctors/${doctorId}/workingTime`,
+        DOCTOR_CHECKING_SERVICES: (doctorId) => `doctors/${doctorId}/checkingServices`,
+        APPOINTMENTS: 'appointments',
+        APPOINTMENT: (id) => `appointments/${id}`
     }
 }

@@ -12,15 +12,14 @@ class AppProvider extends React.PureComponent {
       // booking
       appointment: {
         date: null,
-        duration: 0,
-        price: 0,
-        description: 0,
-        type: 0,
-        doctorId: null
+        time: null,
+        checkingService: null,
+        doctor: null
       },
 
       isAuthenticated: async () => {
         const token = await AsyncStorage.getItem('@access_token');
+        console.log(token !== null);
 
         // check token expired here
         return token !== null;
