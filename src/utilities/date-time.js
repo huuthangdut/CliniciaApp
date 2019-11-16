@@ -11,6 +11,6 @@ export class DateTime {
     }
 
     static toDateString(date, format = 'YYYYMMDDHHmm') {
-        return moment(date).format(format);
+        return moment(date).utc().format(format);
     }
 }

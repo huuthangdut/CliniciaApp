@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
+import qs from 'qs';
 
 import {AppError} from '../common/app-error';
 import {AppErrorCode} from '../common/enums';
@@ -9,6 +10,9 @@ export class Api {
 
   static async get(url, params, authorize) {
     const config = await this.requestConfig(params, authorize);
+
+    console.log(config);
+
     const response = await axios.get(url, config).catch(this.handleError);
 
     return response.data.result;
@@ -28,6 +32,8 @@ export class Api {
   static async requestConfig(params, authorize) {
     let config = { 
       params: params || undefined,
+      // to handle multiple parameters with the same name
+      paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'repeat' }),
       headers: { 
           'Accept': 'application/json',
           'Content-Type': 'application/json'
@@ -47,4 +53,21 @@ export class Api {
     }
     return config;
   }
+
+  static apiParamsSerializer = (params) => {
+    var parts = [];
+    for (var key in params) {
+      if (params.hasOwnProperty(key)) {
+        var obj = params[key];
+        if ($.isArray(obj)) {
+          for (var idx = 0; idx < obj.length; idx++) {
+            parts.push(key + '=' + encodeURIComponent(obj[idx]));
+          }
+        } else {
+          parts.push(key + '=' + encodeURIComponent(obj));
+        }
+      }
+    }
+    return parts.join('&');
+  };
 }

@@ -67,7 +67,7 @@ const DoctorScreen = props => {
               <ActivityIndicator size={40} style={{color: '#000'}} />
             </View>
           ) : (
-            <DoctorList 
+            <DoctorList
               items={doctors} 
               loading={loading}
               isRefreshing={isRefreshing}

@@ -11,8 +11,12 @@ import AppointmentStatus from './components/AppointmentStatus';
 import Button from '../../components/core/Button';
 import theme from '../../styles/theme';
 import Header from '../../components/core/Header';
+import { DateTime } from '../../utilities/date-time';
 
 const AppointmentDetailsScreen = props => {
+  const { navigation } = props;
+  const appointment = navigation.getParam('appointment');
+
   return (
     <Fragment>
       <Header/>
@@ -23,15 +27,12 @@ const AppointmentDetailsScreen = props => {
               <Avatar
                 size={60}
                 rounded
-                source={{
-                  uri:
-                    'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-                }}
+                source={{ uri: appointment.doctor.imageProfile }}
               />
             </View>
             <View style={styles.headerTextWrapper}>
-              <Text style={styles.headerText}>Kristina Clark</Text>
-              <AppointmentStatus type="confirmed" />
+              <Text style={styles.headerText}>{appointment.doctor.name}</Text>
+              <AppointmentStatus type={appointment.status} />
             </View>
             <View style={styles.contact}>
               <TouchableOpacity style={styles.iconWrapper}>
@@ -54,29 +55,29 @@ const AppointmentDetailsScreen = props => {
 
           <View style={styles.content}>
             <View style={styles.itemRow}>
-              <Text style={styles.smText}>Date & Time</Text>
-              <Text style={styles.lgText}>Monday, October 24</Text>
-              <Text style={styles.smText}>8:00 AM</Text>
+              <Text style={styles.smText}>Thời gian</Text>
+              <Text style={styles.lgText}>{DateTime.toDateString(appointment.appointmentDate, 'DD/MM/YYYY')}</Text>
+              <Text style={styles.smText}>{DateTime.toDateString(appointment.appointmentDate, 'HH:mm')}</Text>
             </View>
             <View style={styles.itemRow}>
-              <Text style={styles.smText}>Address</Text>
-              <Text style={styles.lgText}>San Francisco, California</Text>
-              <Text style={styles.smText}>Hoan My Hospital</Text>
-              <Text style={styles.smText}>0.31 mi away</Text>
+              <Text style={styles.smText}>Địa chỉ</Text>
+              <Text style={styles.lgText}>{appointment.doctor.clinic}</Text>
+              <Text style={styles.smText}>{appointment.doctor.address}</Text>
+              {/* <Text style={styles.smText}>0.31 mi away</Text> */}
             </View>
             <View style={styles.itemRow}>
-              <Text style={styles.smText}>Fee</Text>
-              <Text style={styles.lgText}>$75</Text>
-              <Text style={styles.smText}>For 30 minutes</Text>
+              <Text style={styles.smText}>Giá khám</Text>
+              <Text style={styles.lgText}>{appointment.price ? appointment.price + 'đ' : 'Miễn phí'}</Text>
+              <Text style={styles.smText}>{appointment.totalMinutes} phút</Text>
             </View>
             <View style={styles.itemRow}>
-              <Text style={styles.smText}>Need</Text>
-              <Text style={styles.lgText}>Treatment</Text>
-              <Text style={styles.smText}>Any kind of treatment</Text>
+              <Text style={styles.smText}>Dịch vụ khám</Text>
+              <Text style={styles.lgText}>{appointment.checkingService.name}</Text>
+              <Text style={styles.smText}>{appointment.checkingService.description}</Text>
             </View>
             <View style={styles.itemRow}>
-              <Text style={styles.smText}>Reminder</Text>
-              <Text style={styles.lgText}>30 phút trước</Text>
+              <Text style={styles.smText}>Nhắc nhở</Text>
+              <Text style={styles.lgText}>Trước 30 phút</Text>
             </View>
           </View>
           <Button title="Cancel" secondary disabled style={styles.button} />
