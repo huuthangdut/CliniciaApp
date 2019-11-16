@@ -1,5 +1,5 @@
 import React from 'react';
-import {RefreshControl, ActivityIndicator, StyleSheet, FlatList} from 'react-native';
+import {ActivityIndicator, StyleSheet, FlatList} from 'react-native';
 import theme from '../../../styles/theme';
 import FlatListItemSeperator from '../../../components/core/FlatListItemSeperator';
 import DoctorItem from './DoctorItem';
@@ -30,12 +30,6 @@ const DoctorList = props => {
       ListFooterComponent={() => renderFooter(props.loading)}
       onEndReachedThreshold={0.4}
       onEndReached={props.onLoadMore}
-      refreshControl={
-        <RefreshControl
-          refreshing={props.isRefreshing}
-          onRefresh={props.onRefresh}
-        />
-      }
     />
   );
 };

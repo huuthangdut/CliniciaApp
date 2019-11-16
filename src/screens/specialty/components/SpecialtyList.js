@@ -26,12 +26,6 @@ const SpecialtyList = props => {
       ListFooterComponent={() => renderFooter(props.loading)}
       onEndReachedThreshold={0.4}
       onEndReached={props.onLoadMore}
-      refreshControl={
-        <RefreshControl
-          refreshing={props.isRefreshing}
-          onRefresh={props.onRefresh}
-        />
-      }
     />
   );
 };

@@ -11,7 +11,6 @@ const DoctorScreen = props => {
 
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [isRefreshing, setIsRefreshing] = useState(false);
   const [doctors, setDoctors] = useState([]);
   const [hasMoreItems, setHasMoreItems] = useState(true);
   const pageSize = 10;
@@ -28,13 +27,11 @@ const DoctorScreen = props => {
         listDoctors.push(...result.items);
 
         setLoading(false);
-        setIsRefreshing(false);
         setDoctors(listDoctors);
         setHasMoreItems(result.hasNextPage);
       })
       .catch(e => {
         setLoading(false);
-        setIsRefreshing(false);
       });
   };
 
@@ -42,13 +39,6 @@ const DoctorScreen = props => {
     if (!loading && hasMoreItems) {
       setPage(page + 1);
     }
-  };
-
-  const handleRefresh = () => {
-    setIsRefreshing(true);
-    setHasMoreItems(true);
-    setDoctors([]);
-    setPage(0);
   };
 
   useEffect(() => {
@@ -70,9 +60,7 @@ const DoctorScreen = props => {
             <DoctorList
               items={doctors} 
               loading={loading}
-              isRefreshing={isRefreshing}
               onLoadMore={() => handleLoadMore()}
-              onRefresh={() => handleRefresh()}
               navigation={navigation} />
           )}
         </View>

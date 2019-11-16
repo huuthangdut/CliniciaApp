@@ -15,12 +15,12 @@ import {AppointmentStatus} from '../../../common/enums';
 const AppointmentList = props => {
   const {navigation, type} = props;
 
+  const [page, setPage] = useState(0);
+  const [hasMoreItems, setHasMoreItems] = useState(true);
   const [loading, setLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [appointments, setAppointments] = useState([]);
 
-  let hasMoreItems;
-  let page = 0;
   let pageSize = 10;
   let status;
 
@@ -49,7 +49,7 @@ const AppointmentList = props => {
         listAppointments.push(...result.items);
         setLoading(false);
         setAppointments(listAppointments);
-        hasMoreItems = result.hasNextPage;
+        setHasMoreItems(result.hasNextPage);
       })
       .catch(e => {
         setLoading(false);
@@ -59,16 +59,16 @@ const AppointmentList = props => {
 
   const handleLoadMore = () => {
     if (!loading && hasMoreItems) {
-      page = page + 1;
-      loadAppointments(page, pageSize);
+      loadAppointments(page + 1, pageSize);
+      setPage(page + 1);
     }
   };
 
   const handleRefresh = () => {
     setIsRefreshing(true);
 
-    page = 0;
-    AppointmentService.getAppointments(page, pageSize, status)
+    setPage(0);
+    AppointmentService.getAppointments(0, pageSize, status)
       .then(result => {
         setAppointments(result.items);
         setIsRefreshing(false);
@@ -87,7 +87,7 @@ const AppointmentList = props => {
 
   return (
     <View style={styles.container}>
-      {loading && page == 0 ? (
+      {loading && page === 0 ? (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <ActivityIndicator size={40} style={{color: '#000'}} />
         </View>
@@ -101,7 +101,7 @@ const AppointmentList = props => {
             <AppointmentItem item={item} navigation={props.navigation} />
           )}
           keyExtractor={item => item.id.toString()}
-          ListFooterComponent={() => renderFooter(props.loading)}
+          ListFooterComponent={() => renderFooter(loading)}
           onEndReachedThreshold={0.4}
           onEndReached={() => handleLoadMore()}
           refreshControl={

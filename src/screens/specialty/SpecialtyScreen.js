@@ -11,12 +11,7 @@ const SpecialtyScreen = props => {
   const [hasMoreItems, setHasMoreItems] = useState(true);
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [isRefreshing, setIsRefreshing] = useState(false);
   const [specialties, setSpecialties] = useState([]);
-
-  useEffect(() => {
-    loadSpecialties();
-  }, [page]);
 
   const loadSpecialties = () => {
     setLoading(true);
@@ -26,13 +21,11 @@ const SpecialtyScreen = props => {
         listSpecialties.push(...result.items);
 
         setLoading(false);
-        setIsRefreshing(false);
         setSpecialties(listSpecialties);
         setHasMoreItems(result.hasNextPage);
       })
       .catch(e => {
         setLoading(false);
-        setIsRefreshing(false);
       });
   };
 
@@ -42,12 +35,9 @@ const SpecialtyScreen = props => {
     }
   };
 
-  const handleRefresh = () => {
-    setIsRefreshing(true);
-    setHasMoreItems(true);
-    setSpecialties([]);
-    setPage(0);
-  };
+  useEffect(() => {
+    loadSpecialties();
+  }, [page]);
 
   return (
     <Fragment>
@@ -63,9 +53,7 @@ const SpecialtyScreen = props => {
             <SpecialtyList
               items={specialties}
               loading={loading}
-              isRefreshing={isRefreshing}
               onLoadMore={() => handleLoadMore()}
-              onRefresh={() => handleRefresh()}
               navigation={props.navigation}
             />
           )}
