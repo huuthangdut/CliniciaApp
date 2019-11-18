@@ -1,5 +1,5 @@
 {
-  "name": "Clinicia",
+  "name": "com.clinicia",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -20,7 +20,9 @@
     "react-content-loader": "^4.3.2",
     "react-native": "0.61.2",
     "react-native-calendars": "^1.212.0",
+    "react-native-device-info": "^5.3.0",
     "react-native-elements": "^1.2.5",
+    "react-native-firebase": "^5.5.6",
     "react-native-gesture-handler": "^1.4.1",
     "react-native-reanimated": "^1.3.0",
     "react-native-svg": "^9.13.3",

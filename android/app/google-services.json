@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "49014005414",
+    "firebase_url": "https://clinicia.firebaseio.com",
+    "project_id": "clinicia",
+    "storage_bucket": "clinicia.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:49014005414:android:4edec541e8b03d32859e67",
+        "android_client_info": {
+          "package_name": "com.clinicia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "49014005414-ltc69iaff61026036qo0b31qmc2v0c3q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAANMddZH-jNFfR0xJUaS7H14Xlrp9C0rg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "49014005414-ltc69iaff61026036qo0b31qmc2v0c3q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

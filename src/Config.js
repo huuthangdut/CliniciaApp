@@ -10,6 +10,8 @@ export const CONFIG = {
         DOCTOR_WORKING_TIME: (doctorId) => `doctors/${doctorId}/workingTime`,
         DOCTOR_CHECKING_SERVICES: (doctorId) => `doctors/${doctorId}/checkingServices`,
         APPOINTMENTS: 'appointments',
-        APPOINTMENT: (id) => `appointments/${id}`
+        APPOINTMENT: (id) => `appointments/${id}`,
+        DEVICES: 'devices',
+        DEVICE_STATUS: (deviceUuid) => `devices/${deviceUuid}/status`,
     }
 }
