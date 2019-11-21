@@ -13,5 +13,9 @@ export const CONFIG = {
         APPOINTMENT: (id) => `appointments/${id}`,
         DEVICES: 'devices',
         DEVICE_STATUS: (deviceUuid) => `devices/${deviceUuid}/status`,
+        NOTIFICATIONS: 'notifications',
+        NOTIFICATION_READ: (id) => `notifications/${id}/read`,
+        NOTIFICATION_UNSEEN_COUNT: 'notifications/unseen/count',
+        NOTIFICATION_UNSEEN_READ: 'notifications/unseen/read',
     }
 }

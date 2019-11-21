@@ -9,7 +9,7 @@ const NotificationScreen = props => {
       <Header hasBackIcon={false} hasRightMenu={true}/>
       <View style={styles.container}>
         <Text style={styles.header}>Thông báo</Text>
-        <NotificationList />
+        <NotificationList navigation={props.navigation}/>
       </View>
     </Fragment>
   );

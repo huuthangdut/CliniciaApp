@@ -72,7 +72,7 @@ const AppointmentList = props => {
       .then(result => {
         setAppointments(result.items);
         setIsRefreshing(false);
-        hasMoreItems = result.hasNextPage;
+        setHasMoreItems(result.hasNextPage);
       })
       .catch(e => {
         setIsRefreshing(false);

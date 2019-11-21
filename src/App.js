@@ -38,7 +38,6 @@ const App = () => {
       .notifications()
       .onNotification(notification => {
         const {title, body, data} = notification;
-        
       });
 
     /*
