@@ -1,16 +1,17 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useContext} from 'react';
 import {Text, View, StyleSheet, ScrollView} from 'react-native';
 import theme from '../../../styles/theme';
 import {Divider, Avatar} from 'react-native-elements';
 import Button from '../../../components/core/Button';
 import Header from '../../../components/core/Header';
-import WithContext from '../../../components/core/WithContext';
 import {DateTime} from '../../../utilities/date-time';
 import {AppointmentService} from '../../../services/AppointmentService';
+import {AppContext} from '../../../AppProvider';
 
 const ReviewAppointmentScreen = props => {
   const {navigation} = props;
-  const {appointment} = props.context;
+  const context = useContext(AppContext);
+  const appointment = context.appointment.get;
 
   const getAppointmentModel = () => {
     return {
@@ -26,7 +27,6 @@ const ReviewAppointmentScreen = props => {
     AppointmentService.addAppointment(getAppointmentModel()).then(() => {
       navigation.replace('BookingSuccess');
     }).catch(e => console.log(e));
-    
   };
 
   return (
@@ -155,4 +155,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WithContext(ReviewAppointmentScreen);
+export default ReviewAppointmentScreen;

@@ -1,4 +1,4 @@
-import React, {useState, Fragment, useEffect} from 'react';
+import React, {useState, Fragment, useEffect, useContext} from 'react';
 import {
   Text,
   View,
@@ -15,12 +15,13 @@ import Button from '../../../components/core/Button';
 import Header from '../../../components/core/Header';
 import {DoctorService} from '../../../services/DoctorService';
 import {DateTime} from '../../../utilities/date-time';
-import WithContext from '../../../components/core/WithContext';
+import {AppContext} from '../../../AppProvider';
 
 const getDateString = date => date.toISOString().split('T')[0];
 
 const MakeAppointmentScreen = props => {
   const {navigation} = props;
+  const context = useContext(AppContext);
   const doctor = navigation.getParam('doctor');
 
   const [selectedService, setSelectedService] = useState();
@@ -59,12 +60,12 @@ const MakeAppointmentScreen = props => {
   };
 
   const handleNext = () => {
-    props.context.appointment = {
+    context.appointment.set({
       date: selectedDate,
       time: selectedTime,
       checkingService: selectedService,
-      doctor: doctor,
-    };
+      doctor: doctor
+    });
 
     navigation.navigate('ReviewAppointment');
   };
@@ -356,4 +357,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WithContext(MakeAppointmentScreen);
+export default MakeAppointmentScreen;

@@ -1,6 +1,7 @@
 import React from 'react';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
+import {Avatar, Badge, Icon, withBadge} from 'react-native-elements';
 import theme from './styles/theme';
 import {createSwitchNavigator, createAppContainer} from 'react-navigation';
 import HomeScreen from './screens/home/HomeScreen';
@@ -11,7 +12,7 @@ import AppointmentDetailsScreen from './screens/appointment/AppointmentDetailsSc
 import FavoriteScreen from './screens/favorite/FavoriteScreen';
 import SpecialtyScreen from './screens/specialty/SpecialtyScreen';
 import LoginScreen from './screens/auth/LoginScreen';
-import {Image} from 'react-native';
+import {Image, View} from 'react-native';
 import ClinicScreen from './screens/clinic/ClinicScreen';
 import ClinicDetailsScreen from './screens/clinic/ClinicDetailsScreen';
 import MakeAppointmentScreen from './screens/booking/make-appointment/MakeAppointmentScreen';
@@ -20,39 +21,48 @@ import BookingSuccessScreen from './screens/booking/booking-success/BookingSucce
 import DoctorScreen from './screens/doctor/DoctorScreen';
 import DoctorDetailsScreen from './screens/doctor/DoctorDetailsScreen';
 import ChangePasswordScreen from './screens/changepassword/ChangePasswordScreen';
-import InitLocationScreen from './screens/location/InitLocationScreen'
-import FilterScreen from './screens/doctor/FilterScreen'
+import InitLocationScreen from './screens/location/InitLocationScreen';
+import FilterScreen from './screens/doctor/FilterScreen';
 
-const FavoriteNavigator = createStackNavigator({
-  Favorite: FavoriteScreen
-}, {
-  headerMode: 'none'
-})
+const FavoriteNavigator = createStackNavigator(
+  {
+    Favorite: FavoriteScreen,
+  },
+  {
+    headerMode: 'none',
+  },
+);
 
-const DoctorNavigator = createStackNavigator({
-  Doctor: DoctorScreen,
-  DoctorDetails: DoctorDetailsScreen,
-  Filter: FilterScreen
-}, {
-  headerMode: 'none',
-  initialRouteName: 'Doctor'
-});
+const DoctorNavigator = createStackNavigator(
+  {
+    Doctor: DoctorScreen,
+    DoctorDetails: DoctorDetailsScreen,
+    Filter: FilterScreen,
+  },
+  {
+    headerMode: 'none',
+    initialRouteName: 'Doctor',
+  },
+);
 
-const BookingNavigator = createStackNavigator({
-  MakeAppointment: MakeAppointmentScreen,
-  ReviewAppointment: ReviewAppointmentScreen,
-  BookingSuccess: BookingSuccessScreen,
-}, {
-  headerMode: 'none'
-});
+const BookingNavigator = createStackNavigator(
+  {
+    MakeAppointment: MakeAppointmentScreen,
+    ReviewAppointment: ReviewAppointmentScreen,
+    BookingSuccess: BookingSuccessScreen,
+  },
+  {
+    headerMode: 'none',
+  },
+);
 
 const ClinicNavigator = createStackNavigator(
   {
     Clinic: ClinicScreen,
-    ClinicDetails: ClinicDetailsScreen
+    ClinicDetails: ClinicDetailsScreen,
   },
   {
-    headerMode: 'none'
+    headerMode: 'none',
   },
 );
 
@@ -61,13 +71,13 @@ const SpecialtyNavigator = createStackNavigator(
     Specialty: SpecialtyScreen,
   },
   {
-    headerMode: 'none'
+    headerMode: 'none',
   },
 );
 
 const HomeNavigator = createStackNavigator(
   {
-    Home: HomeScreen
+    Home: HomeScreen,
   },
   {
     headerMode: 'none',
@@ -77,7 +87,7 @@ const HomeNavigator = createStackNavigator(
 const AppointmentNavigator = createStackNavigator(
   {
     Appointments: AppointmentScreen,
-    AppointmentDetails: AppointmentDetailsScreen
+    AppointmentDetails: AppointmentDetailsScreen,
   },
   {
     headerMode: 'none',
@@ -86,7 +96,7 @@ const AppointmentNavigator = createStackNavigator(
 
 const NotificationNavigator = createStackNavigator(
   {
-    Notification: NotificationScreen
+    Notification: NotificationScreen,
   },
   {
     headerMode: 'none',
@@ -96,7 +106,7 @@ const NotificationNavigator = createStackNavigator(
 const AccountNavigator = createStackNavigator(
   {
     Account: AccountScreen,
-    ChangePassword: ChangePasswordScreen
+    ChangePassword: ChangePasswordScreen,
   },
   {
     headerMode: 'none',
@@ -140,14 +150,21 @@ const TabNavigator = createBottomTabNavigator(
       navigationOptions: {
         tabBarLabel: 'Thông báo',
         tabBarIcon: ({focused}) => (
-          <Image
-            style={{width: 24, height: 24}}
-            source={
-              focused
-                ? theme.tabIcons.notificationFocus
-                : theme.tabIcons.notification
-            }
-          />
+          <View>
+            <Image
+              style={{width: 24, height: 24}}
+              source={
+                focused
+                  ? theme.tabIcons.notificationFocus
+                  : theme.tabIcons.notification
+              }
+            />
+            <Badge
+              value="9"
+              status="error"
+              containerStyle={{position: 'absolute', top: -4, right: -13}}
+            />
+          </View>
         ),
       },
     },
