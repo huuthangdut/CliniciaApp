@@ -44,16 +44,14 @@ export class Api {
       }
     };
     if (authorize) {
-        // let token = await AsyncStorage.getItem('@access_token').catch((error) => {
-        //     throw new AppError(AppErrorCode.TokenError, error.message);
-        // });
-        // if (token) {
-        //     config.headers['Authorization'] = `Bearer ${token}`; 
-        // } else {
-        //     throw new AppError(AppErrorCode.TokenError, 'Token not found.');
-        // }
-        const head = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiMTIzQGdtYWlsLmNvbSIsInVzZXJfaWQiOiIwOGQ3Njc4Ny0zNzE3LTBjYmQtZWJkMy1lZTMxZmYyMWRlOTQiLCJ1c2VyX25hbWUiOiIxMjNAZ21haWwuY29tIiwiZmlyc3RfbmFtZSI6IlRyYW4gSHV1IiwibGFzdF9uYW1lIjoiVGhhbmciLCJlbWFpbCI6IjEyM0BnbWFpbC5jb20iLCJwaG9uZV9udW1iZXIiOiIzOTU5MjI1OTkiLCJyb2xlIjoiUGF0aWVudCIsInN1YiI6IjEyM0BnbWFpbC5jb20iLCJqdGkiOiI3M2MxYWU3MC0zYTg2LTQyNTEtODc4Ni1kMGJjNGU1YzBjOTUiLCJpYXQiOjE1NzQxNjY5MDIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3N5c3RlbSI6Ik1vYmlsZSIsIm5iZiI6MTU3NDE2NjkwMiwiZXhwIjoxNTc2NzU4OTAyLCJpc3MiOiJDbGluaWNpYS5jb20iLCJhdWQiOiJDbGluaWNpYSJ9.A8qMK25JEXPo6_WxIy4RjDmNn4illERhdqpLc84O_v4';
-        config.headers['Authorization'] = head;
+        let token = await AsyncStorage.getItem('@access_token').catch((error) => {
+            throw new AppError(AppErrorCode.TokenError, error.message);
+        });
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`; 
+        } else {
+            throw new AppError(AppErrorCode.TokenError, 'Token not found.');
+        }
     }
     return config;
   }

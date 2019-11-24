@@ -6,12 +6,35 @@ const login = (username, password) => {
     `${CONFIG.API_ROOT}/v${CONFIG.API_VERSION}/${CONFIG.API_URL.LOGIN}`,
     {
       username,
-      password
+      password,
     },
-    false
+    false,
   );
 };
 
+const request2fa = phoneNumber => {
+  return Api.post(
+    `${CONFIG.API_ROOT}/v${CONFIG.API_VERSION}/${CONFIG.API_URL.REQUEST_2FA}`,
+    {
+      phoneNumber,
+    },
+    false,
+  );
+};
+
+const verify2fa = (code, token) => {
+  return Api.post(
+    `${CONFIG.API_ROOT}/v${CONFIG.API_VERSION}/${CONFIG.API_URL.VERIFY_2FA}`,
+    {
+      code,
+      token
+    },
+    false,
+  );
+}
+
 export const AuthService = {
-  login
+  login,
+  request2fa,
+  verify2fa
 };

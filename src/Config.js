@@ -4,6 +4,8 @@ export const CONFIG = {
     API_URL: {
         LOGIN: 'account/login',
         REGISTER: 'account/register',
+        REQUEST_2FA: 'account/request2fa',
+        VERIFY_2FA: 'account/verify2fa',
         SPECIALTIES: 'specialties',
         DOCTORS: 'doctors',
         DOCTOR: (id) => `doctors/${id}`,

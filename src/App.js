@@ -1,8 +1,11 @@
-import React, {Fragment, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import Navigator from './Navigator';
 import AppProvider from './AppProvider';
-import AsyncStorage from '@react-native-community/async-storage';
 import firebase from 'react-native-firebase';
+import {NavigationService} from './services/NavigationService';
+import {DeviceService} from './services/DeviceService';
+import DeviceInfo from 'react-native-device-info';
+import {Platform} from 'react-native';
 
 const App = () => {
   const checkPermission = async () => {
@@ -17,7 +20,8 @@ const App = () => {
   const getFcmToken = async () => {
     const fcmToken = await firebase.messaging().getToken();
     if (fcmToken) {
-      await AsyncStorage.setItem('@fcm_token', fcmToken);
+      const deviceUuid = DeviceInfo.getUniqueId();
+      await DeviceService.addOrUpdateDevice(fcmToken, Platform.OS, deviceUuid);
     } else {
       console.log('No token received');
     }
@@ -26,8 +30,7 @@ const App = () => {
   const requestPermission = async () => {
     try {
       await firebase.messaging().requestPermission();
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   const messageListener = async () => {
@@ -74,7 +77,11 @@ const App = () => {
 
   return (
     <AppProvider>
-      <Navigator />
+      <Navigator
+        ref={navigationRef =>
+          NavigationService.setTopLevelNavigator(navigationRef)
+        }
+      />
     </AppProvider>
   );
 };

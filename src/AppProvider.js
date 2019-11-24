@@ -1,14 +1,17 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {AuthService} from './services/AuthService';
-import {Alert} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import DeviceInfo from 'react-native-device-info';
 import {DeviceService} from './services/DeviceService';
-import {Platform} from 'react-native';
+import { ApiErrorCode } from './common/enums';
+import {NavigationService} from './services/NavigationService';
 
 const AppContext = React.createContext();
 
 const AppProvider = (props) => {
+  const {navigation} = props;
+
+  const [isLogging, setIsLogging] = useState(false);
   const [appointment, setAppointment] = useState({});
   const [notifications, setNotifications] = useState([]);
   const [notificationCount, setNotificationCount] = useState(0);
@@ -21,22 +24,26 @@ const AppProvider = (props) => {
 
   const login = async (username, password) => {
     try {
+      setIsLogging(true);
       const result = await AuthService.login(username, password);
       if (result) {
         await AsyncStorage.setItem('@access_token', result.accessToken);
-        const deviceUuid = DeviceInfo.getUniqueId();
-        const fcmToken = await AsyncStorage.getItem('@fcm_token');
 
-        if (deviceUuid && fcmToken) {
-          await DeviceService.addOrUpdateDevice(
-            fcmToken,
-            Platform.OS,
-            deviceUuid,
-          );
-        }
+        setIsLogging(false);
+        NavigationService.reset('Tab');
       }
+      setIsLogging(false);
     } catch (error) {
-      Alert.alert(error.errorMessage);
+      if(error.errorCode === ApiErrorCode.RequireConfirmedPhoneNumber) {
+        AuthService.request2fa(username).then(result => {
+          setIsLogging(false);
+          NavigationService.navigate('ConfirmPhoneNumber', { token: result.token })
+        });
+        
+      } else {
+        setIsLogging(false);
+        console.log(error);
+      }
     }
   };
 
@@ -54,6 +61,7 @@ const AppProvider = (props) => {
     /**
      * global state
      */
+    isLogging: {get: isLogging, set: setIsLogging},
     appointment: {get: appointment, set: setAppointment},
     notifications: {get: notifications, set: setNotifications, add: addNotification},
     notificationCount: {get: notificationCount, set: setNotificationCount},

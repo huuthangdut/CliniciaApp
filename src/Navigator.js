@@ -23,6 +23,7 @@ import DoctorDetailsScreen from './screens/doctor/DoctorDetailsScreen';
 import ChangePasswordScreen from './screens/changepassword/ChangePasswordScreen';
 import InitLocationScreen from './screens/location/InitLocationScreen';
 import FilterScreen from './screens/doctor/FilterScreen';
+import AuthLoadingScreen from './screens/auth/AuthLoadingScreen';
 
 const FavoriteNavigator = createStackNavigator(
   {
@@ -209,11 +210,12 @@ const AppNavigator = createStackNavigator(
 
 const AppSwitch = createSwitchNavigator(
   {
-    Login: LoginScreen,
+    AuthLoading: AuthLoadingScreen,
     App: AppNavigator,
+    Login: LoginScreen
   },
   {
-    initialRouteName: 'App',
+    initialRouteName: 'AuthLoading',
   },
 );
 
