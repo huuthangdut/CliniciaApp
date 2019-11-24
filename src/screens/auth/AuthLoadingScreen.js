@@ -11,7 +11,7 @@ const AuthLoadingScreen = props => {
       if(loggedIn) {
         navigation.navigate('App');
       } else {
-        navigation.navigate('Login');
+        navigation.navigate('Auth');
       }
     });    
   }, []);
