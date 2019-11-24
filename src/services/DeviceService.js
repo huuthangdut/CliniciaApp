@@ -9,7 +9,7 @@ const addOrUpdateDevice = (deviceToken, deviceType, deviceUuid) => {
       deviceType,
       deviceUuid,
     },
-    true,
+    true
   );
 };
 
@@ -17,9 +17,9 @@ const updateStatus = (deviceUuid, status) => {
   return Api.post(
     `${CONFIG.API_ROOT}/v${CONFIG.API_VERSION}/${CONFIG.API_URL.DEVICE_STATUS(deviceUuid)}`,
     {
-      status,
+      status
     },
-    true,
+    true
   );
 };
 

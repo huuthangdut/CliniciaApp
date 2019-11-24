@@ -51,6 +51,7 @@ const AppProvider = (props) => {
     const uuid = DeviceInfo.getUniqueId();
     await DeviceService.updateStatus(uuid, false);
     await AsyncStorage.removeItem('@access_token');
+    // NavigationService.reset('Tab');
   };
 
   const addNotification = (notification) => {

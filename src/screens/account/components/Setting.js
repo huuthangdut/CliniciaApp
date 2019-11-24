@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {
   StyleSheet,
   View,
@@ -7,8 +7,11 @@ import {
 } from 'react-native'
 import { ListItem } from 'react-native-elements'
 import theme from '../../../styles/theme'
+import {AppContext} from '../../../AppProvider';
 
 const Setting = (props) => {
+  const context = useContext(AppContext);
+
   const listSetting = [
     {
       title: 'Đổi mật khẩu',
@@ -24,6 +27,7 @@ const Setting = (props) => {
     {
       title: 'Đăng xuất',
       icon: theme.tabIcons.signOut,
+      onPress: async () => await context.logout(),
       name: 'sign-out'
     },
   ]
