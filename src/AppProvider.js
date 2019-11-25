@@ -11,7 +11,9 @@ const AppContext = React.createContext();
 const AppProvider = (props) => {
   const {navigation} = props;
 
+  const [isVerifying, setIsVerifying] = useState(false);
   const [isLogging, setIsLogging] = useState(false);
+  const [isRegistering, setIsRegistering] = useState(false);
   const [appointment, setAppointment] = useState({});
   const [notifications, setNotifications] = useState([]);
   const [notificationCount, setNotificationCount] = useState(0);
@@ -28,16 +30,14 @@ const AppProvider = (props) => {
       const result = await AuthService.login(username, password);
       if (result) {
         await AsyncStorage.setItem('@access_token', result.accessToken);
-
-        setIsLogging(false);
-        NavigationService.reset('Tab');
+        NavigationService.reset('App');
       }
       setIsLogging(false);
     } catch (error) {
       if(error.errorCode === ApiErrorCode.RequireConfirmedPhoneNumber) {
         AuthService.request2fa(username).then(result => {
           setIsLogging(false);
-          NavigationService.navigate('ConfirmPhoneNumber', { token: result.token })
+          NavigationService.reset('Verify', { token: result.token })
         });
         
       } else {
@@ -47,11 +47,46 @@ const AppProvider = (props) => {
     }
   };
 
+  const register = async ({firstName, lastName, email, password, phoneNumber}) => {
+    try {
+      setIsRegistering(true);
+      const result  = await AuthService.register({ 
+        firstName, 
+        lastName, 
+        email, 
+        password, 
+        phoneNumber
+      });
+      if(result && result.token) {
+        NavigationService.reset('Verify', { token: result.token });
+      }
+      setIsRegistering(false);
+    } catch (error) {
+      setIsRegistering(false);
+      console.log(error);
+    }
+  };
+
+  const verify = async (code, token) => {
+    try {
+      setIsVerifying(true);
+      const result = await AuthService.verify2fa(code, token);
+      if (result && result.accessToken) {
+        await AsyncStorage.setItem('@access_token', result.accessToken);
+        NavigationService.reset('Tab');
+      }
+      setIsVerifying(false);
+    } catch(error) {
+      setIsVerifying(false);
+      console.log(error);
+    }
+  }
+
   const logout = async () => {
     const uuid = DeviceInfo.getUniqueId();
     await DeviceService.updateStatus(uuid, false);
     await AsyncStorage.removeItem('@access_token');
-    // NavigationService.reset('Tab');
+    NavigationService.reset('Auth');
   };
 
   const addNotification = (notification) => {
@@ -62,7 +97,9 @@ const AppProvider = (props) => {
     /**
      * global state
      */
+    isVerifying: {get: isVerifying, set: setIsVerifying},
     isLogging: {get: isLogging, set: setIsLogging},
+    isRegistering: {get: isRegistering, set: setIsRegistering},
     appointment: {get: appointment, set: setAppointment},
     notifications: {get: notifications, set: setNotifications, add: addNotification},
     notificationCount: {get: notificationCount, set: setNotificationCount},
@@ -73,7 +110,9 @@ const AppProvider = (props) => {
      */
     isAuthenticated: isAuthenticated,
     login: login,
+    register: register,
     logout: logout,
+    verify: verify
   };
 
   return (

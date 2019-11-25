@@ -27,6 +27,7 @@ const reset = (routeName, params) => {
           params
         }),
       ],
+      key: undefined
     }),
   );
 }

@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     backgroundColor: '#fff',
-    padding: 25,
+    padding: 25
   },
   row: {
     flexDirection: 'row',

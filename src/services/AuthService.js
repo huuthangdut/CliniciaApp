@@ -12,6 +12,20 @@ const login = (username, password) => {
   );
 };
 
+const register = ({firstName, lastName, phoneNumber, email, password}) => {
+  return Api.post(
+    `${CONFIG.API_ROOT}/v${CONFIG.API_VERSION}/${CONFIG.API_URL.REGISTER}`,
+    {
+      firstName, 
+      lastName, 
+      phoneNumber, 
+      email, 
+      password
+    },
+    false,
+  );
+};
+
 const request2fa = phoneNumber => {
   return Api.post(
     `${CONFIG.API_ROOT}/v${CONFIG.API_VERSION}/${CONFIG.API_URL.REQUEST_2FA}`,
@@ -27,14 +41,15 @@ const verify2fa = (code, token) => {
     `${CONFIG.API_ROOT}/v${CONFIG.API_VERSION}/${CONFIG.API_URL.VERIFY_2FA}`,
     {
       code,
-      token
+      token,
     },
     false,
   );
-}
+};
 
 export const AuthService = {
   login,
+  register,
   request2fa,
-  verify2fa
+  verify2fa,
 };
