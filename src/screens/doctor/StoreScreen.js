@@ -1,10 +1,10 @@
 import React, {useState, Fragment} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import theme from '../../styles/theme';
-import DoctorList from './components/DoctorList';
+import StoreList from './components/StoreList';
 import Header from '../../components/core/Header';
 
-const DoctorScreen = props => {
+const StoreScreen = props => {
   const {navigation} = props;
   const [doctors, setDoctors] = useState([
     {
@@ -111,11 +111,10 @@ const DoctorScreen = props => {
 
   return (
     <Fragment>
-      <Header />
+      <Header navigation={navigation} title={'Stores'}/>
       <View style={styles.container}>
-        <Text style={styles.header}>Doctors</Text>
         <View style={styles.list}>
-          <DoctorList items={doctors} navigation={navigation} />
+          <StoreList items={doctors} navigation={navigation} />
         </View>
       </View>
     </Fragment>
@@ -130,7 +129,9 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 34,
-    fontFamily: 'SF-Pro-Display-Bold',
+    // fontFamily: 'SF-Pro-Display-Bold',
+    fontWeight: 'bold',
+    alignSelf: 'center'
   },
   list: {
     flex: 1,
@@ -138,4 +139,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DoctorScreen;
+export default StoreScreen;

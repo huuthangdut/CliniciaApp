@@ -7,25 +7,14 @@ import AppointmentStatus from './AppointmentStatus';
 const AppointmentItem = props => {
   return (
     <TouchableOpacity style={styles.container} activeOpacity={0.7} onPress={() => props.navigation.navigate('AppointmentDetails')}>
-      <View style={styles.image}>
-        <Avatar
-          size={75}
-          rounded
-          source={{
-            uri:
-              'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-          }}
-        />
-      </View>
       <View style={styles.textWrapper}>
         <Text style={styles.doctorName}>{props.item.doctor}</Text>
         <Text numberOfLines={1} style={styles.clinicName}>{props.item.clinic}</Text>
-        <Text style={styles.date}>{props.item.date}</Text>
-        <Text style={styles.date}>{props.item.time}</Text>
+        <Text style={styles.date}>{props.item.date} {props.item.time}</Text>
+        <Text style={styles.date}>{props.item.total}d, {props.item.totalQuantity} item(s)  </Text>
       </View>
       <View style={styles.timeStatusWrapper}>
-          <Text style={styles.timeBeforeNow}>30 min before</Text>
-          <AppointmentStatus type="confirmed"/>
+          <AppointmentStatus type="waitting"/>
       </View>
     </TouchableOpacity>
   );
@@ -54,7 +43,7 @@ const styles = StyleSheet.create({
   clinicName: {
     fontSize: 13,
     fontFamily: 'SF-Pro-Text-Regular',
-    lineHeight: 20
+    lineHeight: 20,
   },
   date: {
       fontSize: 13,

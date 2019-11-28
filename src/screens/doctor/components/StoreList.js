@@ -2,9 +2,9 @@ import React from 'react';
 import {Text, View, StyleSheet, FlatList} from 'react-native';
 import theme from '../../../styles/theme';
 import FlatListItemSeperator from '../../../components/core/FlatListItemSeperator';
-import DoctorItem from './DoctorItem';
+import StoreItem from './StoreItem';
 
-const DoctorList = props => {
+const StoreList = props => {
   const {items, navigation} = props;
 
   return (
@@ -14,9 +14,9 @@ const DoctorList = props => {
       ItemSeparatorComponent={FlatListItemSeperator}
       data={items}
       renderItem={({item}) => (
-        <DoctorItem item={item} navigation={navigation} />
+        <StoreItem item={item} navigation={navigation} />
       )}
-      keyExtractor={item => item.id.toString()}
+      keyExtractor={item => item.id}
     />
   );
 };
@@ -27,4 +27,4 @@ const styles = StyleSheet.create({
   }
 }); 
 
-export default DoctorList;
+export default StoreList;

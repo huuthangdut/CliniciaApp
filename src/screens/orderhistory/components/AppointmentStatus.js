@@ -15,6 +15,10 @@ const AppointmentStatus = props => {
       statusText = 'Cancelled';
       backgroundColor = '#707070';
       break;
+    case 'waitting':
+      statusText = 'Waitting';
+      backgroundColor = '#f5e025';
+      break;
   }
 
   return (

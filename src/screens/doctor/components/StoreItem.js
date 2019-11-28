@@ -3,21 +3,12 @@ import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import theme from '../../../styles/theme';
 import {Avatar, Icon, Rating} from 'react-native-elements';
 
-const DoctorItem = props => {
+const StoreItem = props => {
   const {item, navigation} = props;
 
   return (
-    <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('DoctorDetails')}>
-      <View style={styles.image}>
-        <Avatar
-          size={80}
-          rounded
-          source={{
-            uri:
-              'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-          }}
-        />
-      </View>
+    <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('Store', {storeId: item._id})}>
+      {console.log(item)}
       <View style={styles.content}>
         <Text style={styles.name}>{item.name}</Text>
         <View style={styles.row}>
@@ -27,24 +18,21 @@ const DoctorItem = props => {
             size={12}
             color="#C8C7CC"
           />
-          <Text style={styles.text}>{item.distance} km away</Text>
+          <Text style={styles.text}> km away</Text>
           <Icon name="dot-single" type="entypo" size={12} color="#C8C7CC" />
-          <Text style={styles.text}>{item.specialty}</Text>
+          <Text style={styles.text}>{item.address}</Text>
         </View>
         <View style={styles.row}>
-          <Rating
+          {/* <Rating
             imageSize={10}
             readonly
-            startingValue={item.rating}
+            startingValue={5}
             style={styles.rating}
           />
-          <Text style={styles.text}>{item.ratingCount}</Text>
-          <Icon name="dot-single" type="entypo" size={12} color="#C8C7CC" />
-          <Text>${item.pricePerHour}/hour</Text>
+          <Text style={styles.text}>{item.ratingCount}</Text> */}
+          {/* <Icon name="dot-single" type="entypo" size={12} color="#C8C7CC" /> */}
+          <Text>Average: </Text>
         </View>
-      </View>
-      <View style={styles.likeWrapper}>
-        <Icon name="heart" type="antdesign" size={20} color={theme.colors.red} />
       </View>
     </TouchableOpacity>
   );
@@ -65,6 +53,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     flex: 1,
     justifyContent: 'center',
+    marginLeft: 20
   },
   name: {
     fontSize: 15,
@@ -96,4 +85,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DoctorItem;
+export default StoreItem;

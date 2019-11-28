@@ -1,22 +1,22 @@
-import React, {Fragment, useState} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
-import {TabView, SceneMap} from 'react-native-tab-view';
+import React, { Fragment, useState } from 'react';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { TabView } from 'react-native-tab-view';
 import theme from '../../styles/theme';
 import AppointmentList from './components/AppointmentList';
 import Header from '../../components/core/Header';
 
-const AppointmentScreen = props => {
+const OrderHisToryScreen = props => {
   const [tabBarConfig, setTabBarConfig] = useState({
     index: 0,
     routes: [
-      {key: 'Upcoming', title: 'Upcoming'},
-      {key: 'Previous', title: 'Previous'},
+      { key: 'Upcoming', title: 'Proccessing' },
+      { key: 'Previous', title: 'Done' },
     ],
   });
 
   const handleIndexChange = index => setTabBarConfig(...tabBarConfig, index);
 
-  const renderScene = ({route}) => {
+  const renderScene = ({ route }) => {
     switch (route.key) {
       case 'Upcoming':
         return (
@@ -47,11 +47,11 @@ const AppointmentScreen = props => {
                 key={index}
                 activeOpacity={0.7}
                 style={styles.tabItem}
-                onPress={() => setTabBarConfig({...tabBarConfig, index})}>
-                <Text style={[{color}, styles.tabItemText]}>{route.title}</Text>
+                onPress={() => setTabBarConfig({ ...tabBarConfig, index })}>
+                <Text style={[{ color }, styles.tabItemText]}>{route.title}</Text>
                 <View
                   style={[
-                    {backgroundColor: highlightColor},
+                    { backgroundColor: highlightColor },
                     styles.highlight,
                   ]}></View>
               </TouchableOpacity>
@@ -65,9 +65,8 @@ const AppointmentScreen = props => {
 
   return (
     <Fragment>
-      <Header hasBackIcon={false} hasRightMenu={true}/>
+      <Header title='Order history' />
       <View style={styles.container}>
-        <Text style={styles.header}>Appointments</Text>
         <TabView
           lazy
           navigationState={tabBarConfig}
@@ -122,4 +121,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AppointmentScreen;
+export default OrderHisToryScreen;

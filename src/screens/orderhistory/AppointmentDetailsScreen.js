@@ -15,69 +15,65 @@ import Header from '../../components/core/Header';
 const AppointmentDetailsScreen = props => {
   return (
     <Fragment>
-      <Header/>
+      <Header title='Order'/>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           <View style={styles.headerInfo}>
             <View style={styles.image}>
               <Avatar
                 size={60}
-                rounded
-                source={{
-                  uri:
-                    'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-                }}
+                // rounded
+                // source={{
+                //   uri:
+                //     'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
+                // }}
               />
             </View>
             <View style={styles.headerTextWrapper}>
-              <Text style={styles.headerText}>Kristina Clark</Text>
-              <AppointmentStatus type="confirmed" />
+              <Text style={styles.headerText}>High5 Coffee</Text>
+              <AppointmentStatus type="waitting" />
             </View>
             <View style={styles.contact}>
-              <TouchableOpacity style={styles.iconWrapper}>
+              <TouchableOpacity style={styles.iconWrapper} onPress={() => {}}>
                 <Icon
                   iconStyle={styles.icon}
                   size={25}
-                  name="message-circle"
+                  name="heart"
                   type="feather"></Icon>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.iconWrapper}>
+              {/* <TouchableOpacity style={styles.iconWrapper}>
                 <Icon
                   iconStyle={styles.icon}
                   size={25}
                   name="phone"
                   type="font-awesome"></Icon>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           </View>
           <View style={styles.divider}></View>
 
           <View style={styles.content}>
             <View style={styles.itemRow}>
-              <Text style={styles.smText}>Date & Time</Text>
-              <Text style={styles.lgText}>Monday, October 24</Text>
-              <Text style={styles.smText}>8:00 AM</Text>
+              {/* <Text style={styles.smText}>Date & Time</Text>
+              <Text style={styles.lgText}>Monday, October 24</Text> */}
+              <Text style={styles.smText}>Monday, October 24 8:00 AM</Text>
             </View>
             <View style={styles.itemRow}>
               <Text style={styles.smText}>Address</Text>
-              <Text style={styles.lgText}>San Francisco, California</Text>
-              <Text style={styles.smText}>Hoan My Hospital</Text>
+              <Text style={styles.lgText}>436 Dien Bien Phu, Thanh Khe, Da Nang</Text>
+              {/* <Text style={styles.smText}>Hoan My Hospital</Text> */}
               <Text style={styles.smText}>0.31 mi away</Text>
             </View>
             <View style={styles.itemRow}>
               <Text style={styles.smText}>Fee</Text>
-              <Text style={styles.lgText}>$75</Text>
-              <Text style={styles.smText}>For 30 minutes</Text>
+              <Text style={styles.lgText}>20000d</Text>
+              <Text style={styles.smText}>1 item(s)</Text>
             </View>
-            <View style={styles.itemRow}>
+            {/* <View style={styles.itemRow}>
               <Text style={styles.smText}>Need</Text>
               <Text style={styles.lgText}>Treatment</Text>
               <Text style={styles.smText}>Any kind of treatment</Text>
-            </View>
-            <View style={styles.itemRow}>
-              <Text style={styles.smText}>Reminder</Text>
-              <Text style={styles.lgText}>30 minutes before</Text>
-            </View>
+            </View> */}
           </View>
           <Button title="Cancel" secondary disabled style={styles.button} />
         </View>
@@ -115,7 +111,7 @@ const styles = StyleSheet.create({
   contact: {
     width: 100,
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     alignItems: 'center',
   },
   iconWrapper: {
@@ -124,9 +120,9 @@ const styles = StyleSheet.create({
     marginRight: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 2,
-    borderColor: theme.colors.lightGray,
-    borderRadius: 40 / 2,
+    // borderWidth: 2,
+    // borderColor: theme.colors.lightGray,
+    // borderRadius: 40 / 2,
   },
   icon: {
     color: theme.colors.primary,
