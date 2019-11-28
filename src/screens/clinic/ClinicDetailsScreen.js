@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {StyleSheet, View, Text, ScrollView} from 'react-native';
 import theme from '../../styles/theme';
 import {Avatar, Rating} from 'react-native-elements';
-import DoctorList from '../doctor/components/DoctorList';
+import DoctorList from '../doctor/components/StoreList';
 
 const ClinicDetailsScreen = props => {
   const {navigation} = props;

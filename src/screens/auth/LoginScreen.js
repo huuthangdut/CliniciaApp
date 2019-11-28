@@ -1,107 +1,251 @@
 import React, { useRef, useState } from 'react';
-import {TouchableWithoutFeedback, View, Text, Keyboard, StyleSheet, Alert} from 'react-native';
+import { TouchableWithoutFeedback, View, Text, Keyboard, StyleSheet, Alert, ImageBackground, Dimensions, ActivityIndicator, ScrollView } from 'react-native';
 import TextField from '../../components/core/TextField';
 import Button from '../../components/core/Button';
 import theme from '../../styles/theme';
 import WithContext from '../../components/core/WithContext';
+import { AuthService } from '../../services/AuthService';
 
 const LoginScreen = props => {
+  const { navigation } = props
+  const { login, signUp } = props.context
+
   const passwordRef = useRef();
+  const repasswordRef = useRef();
+  const firstNameRef = useRef();
+  const lastNameRef = useRef();
 
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
 
-  const focusPassword = () => passwordRef.current.focus();
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [repassword, setRepassword] = useState('')
 
-  const login = async () => {
-    await props.context.login(username, password);
-    const isAuthenticated = props.context.isAuthenticated();
-    if(isAuthenticated) {
-      props.navigation.navigate('Tab');
+  const [signUpMode, setSignUpMode] = useState(false)
+
+  const [isLoading, setLoading] = useState(false)
+
+  const focusNext = () => {
+    if(firstNameRef.current) {
+      firstNameRef.current.focus()
+    } else {
+      passwordRef.current.focus()
     }
+  }
+
+  const focusPassword = () => {
+    passwordRef.current.focus()
+  }
+
+  const focusRepassword = () => {
+    repasswordRef.current.focus()
+  }
+  
+  const focusLastName = () => {
+    lastNameRef.current.focus()
+  }
+  
+  const handleLogin = async () => {
+    setLoading(true)
+
+    AuthService.login(
+      'phuc@mail.com',
+      'phuc',
+      res => {
+        if (res.data.errors) {
+          handleErr(res.data.errors)
+        }
+        if (res.data.data) {
+          props.context && login(res.data.data.login)
+          navigation.navigate('Tab');
+        }
+        setLoading(false)
+      },
+      err => {
+        alert(err)
+        setLoading(false)
+      }
+    );
+  }
+
+  const handleErr = errs => {
+    let errors = []
+
+    if(errs.length > 0) {
+      errs.map(item => {
+        errors.push(item.message)
+      })
+    }
+
+    setLoading(false)
+    alert(errors)
+  }
+
+  const handleSignUp = () => {
+    setLoading(true)
+
+    let data = {
+      fName: firstName,
+      lName: lastName,
+      email: username,
+      password: password,
+      repassword: repassword
+    }
+
+    AuthService.signUp(
+      data,
+      res => {
+        if (res.data.errors) {
+          handleErr(res.data.errors)
+        }
+        if (res.data.data) {
+          setLoading(false)
+          signUp(res.data.data.createUser)
+          navigation.navigate('Tab');
+        }
+      },
+      err => {
+        console.log(err)
+        setLoading(false)
+      }
+    )
   }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={styles.container}>
+      <ImageBackground source={require('../../../assets/img/login-backgrond.jpg')} style={styles.container}>
         <View style={styles.form}>
-          <Text style={styles.heading}>Welcome back</Text>
-          <Text style={styles.title}>Sign in to continue</Text>
-          <TextField
-            placeholder="Email"
-            keyboardType="email-address"
-            onChangeText={(value) => setUsername(value)}
-            onSubmitEditing={focusPassword}
-            returnKeyType="next"
-          />
-          <TextField
-            ref={passwordRef}
-            placeholder="Password"
-            onChangeText={(value) => setPassword(value)}
-            returnKeyType="done"
-            secureTextEntry={true}
-          />
+        <ScrollView style={{flex: 1}}>
+          <Text style={styles.heading}>Welcome to ExFood</Text>
+          
+
+          <Text style={styles.title}>{signUpMode ? "Join with us" : "Sign in to continue"}</Text>
+          <>
+            
+            <TextField
+              placeholder="Email"
+              keyboardType="email-address"
+              onChangeText={(value) => {
+                if(value && value.trim() === '') {
+                  setUsername('')
+                } 
+                setUsername(value)
+              }}
+              onSubmitEditing={focusNext}
+              returnKeyType="next"
+            />
+            {signUpMode && <>
+              <TextField
+                ref={firstNameRef}
+                placeholder="First Name"
+                keyboardType="email-address"
+                onChangeText={(value) => setFirstName(value)}
+                onSubmitEditing={focusLastName}
+                returnKeyType="next"
+              />
+              <TextField
+                ref={lastNameRef}
+                placeholder="Last Name"
+                keyboardType="email-address"
+                onChangeText={(value) => setLastName(value)}
+                onSubmitEditing={focusPassword}
+                returnKeyType="next"
+              />
+              <TextField
+                ref={passwordRef}
+                placeholder="Password"
+                onChangeText={(value) => setPassword(value)}
+                returnKeyType="done"
+                onSubmitEditing={focusRepassword}
+                secureTextEntry={true}
+              />
+              <TextField
+                ref={repasswordRef}
+                placeholder="Re-enter Password"
+                onChangeText={(value) => setRepassword(value)}
+                returnKeyType="done"
+                secureTextEntry={true}
+              />
+            </>}
+            {!signUpMode && <TextField
+              ref={passwordRef}
+              placeholder="Password"
+              onChangeText={(value) => setPassword(value)}
+              returnKeyType="done"
+              secureTextEntry={true}
+            />}
+          </>
+          
           <View
             style={{
               ...styles.row,
-              marginBottom: 16,
+              marginBottom: 40,
             }}>
-            <Text style={styles.forgotPasswordLabel}>
-              Forgot password?
-            </Text>
           </View>
-          <Button title="Sign In" primary onPress={login} />
+          
+          {isLoading ? <ActivityIndicator size={50} color={theme.colors.white}/> 
+          :
+          <Button title={signUpMode ? "Sign Up" :  "Sign In"} primary onPress={signUpMode ? handleSignUp : handleLogin} />
+          }
+          </ScrollView>
         </View>
+       
         <Text
           style={styles.signUpLabel}
-          onPress={() => {}}>
-          Don't have an account? Sign Up
+          onPress={() => {
+            setSignUpMode(!signUpMode)
+          }}>
+          {signUpMode ? "Back to Sign In" : "Don't have an account? Sign Up"}
         </Text>
-      </View>
+      </ImageBackground>
     </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      flexDirection: 'column',
-      backgroundColor: '#fff',
-      padding: 25
-    },
-    row: {
-      flexDirection: 'row'
-    },
-    form: {
-      flexGrow: 2,
-      marginTop: 20
-    },
-    heading: {
-      fontSize: 40,
-      fontFamily: 'SF-Pro-Display-Bold',
-      marginVertical: 16
-    },
-    title: {
-      fontSize: 17,
-      fontFamily: 'SF-Pro-Text-Regular',
-      color: theme.colors.darkGray,
-      marginVertical: 28
-    },
-    forgotPasswordLabel: {
-      flex: 1,
-      textAlign: 'right',
-      color: theme.colors.gray,
-      fontSize: 15,
-      fontFamily: 'SF-Pro-Text-Regular',
-      marginBottom: 5
-    },
-    signUpLabel: {
-      textAlign: "center",
-      marginVertical: 8,
-      fontSize: 17,
-      fontFamily: 'SF-Pro-Text-Regular',
-      color: theme.colors.gray
-    }
-  });
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    paddingHorizontal: 25,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height
+  },
+  row: {
+    flexDirection: 'row'
+  },
+  form: {
+    flexGrow: 2,
+    marginTop: 20
+  },
+  heading: {
+    fontSize: 40,
+    fontFamily: 'SF-Pro-Display-Bold',
+    marginVertical: 16,
+    color: theme.colors.white
+  },
+  title: {
+    fontSize: 17,
+    fontFamily: 'SF-Pro-Text-Regular',
+    color: theme.colors.white,
+    marginVertical: 28
+  },
+  forgotPasswordLabel: {
+    flex: 1,
+    textAlign: 'right',
+    color: theme.colors.white,
+    fontSize: 15,
+    fontFamily: 'SF-Pro-Text-Regular',
+    marginBottom: 5
+  },
+  signUpLabel: {
+    textAlign: "center",
+    marginVertical: 8,
+    fontSize: 17,
+    fontFamily: 'SF-Pro-Text-Regular',
+    color: theme.colors.white,
+    fontWeight: 'bold'
+  }
+});
 
 export default WithContext(LoginScreen);

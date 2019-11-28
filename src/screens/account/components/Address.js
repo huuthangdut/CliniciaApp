@@ -1,4 +1,4 @@
-import React, { useState ,} from 'react'
+import React, { useState, useEffect, } from 'react'
 import {
   StyleSheet,
   View,
@@ -7,51 +7,62 @@ import {
 } from 'react-native';
 import { ListItem } from 'react-native-elements'
 import theme from '../../../styles/theme'
+import WithContext from '../../../components/core/WithContext'
+import {AuthService} from '../../../services/AuthService'
 
-const Address = () => {
-  const [addresses, setAddresses] = useState([
-    {
-      type: 'Home',
-      address: '08 Hà Văn Tính, Liên Chiểu, Đà Nẵng',
-    },
-    {
-      type: 'Company',
-      address: '140 Nguyễn Giản Thanh ,quận Thanh Khê, Đà Nẵng'
-    },
-  ])
+const Address = props => {
+  const { navigation, context } = props
+  const { user } = context
+
+  const [addresses, setAddresses] = useState([])
+
+  useEffect(() => {
+    getAddresses()
+  })
+
+  const goToMapScreen = () => {
+    navigation.navigate('LocationPicker')
+  }
+
+  const getAddresses = () => {
+    AuthService.getLocations(
+      user.userId,
+      res => {
+        setAddresses(res.data.data.user.location)
+      },
+      err => {
+        alert(err)
+      }
+    )
+  }
 
   return (
     <View style={styles.setting}>
       <Text style={styles.headerLabel}>Address</Text>
       <View style={styles.addressList}>
+        <TouchableOpacity>
+          <View style={styles.addressItem}>
+            <ListItem
+              key={'myLocation'}
+              title={context.temptLocation.address}
+              bottomDivider
+            />
+          </View>
+        </TouchableOpacity>
         {
-          addresses.map((item, i) => (
+          addresses.length > 0 && addresses.map((item, i) => (
             <TouchableOpacity>
               <View style={styles.addressItem}>
-                <View>
-                  <ListItem
-                    key={i}
-                    subtitle={item.address}
-                    title={item.type}
-                    titleStyle={{
-                      fontSize: 13,
-                      color: theme.colors.darkGray,
-                      fontFamily: 'SF-Pro-Text-Regular',
-                    }}
-                    subtitleStyle={{
-                      fontSize: 15,
-                      fontFamily: 'SF-Pro-Text-Regular',
-                      color: theme.colors.black
-                    }}
-                    bottomDivider
-                    chevron
-                  />
-                </View>
+                <ListItem
+                  key={i}
+                  title={item.address}
+                  bottomDivider
+                />
               </View>
             </TouchableOpacity>
           ))
         }
-        <TouchableOpacity>
+        <TouchableOpacity onPress={goToMapScreen}>
           <ListItem
             key='add'
             title='Add a new address'
@@ -88,8 +99,8 @@ const styles = StyleSheet.create({
     fontFamily: 'SF-Pro-Text-Regular',
     color: theme.colors.darkGray,
     paddingTop: 15,
-    marginBottom:0,
+    marginBottom: 0,
   }
 })
 
-export default Address
+export default WithContext(Address)

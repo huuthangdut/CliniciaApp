@@ -9,14 +9,14 @@ const NotificationItem = props => {
   return (
     <TouchableOpacity style={[styles.container, {backgroundColor}]} activeOpacity={0.7}>
       <View style={styles.image}>
-        <Avatar
+        {/* <Avatar
           size={45}
           rounded
           source={{
             uri:
               'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
           }}
-        />
+        /> */}
       </View>
       <View style={styles.content}>
           <Text style={styles.text} numberOfLines={2}>{props.item.content}</Text>

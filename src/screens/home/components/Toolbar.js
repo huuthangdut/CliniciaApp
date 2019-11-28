@@ -8,28 +8,14 @@ const Toolbar = props => {
 
   return (
     <View style={[styles.buttonGroup, styles.row]}>
-      <TouchableOpacity style={[styles.col, styles.center]} activeOpacity={0.5}>
-        <View style={styles.row}>
-          <Picker
-            mode="dropdown"
-            selectedValue={sortBy}
-            style={[{flex: 1, marginLeft: 5}, styles.buttonText]}
-            itemStyle={styles.buttonText}
-            onValueChange={(itemValue, itemIndex) => setSortBy(itemValue)}>
-            <Picker.Item label="Top rated" value="top" />
-            <Picker.Item label="Nearest" value="nearest" />
-          </Picker>
-        </View>
-      </TouchableOpacity>
-      <View style={styles.divider} />
-      <TouchableOpacity style={[styles.col, styles.center]} activeOpacity={0.5}>
+      <TouchableOpacity style={[styles.col, styles.center]} activeOpacity={0.5} onPress={() => goToMap()}>
         <View style={styles.row}>
           <Icon
             iconStyle={styles.mapIcon}
-            name="map"
-            type="entypo"
-            size={15}></Icon>
-          <Text style={styles.buttonText}>Map</Text>
+            name="map-marker-circle"
+            type="material-community"
+            size={30}></Icon>
+          <Text style={styles.buttonText}>View Nearby</Text>
         </View>
       </TouchableOpacity>
     </View>
@@ -49,6 +35,9 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     paddingVertical: 1,
+    justifyContent: 'center',
+    alignItems:'center',
+    flex: 1
   },
   col: {
     flex: 1,
@@ -72,7 +61,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     color: theme.colors.gray,
-    lineHeight: 18,
   },
 });
 

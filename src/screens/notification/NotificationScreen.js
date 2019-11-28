@@ -4,11 +4,14 @@ import NotificationList from './components/NotificationList';
 import Header from '../../components/core/Header';
 
 const NotificationScreen = props => {
+  const { navigation } = props
+
+  console.log(navigation)
+
   return (
     <Fragment>
-      <Header hasBackIcon={false} hasRightMenu={true}/>
+      <Header navigation={navigation} title='Notifications'/>
       <View style={styles.container}>
-        <Text style={styles.header}>Notifications</Text>
         <NotificationList />
       </View>
     </Fragment>

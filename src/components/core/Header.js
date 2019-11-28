@@ -1,6 +1,7 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import {Icon} from 'react-native-elements';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Icon } from 'react-native-elements';
+import theme from '../../styles/theme';
 
 const CustomHeader = props => {
   const {
@@ -11,17 +12,17 @@ const CustomHeader = props => {
     hasRightMenu = false,
   } = props;
 
+  const goBack = () => {
+    navigation.goBack()
+  }
+
   return (
     <View style={styles.header}>
-      {hasBackIcon ? (
-        <TouchableOpacity style={styles.icon}>
-          <Icon name="ios-arrow-back" type="ionicon" size={25} color={color} />
+        <TouchableOpacity style={styles.icon} >
+          {/* <Icon name="ios-arrow-back" type="ionicon" size={25} color={color}  /> */}
         </TouchableOpacity>
-      ) : (
-        <View style={styles.icon}></View>
-      )}
       <View style={styles.title}>
-        <Text style={[{color}, styles.texTitle]}>{title}</Text>
+        <Text style={[{ color }, styles.texTitle]}>{title}</Text>
       </View>
       {hasRightMenu ? (
         <TouchableOpacity style={styles.icon}>
@@ -32,16 +33,17 @@ const CustomHeader = props => {
             color={color}
           />
         </TouchableOpacity>
-      ) : (
-        <View style={styles.icon}>
-          <Icon
-            name="shopping-cart"
-            type="font-awesome"
+      ) :
+        <TouchableOpacity style={styles.icon}>
+          {/* <Icon
+            name="dots-horizontal"
+            type="material-community"
             size={25}
             color={color}
-          />
-        </View>
-      )}
+          /> */}
+        </TouchableOpacity>
+      }
+
     </View>
   );
 };
@@ -51,6 +53,7 @@ const styles = StyleSheet.create({
     height: 50,
     paddingHorizontal: 9,
     flexDirection: 'row',
+    backgroundColor: theme.colors.primary
   },
   title: {
     flex: 1,
@@ -60,6 +63,7 @@ const styles = StyleSheet.create({
   texTitle: {
     fontSize: 17,
     fontFamily: 'SF-Pro-Text-Semibold',
+    color: theme.colors.white
   },
   icon: {
     width: 30,

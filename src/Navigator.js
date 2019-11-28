@@ -1,27 +1,32 @@
 import React from 'react';
-import {createStackNavigator} from 'react-navigation-stack';
-import {createBottomTabNavigator} from 'react-navigation-tabs';
+import { createStackNavigator } from 'react-navigation-stack';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
 import theme from './styles/theme';
-import {createSwitchNavigator, createAppContainer} from 'react-navigation';
+import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 import HomeScreen from './screens/home/HomeScreen';
-import AppointmentScreen from './screens/appointment/AppointmentScreen';
+import OrderHisToryScreen from './screens/orderhistory/OrderHisToryScreen';
 import NotificationScreen from './screens/notification/NotificationScreen';
 import AccountScreen from './screens/account/AccountScreen';
-import AppointmentDetailsScreen from './screens/appointment/AppointmentDetailsScreen';
+import AppointmentDetailsScreen from './screens/orderhistory/AppointmentDetailsScreen';
 import FavoriteScreen from './screens/favorite/FavoriteScreen';
 import SpecialtyScreen from './screens/specialty/SpecialtyScreen';
 import LoginScreen from './screens/auth/LoginScreen';
-import {Image} from 'react-native';
 import ClinicScreen from './screens/clinic/ClinicScreen';
 import ClinicDetailsScreen from './screens/clinic/ClinicDetailsScreen';
 import MakeAppointmentScreen from './screens/booking/make-appointment/MakeAppointmentScreen';
 import ReviewAppointmentScreen from './screens/booking/review-appointment/ReviewAppointmentScreen';
 import BookingSuccessScreen from './screens/booking/booking-success/BookingSuccessScreen';
-import DoctorScreen from './screens/doctor/DoctorScreen';
+import ListStoreScreen from './screens/doctor/StoreScreen';
 import DoctorDetailsScreen from './screens/doctor/DoctorDetailsScreen';
 import ChangePasswordScreen from './screens/changepassword/ChangePasswordScreen';
 import InitLocationScreen from './screens/location/InitLocationScreen'
 import FilterScreen from './screens/doctor/FilterScreen'
+import StoreScreen from './screens/store/StoreScreen'
+import ReviewOrderScreen from './screens/store/ReviewOrderScreen'
+import { Icon } from 'react-native-elements';
+import CheckoutScreen from './screens/store/CheckoutScreen'
+import LocaltionPickerScreen from './screens/location/LocaltionPickerScreen'
+import AsyncStorage from '@react-native-community/async-storage';
 
 const FavoriteNavigator = createStackNavigator({
   Favorite: FavoriteScreen
@@ -30,21 +35,39 @@ const FavoriteNavigator = createStackNavigator({
 })
 
 const DoctorNavigator = createStackNavigator({
-  Doctor: DoctorScreen,
-  DoctorDetails: DoctorDetailsScreen,
+  Stores: ListStoreScreen,
   Filter: FilterScreen
 }, {
   headerMode: 'none',
-  initialRouteName: 'Doctor'
+  initialRouteName: 'Stores'
 });
 
-const BookingNavigator = createStackNavigator({
-  MakeAppointment: MakeAppointmentScreen,
-  ReviewAppointment: ReviewAppointmentScreen,
-  BookingSuccess: BookingSuccessScreen,
+const OrderNavigator = createStackNavigator({
+  Store: StoreScreen,
+  Checkout: CheckoutScreen,
+  ReviewOrder: ReviewOrderScreen
 }, {
-  headerMode: 'none'
-});
+  headerMode: 'none',
+  initialRouteName: 'Store'
+})
+
+OrderNavigator.navigationOptions = ({navigation}) => {
+  let tabBarVisible = true;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+  return {
+    tabBarVisible,
+  }; 
+}
+
+// const BookingNavigator = createStackNavigator({
+//   MakeAppointment: MakeAppointmentScreen,
+//   ReviewAppointment: ReviewAppointmentScreen,
+//   BookingSuccess: BookingSuccessScreen,
+// }, {
+//   headerMode: 'none'
+// });
 
 const ClinicNavigator = createStackNavigator(
   {
@@ -60,9 +83,10 @@ const SpecialtyNavigator = createStackNavigator(
   {
     Specialty: SpecialtyScreen,
   },
-  {
-    headerMode: 'none'
+  { 
+    headerMode: 'none',
   },
+  
 );
 
 const HomeNavigator = createStackNavigator(
@@ -74,15 +98,25 @@ const HomeNavigator = createStackNavigator(
   },
 );
 
-const AppointmentNavigator = createStackNavigator(
+const OrderHisToryNavigator = createStackNavigator(
   {
-    Appointments: AppointmentScreen,
+    OrderHisTory: OrderHisToryScreen,
     AppointmentDetails: AppointmentDetailsScreen
   },
   {
     headerMode: 'none',
   },
 );
+
+OrderHisToryNavigator.navigationOptions = ({navigation}) => {
+  let tabBarVisible = true;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+  return {
+    tabBarVisible
+  }
+}
 
 const NotificationNavigator = createStackNavigator(
   {
@@ -96,12 +130,27 @@ const NotificationNavigator = createStackNavigator(
 const AccountNavigator = createStackNavigator(
   {
     Account: AccountScreen,
-    ChangePassword: ChangePasswordScreen
+    LocationPicker: {
+      screen: LocaltionPickerScreen,
+    },
+    ChangePassword: ChangePasswordScreen,
+
   },
   {
     headerMode: 'none',
-  },
+    initialRouteName: 'Account'
+  }
 );
+
+AccountNavigator.navigationOptions = ({navigation}) => {
+  let tabBarVisible = true;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+  return {
+    tabBarVisible
+  }
+}
 
 const TabNavigator = createBottomTabNavigator(
   {
@@ -109,28 +158,26 @@ const TabNavigator = createBottomTabNavigator(
       screen: HomeNavigator,
       navigationOptions: {
         tabBarLabel: 'Browser',
-        tabBarIcon: ({focused}) => (
-          <Image
-            style={{width: 24, height: 24}}
-            source={
-              focused ? theme.tabIcons.searchFocus : theme.tabIcons.search
-            }
+        tabBarIcon: ({ focused }) => (
+          <Icon
+            type='material-community'
+            name='home-heart'
+            size={30}
+            color={focused ? theme.colors.primary : theme.colors.darkGray}
           />
         ),
       },
     },
     Appointment: {
-      screen: AppointmentNavigator,
+      screen: OrderHisToryNavigator,
       navigationOptions: {
-        tabBarLabel: 'Appointments',
-        tabBarIcon: ({focused}) => (
-          <Image
-            style={{width: 24, height: 24}}
-            source={
-              focused
-                ? theme.tabIcons.appointmentFocus
-                : theme.tabIcons.appointment
-            }
+        tabBarLabel: 'History',
+        tabBarIcon: ({ focused }) => (
+          <Icon
+            type='material-community'
+            name='history'
+            size={30}
+            color={focused ? theme.colors.primary : theme.colors.darkGray}
           />
         ),
       },
@@ -139,14 +186,12 @@ const TabNavigator = createBottomTabNavigator(
       screen: NotificationNavigator,
       navigationOptions: {
         tabBarLabel: 'Notifications',
-        tabBarIcon: ({focused}) => (
-          <Image
-            style={{width: 24, height: 24}}
-            source={
-              focused
-                ? theme.tabIcons.notificationFocus
-                : theme.tabIcons.notification
-            }
+        tabBarIcon: ({ focused }) => (
+          <Icon
+            type='material-community'
+            name='bell'
+            size={30}
+            color={focused ? theme.colors.primary : theme.colors.darkGray}
           />
         ),
       },
@@ -155,12 +200,12 @@ const TabNavigator = createBottomTabNavigator(
       screen: AccountNavigator,
       navigationOptions: {
         tabBarLabel: 'Account',
-        tabBarIcon: ({focused}) => (
-          <Image
-            style={{width: 24, height: 24}}
-            source={
-              focused ? theme.tabIcons.accountFocus : theme.tabIcons.account
-            }
+        tabBarIcon: ({ focused }) => (
+          <Icon
+            type='material-community'
+            name='account'
+            size={30}
+            color={focused ? theme.colors.primary : theme.colors.darkGray}
           />
         ),
       },
@@ -169,10 +214,10 @@ const TabNavigator = createBottomTabNavigator(
   {
     tabBarOptions: {
       activeTintColor: theme.colors.primary,
-      inactiveTintColor: theme.colors.gray,
+      inactiveTintColor: theme.colors.gray
     },
-    initialRouteName: 'Home',
-  },
+    initialRouteName: 'Home'
+  }
 );
 
 const AppNavigator = createStackNavigator(
@@ -180,15 +225,16 @@ const AppNavigator = createStackNavigator(
     Tab: TabNavigator,
     Specialty: SpecialtyNavigator,
     Clinic: ClinicNavigator,
-    Booking: BookingNavigator,
+    Order: OrderNavigator,
     Doctor: DoctorNavigator,
     Favorite: FavoriteNavigator,
   },
   {
     headerMode: 'none',
-    initialRouteName: 'Tab',
-  },
+    initialRouteName: 'Tab'
+  }
 );
+
 
 const AppSwitch = createSwitchNavigator(
   {
@@ -196,8 +242,10 @@ const AppSwitch = createSwitchNavigator(
     App: AppNavigator,
   },
   {
-    initialRouteName: 'App',
-  },
+    initialRouteName: isSignedIn ? 'App' : 'Login'
+  }
 );
+
+const isSignedIn = AsyncStorage.getItem('@access_token')
 
 export default Navigator = createAppContainer(AppSwitch);

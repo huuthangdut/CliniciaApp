@@ -7,6 +7,7 @@ import {
 } from 'react-native'
 import { ListItem } from 'react-native-elements'
 import theme from '../../../styles/theme'
+import WithContext from '../../../AppProvider'
 
 const Setting = (props) => {
   const listSetting = [
@@ -24,6 +25,9 @@ const Setting = (props) => {
     {
       title: 'Sign Out',
       icon: theme.tabIcons.signOut,
+      onPress: () => {
+
+      },
       name: 'sign-out'
     },
   ]

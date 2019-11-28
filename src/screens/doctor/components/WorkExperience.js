@@ -29,7 +29,6 @@ const WorkExperience = props => {
 
   return (
     <View style={styles.container}>
-      {console.log(selectedOption)}
       <ListItem
         title='Year Experience'
       />

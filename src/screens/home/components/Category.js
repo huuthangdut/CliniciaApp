@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, FlatList, Alert} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, FlatList, Alert, Image} from 'react-native';
 import theme from '../../../styles/theme';
 import {Icon} from 'react-native-elements';
 
@@ -9,19 +9,17 @@ const Category = props => {
   return (
     <View style={styles.container}>
       <View style={styles.row}>
-        <Text style={[{flex: 3}, styles.alignLeft, styles.title]}>
-          Specialities
-        </Text>
         <TouchableOpacity 
           onPress={() => navigation.navigate('Specialty')}
           style={[{flex: 1}, styles.alignRight, styles.row]}
           activeOpacity={0.7}>
-          <Text style={styles.link}>See all</Text>
-          <Icon
+          {/* <Text style={styles.link}>View all</Text> */}
+          {/* <Icon
             name='chevron-right'
             type='evilIcons'
             size={20}
-            color={theme.colors.primary}></Icon>
+            color={theme.colors.primary}></Icon> */}
+            
         </TouchableOpacity>
       </View>
       <View>
@@ -33,11 +31,7 @@ const Category = props => {
           renderItem={({item}) => (
             <TouchableOpacity style={styles.item} activeOpacity={0.7} onPress={() => navigation.navigate('Doctor')}>
               <View style={styles.iconWrapper}>
-                <Icon
-                  name="heartbeat"
-                  type="font-awesome"
-                  size={40}
-                  color="#fff"></Icon>
+                  <Image style={{width: 40, height: 40 }} source={item.icon} />
               </View>
               <View style={styles.center}>
                 <Text style={styles.doctor}>{item.name}</Text>
@@ -75,8 +69,8 @@ const styles = StyleSheet.create({
   },
   link: {
     fontSize: 14,
-    color: '#4486FF',
-    alignItems: 'center'
+    color: theme.colors.primary,
+    alignItems: 'center',
   },
   list: {
     height: 120,
@@ -84,8 +78,9 @@ const styles = StyleSheet.create({
   item: {
     width: 85,
     flexDirection: 'column',
-    marginRight: 10,
-    marginVertical: 8
+    marginRight: 13,
+    marginVertical: 8,
+    borderRadius: 43
   },
   iconWrapper: {
     height: 85,
@@ -94,6 +89,7 @@ const styles = StyleSheet.create({
     borderRadius: 9,
     justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: 43
   },
   center: {
     alignItems: 'center',

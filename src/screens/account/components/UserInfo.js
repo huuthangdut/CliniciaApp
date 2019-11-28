@@ -2,8 +2,9 @@ import React from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import {Avatar} from 'react-native-elements';
 import theme from '../../../styles/theme';
-
 const UserInfo = props => {
+  const { user } = props
+
   return (
     <View style={styles.info}>
       <View style={styles.infoAvatar}>
@@ -18,8 +19,8 @@ const UserInfo = props => {
         />
       </View>
       <View style={styles.infoText}>
-        <Text style={styles.infoTextName}>Margaret Carson</Text>
-        <Text style={styles.infoTextMail}>margaret@mail.com</Text>
+        <Text style={styles.infoTextName}>{user.fName + ' ' + user.lName}</Text>
+        <Text style={styles.infoTextMail}>{user.email}</Text>
       </View>
     </View>
   );
