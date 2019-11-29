@@ -9,6 +9,7 @@ const CustomButton = props => {
     title,
     primary,
     disabled,
+    titleStyle = styles.title,
     style,
     loading,
   } = props;
@@ -23,7 +24,7 @@ const CustomButton = props => {
       type={type}
       disabled={disabled}
       loading={loading}
-      titleStyle={styles.title}
+      titleStyle={titleStyle}
       buttonStyle={[styles.button, style, { backgroundColor }]}
     />
   );
