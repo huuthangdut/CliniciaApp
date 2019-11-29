@@ -4,6 +4,7 @@ import theme from '../../../styles/theme';
 import {Icon} from 'react-native-elements';
 
 const Toolbar = props => {
+  const {navigation} = props;
   const [sortBy, setSortBy] = useState('top');
 
   return (
@@ -17,12 +18,12 @@ const Toolbar = props => {
             itemStyle={styles.buttonText}
             onValueChange={(itemValue, itemIndex) => setSortBy(itemValue)}>
             <Picker.Item label="Xếp hạng cao" value="top" />
-            <Picker.Item label="Gần đây" value="nearest" />
+            <Picker.Item label="Gần tôi nhất" value="nearest" />
           </Picker>
         </View>
       </TouchableOpacity>
       <View style={styles.divider} />
-      <TouchableOpacity style={[styles.col, styles.center]} activeOpacity={0.5}>
+      <TouchableOpacity style={[styles.col, styles.center]} activeOpacity={0.5} onPress={() => navigation.navigate('DoctorMap')}>
         <View style={styles.row}>
           <Icon
             iconStyle={styles.mapIcon}

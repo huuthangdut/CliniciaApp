@@ -26,6 +26,19 @@ import FilterScreen from './screens/doctor/FilterScreen';
 import AuthLoadingScreen from './screens/auth/AuthLoadingScreen';
 import RegisterScreen from './screens/auth/RegisterScreen';
 import VerifyScreen from './screens/auth/VerifyScreen';
+import LocationPickerScreen from './screens/location/LocationPickerScreen';
+import DoctorMap from './screens/doctor/components/DoctorMap';
+
+const LocationNavigator = createStackNavigator(
+  {
+    InitLocation: InitLocationScreen,
+    SetLocation: LocationPickerScreen,
+  },
+  {
+    headerMode: 'none',
+    initialRouteName: 'InitLocation'
+  }
+)
 
 const FavoriteNavigator = createStackNavigator(
   {
@@ -81,11 +94,23 @@ const SpecialtyNavigator = createStackNavigator(
 const HomeNavigator = createStackNavigator(
   {
     Home: HomeScreen,
+    DoctorMap: DoctorMap
   },
   {
     headerMode: 'none',
+    initialRouteName: 'Home'
   },
 );
+
+HomeNavigator.navigationOptions = ({navigation}) => {
+  let tabBarVisible = true;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+  return {
+    tabBarVisible
+  }
+}
 
 const AppointmentNavigator = createStackNavigator(
   {
@@ -198,6 +223,7 @@ const TabNavigator = createBottomTabNavigator(
 const AppNavigator = createStackNavigator(
   {
     Tab: TabNavigator,
+    Location: LocationNavigator,
     Specialty: SpecialtyNavigator,
     Clinic: ClinicNavigator,
     Booking: BookingNavigator,

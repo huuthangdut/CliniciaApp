@@ -9,16 +9,17 @@ import {
 import TextField from '../../components/core/TextField';
 import Button from '../../components/core/Button';
 import theme from '../../styles/theme';
-import {AppContext} from '../../AppProvider';
+import {AuthService} from '../../services/AuthService';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const LoginScreen = props => {
   const {navigation} = props;
-  const context = useContext(AppContext);
 
   const passwordRef = useRef();
 
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
+  const [isLogging, setIsLogging] = useState(false);
 
   const focusPassword = () => passwordRef.current.focus();
 
@@ -28,7 +29,26 @@ const LoginScreen = props => {
   };
 
   const login = async () => {
-    await context.login(username, password);
+    try {
+      setIsLogging(true);
+      const result = await AuthService.login(username, password);
+      if (result) {
+        await AsyncStorage.setItem('@access_token', result.accessToken);
+        navigation.navigate('App');
+      }
+      setIsLogging(false);
+    } catch (error) {
+      if(error.errorCode === ApiErrorCode.RequireConfirmedPhoneNumber) {
+        AuthService.request2fa(username).then(result => {
+          setIsLogging(false);
+          navigation.navigate('Verify', { token: result.token });
+        });
+        
+      } else {
+        setIsLogging(false);
+        console.log(error);
+      }
+    }
   };
 
   return (
@@ -59,7 +79,7 @@ const LoginScreen = props => {
             }}>
             <Text style={styles.forgotPasswordLabel}>Quên mật khẩu?</Text>
           </View>
-          <Button title="Đăng nhập" primary onPress={login} loading={context.isLogging.get}/>
+          <Button title="Đăng nhập" primary onPress={login} loading={isLogging}/>
         </View>
         <Text style={styles.signUpLabel} onPress={() => navigation.navigate('Register')}>
           Chưa có tài khoản? Đăng kí  

@@ -14,7 +14,7 @@ import {
 import Button from '../../components/core/Button';
 import Geolocation from '@react-native-community/geolocation';
 import Carousel from 'react-native-snap-carousel';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {UserService} from '../../services/UserService';
 
 const MapStyle = [
   {
@@ -302,7 +302,7 @@ const styles = StyleSheet.create({
   },
   bottomButton: {
     height: 36,
-    marginBottom: 12,
+    marginBottom: 15,
     marginHorizontal: 30
   },
   buttonTitle: {
@@ -322,13 +322,14 @@ const LocationPickerScreen = props => {
   const [selectedCoords, setSelectedCoords] = useState({
     latitude: 0,
     longitude: 0,
-    address: '',
+    formattedAddress: '',
   });
 
   const mapRef = useRef();
   const placeInputRef = useRef();
 
   const [placeInputText, setPlaceInputText] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     Geolocation.getCurrentPosition(
@@ -355,7 +356,7 @@ const LocationPickerScreen = props => {
         pitch: 2,
         heading: 20,
         altitude: 200,
-        zoom: 14,
+        zoom: 17,
       },
       1000,
     );
@@ -366,14 +367,19 @@ const LocationPickerScreen = props => {
   };
 
   const setLocation = () => {
-    // if (
-    //   selectedCoords.latitude &&
-    //   selectedCoords.longitude &&
-    //   selectedCoords.address
-    // ) {
-    //   // call api set location
-    //   // navigate to home
-    // }
+    setIsSubmitting(true);
+    if (
+      selectedCoords.latitude &&
+      selectedCoords.longitude &&
+      selectedCoords.formattedAddress
+    ) {
+      UserService.setLocation(selectedCoords.latitude, selectedCoords.longitude, selectedCoords.formattedAddress).then(() => {
+        navigation.navigate('Tab');
+      }).catch(e => {
+        setIsSubmitting(false);
+        console.log(e);
+      });
+    }
   };
 
   return (
@@ -402,7 +408,7 @@ const LocationPickerScreen = props => {
                   latitude: selectedCoords.latitude,
                   longitude: selectedCoords.longitude,
                 }}
-                title={selectedCoords.address}
+                title={selectedCoords.formattedAddress}
                 onPress={() => {}}
               />
             </>
@@ -414,7 +420,7 @@ const LocationPickerScreen = props => {
           ref={placeInputRef}
           placeholder="Nhập địa chỉ của bạn"
           minLength={2}
-          autoFocus={false}
+          autoFocus={true}
           returnKeyType={'search'}
           keyboardAppearance={'light'}
           listViewDisplayed="false"
@@ -424,7 +430,7 @@ const LocationPickerScreen = props => {
             setSelectedCoords({
               latitude: location.lat,
               longitude: location.lng,
-              address: details.formatted_address,
+              formattedAddress: details.formatted_address,
             });
             cameraTo(location.lat, location.lng);
           }}
@@ -477,7 +483,7 @@ const LocationPickerScreen = props => {
           onPress={goToMyLocation}
         />
       </View>
-      {!!selectedCoords.address && (
+      {!!selectedCoords.formattedAddress && (
         <View style={styles.bottom}>
           <View style={styles.addressContainer}>
             <Icon
@@ -485,7 +491,7 @@ const LocationPickerScreen = props => {
               size={23}
               color={theme.colors.primary}
             />
-            <Text style={styles.addressText}>{selectedCoords.address}</Text>
+            <Text style={styles.addressText}>{selectedCoords.formattedAddress}</Text>
           </View>
           <Button
               title="Đặt làm địa chỉ của tôi"
@@ -493,6 +499,7 @@ const LocationPickerScreen = props => {
               style={styles.bottomButton}
               titleStyle={styles.buttonTitle}
               onPress={() => setLocation()}
+              loading={isSubmitting}
             />
         </View>
       )}

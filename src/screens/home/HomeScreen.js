@@ -97,7 +97,7 @@ const HomeScreen = props => {
         <View style={styles.container}>
           <Reminder item={reminder} />
           <Category items={specialties} navigation={navigation} />
-          <Toolbar />
+          <Toolbar navigation={navigation}/>
           <DoctorList items={doctors} navigation={navigation} />
         </View>
       </ScrollView>

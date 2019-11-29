@@ -8,15 +8,19 @@ import {
 import { ListItem } from 'react-native-elements'
 import theme from '../../../styles/theme'
 import {AppContext} from '../../../AppProvider';
+import DeviceInfo from 'react-native-device-info';
+import {DeviceService} from '../../../services/DeviceService';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const Setting = (props) => {
+  const {navigation} = props;
   const context = useContext(AppContext);
 
   const listSetting = [
     {
       title: 'Đổi mật khẩu',
       icon: theme.tabIcons.lock,
-      onPress: () => props.navigation.navigate('ChangePassword'),
+      onPress: () => navigation.navigate('ChangePassword'),
       name: 'lock'
     },
     {
@@ -27,10 +31,17 @@ const Setting = (props) => {
     {
       title: 'Đăng xuất',
       icon: theme.tabIcons.signOut,
-      onPress: async () => await context.logout(),
+      onPress: async () => await logout(),
       name: 'sign-out'
     },
   ]
+
+  const logout = async () => {
+    const uuid = DeviceInfo.getUniqueId();
+    await DeviceService.updateStatus(uuid, false);
+    await AsyncStorage.removeItem('@access_token');
+    navigation.navigate('Login');
+  };
 
   return (
     <View style={styles.setting}>

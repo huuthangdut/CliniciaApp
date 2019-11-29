@@ -1,19 +1,17 @@
 import React from 'react'
-import { StyleSheet, View, Image, Text,TouchableOpacity  } from "react-native"
-import { Icon } from "react-native-elements"
+import { StyleSheet, View, Image, Text, TouchableOpacity  } from "react-native"
 import theme from '../../styles/theme'
 import Button from '../../components/core/Button'
 
-const InitLocation = () => {
+const InitLocation = props => {
+  const { navigation } = props;
+
   return(
     <View style= {styles.container}>
       <Image source={theme.tabIcons.marker} style={styles.icon}/>
-      <Text numberOfLines={2} style= {styles.greeting}>Hello , nice to meet you!</Text>
-      <Text style= {styles.constructor}>Set your location to start find doctors around you</Text>
-      <Button style= {styles.button} primary title='Use current location'/>
-      <TouchableOpacity>
-      <Text style= {styles.note}>or set your location manually</Text>
-      </TouchableOpacity>
+      <Text numberOfLines={2} style= {styles.greeting}>Chào, Thắng!</Text>
+      <Text style= {styles.constructor}>Thiết lập địa chỉ của bạn và bắt đầu tìm kiếm bác sĩ xung quanh bạn</Text>
+      <Button style= {styles.button} primary title='Bắt đầu' onPress={() => navigation.navigate('SetLocation')}/>
     </View>
   )
 }

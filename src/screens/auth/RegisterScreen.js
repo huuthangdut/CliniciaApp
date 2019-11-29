@@ -11,11 +11,10 @@ import {Keyboard} from 'react-native';
 import TextField from '../../components/core/TextField';
 import Button from '../../components/core/Button';
 import theme from '../../styles/theme';
-import {AppContext} from '../../AppProvider';
+import {AuthService} from '../../services/AuthService';
 
 const RegisterScreen = props => {
   const {navigation} = props;
-  const context = useContext(AppContext);
 
   const lastNameRef = useRef();
   const emailRef = useRef();
@@ -27,6 +26,7 @@ const RegisterScreen = props => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [phoneNumber, setPhoneNumber] = useState();
+  const [isRegistering, setIsRegistering] = useState(false);
 
   const focusLastName = () => lastNameRef.current.focus();
   const focusEmail = () => emailRef.current.focus();
@@ -36,17 +36,28 @@ const RegisterScreen = props => {
   const goToLogin = () => navigation.replace({routeName: 'Login'});
 
   const register = async () => {
-    await context.register({
-      firstName,
-      lastName,
-      email,
-      password,
-      phoneNumber
-    });
-  }
+    try {
+      setIsRegistering(true);
+      const result  = await AuthService.register({ 
+        firstName, 
+        lastName, 
+        email, 
+        password, 
+        phoneNumber
+      });
+      
+      if(result && result.token) {
+        navigation.navigate('Verify', { token: result.token });
+      }
+      setIsRegistering(false);
+    } catch (error) {
+      setIsRegistering(false);
+      console.log(error);
+    }
+  };
 
   return (
-    // <ScrollView>
+    <ScrollView>
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.container}>
         <View style={styles.form}>
@@ -94,14 +105,14 @@ const RegisterScreen = props => {
             returnKeyType="done"
             secureTextEntry={true}
           />
-          <Button title="Đăng ký" primary onPress={register} loading={context.isRegistering.get}/>
+          <Button title="Đăng ký" primary onPress={register} loading={isRegistering}/>
         </View>
         <Text style={styles.signInLabel} onPress={() => goToLogin()}>
           Đã có tài khoản? Đăng nhập
         </Text>
       </View>
     </TouchableWithoutFeedback>
-    // </ScrollView>
+     </ScrollView>
   );
 };
 

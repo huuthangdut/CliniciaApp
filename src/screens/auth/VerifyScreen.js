@@ -9,14 +9,15 @@ import {
 import TextField from '../../components/core/TextField';
 import Button from '../../components/core/Button';
 import theme from '../../styles/theme';
-import {AppContext} from '../../AppProvider';
+import AsyncStorage from '@react-native-community/async-storage';
+import {AuthService} from '../../services/AuthService';
 
 const VerifyScreen = props => {
   const {navigation} = props;
-  const context = useContext(AppContext);
 
   const token = navigation.getParam('token');
   const [otpCode, setOtpCode] = useState();
+  const [isVerifying, setIsVerifying] = useState(false);
 
   const onChangeOtpCode = (value) => {
     value = value.replace(/[^0-9+]+/g, '');
@@ -24,8 +25,19 @@ const VerifyScreen = props => {
   };
 
   const verify = async () => {
-    await context.verify(otpCode, token);
-  };
+    try {
+      setIsVerifying(true);
+      const result = await AuthService.verify2fa(otpCode, token);
+      if (result && result.accessToken) {
+        await AsyncStorage.setItem('@access_token', result.accessToken);
+        navigation.navigate('Location');
+      }
+      setIsVerifying(false);
+    } catch(error) {
+      setIsVerifying(false);
+      console.log(error);
+    }
+  }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -40,7 +52,7 @@ const VerifyScreen = props => {
             value={otpCode}
             returnKeyType="next"
           />
-          <Button title="Xác thực" primary onPress={verify} loading={context.isVerifying.get}/>
+          <Button title="Xác thực" primary onPress={verify} loading={isVerifying}/>
         </View>
       </View>
     </TouchableWithoutFeedback>
