@@ -21,7 +21,7 @@ export default function CartItem(props) {
             paddingHorizontal: 8,
           }}
         >
-          {item.quantity}
+          x {item.quantity}
         </Text>
       </View>
     </View>
@@ -29,20 +29,13 @@ export default function CartItem(props) {
 }
 
 const styles = StyleSheet.create({
-  image: {
-    height: 130,
-    width: 130,
-  },
   container: {
     flexDirection: 'row',
-    marginBottom: 8,
-    borderBottomWidth: 1.5,
     borderColor: theme.colors.lightGray,
-    paddingVertical: 8,
-  },
-  addToCart: {
-    width: 25,
-    height: 25,
+    backgroundColor: theme.colors.favorite.backgroundGray,
+    padding: 10,
+    marginBottom: 10,
+    borderRadius: 10
   },
   title: {
     // fontSize: theme.text.size.xl,

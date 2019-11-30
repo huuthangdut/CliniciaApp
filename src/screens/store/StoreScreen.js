@@ -6,25 +6,29 @@ import Banner from './component/Banner'
 import { ListItem, Icon } from 'react-native-elements'
 import Cart from './component/Cart'
 import StoreService from '../../services/StoreService'
+import AsyncStorage from '@react-native-community/async-storage'
+import EStyleSheet from 'react-native-extended-stylesheet'
 
 function StoreScreen(props) {
   const { navigation } = props
   const { storeId } = navigation.state.params ? navigation.state.params  : ''
-  const name = navigation.getParam('categoryName')
   const [isLight, setIsLight] = useState(true)
   const [foods, setFoods] = useState([])
   const [scrollY, setScrollY] = useState(new Animated.Value(0))
   const [cart, setCart] = useState([])
+  const [store, setStore] = useState()
 
   useEffect(() => {
-    getMenu()
+    getStore()
   }, [])
 
-  const getMenu = () => {
+
+  const getStore = () => {
     StoreService.getStore(
       storeId,
       res => {
-        let resData = res.data.data.menuByRestaurant
+        setStore(res.data.data.restaurantById)
+        let resData = res.data.data.restaurantById.menu_info
         let newList = resData.map(item => {
           return(
             [{_id: item._id, name: item.name, isHeader: true} , ...item.foods]
@@ -34,6 +38,7 @@ function StoreScreen(props) {
       },
       err => {
         console.log(err)
+        alert(err)
       }
     )
   }
@@ -47,7 +52,7 @@ function StoreScreen(props) {
     if (isLight !== check) setIsLight(check);
   }
 
-  const handleItem = (item, value) => {
+  const handleItem = async (item, value) => {
     let newCart = [...cart]
     let newItem = { ...item, quantity: 1 }
     if (cart.length > 0) {
@@ -58,6 +63,7 @@ function StoreScreen(props) {
             newCart.splice(i, 1)
           }
           setCart(newCart)
+          await AsyncStorage.setItem('cart', JSON.stringify({cart: cart }))
           return
         }
       }
@@ -131,13 +137,14 @@ function StoreScreen(props) {
           <>
             <FlatList
               data={item}
+              style={styles.menuType}
               renderItem={({ item }) =>
                 <ListItem
                   key={item._id}
                   title={item.name}
                   subtitle={item.price ? item.price.toString() : <View></View>}
                   titleStyle={item.isHeader ? styles.dishTypeTitle : styles.title}
-                  containerStyle={item.isHeader ? styles.dishTypeContainer : styles.itemContainer}
+                  containerStyle={item.isHeader ? styles.dishTypeContainer : styles.itemContainer }
                   subtitleStyle={styles.subtitle}
                   rightElement={
                     !item.isHeader ? renderRightEle(item) : ''
@@ -148,7 +155,7 @@ function StoreScreen(props) {
               onScroll={Animated.event(
                 [{ nativeEvent: { contentOffset: { y: scrollY } } }]
               )}
-              ListHeaderComponent={<Banner />}
+              ListHeaderComponent={<Banner storeName={store.name} address={store.address}/>}
             />
           </>
         )
@@ -159,6 +166,10 @@ function StoreScreen(props) {
     </View>
   )
 }
+
+const eStyles = EStyleSheet.create({
+
+})
 
 const styles = StyleSheet.create({
   container: {
@@ -190,13 +201,21 @@ const styles = StyleSheet.create({
   },
   dishTypeTitle: {
    color: theme.colors.darkGray,
+   textTransform: 'uppercase',
+   textAlign:'center'
   },
   dishTypeContainer: {
     backgroundColor: theme.colors.lightGray,
-    height: 40,
+    height: 45,
+    marginHorizontal: 15,
+    marginTop: 15,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10
   },
   itemContainer: {
-
+    backgroundColor: theme.colors.favorite.backgroundGray,
+    marginHorizontal: 15,
+    
   },
   quantity: {
     paddingHorizontal: 10,

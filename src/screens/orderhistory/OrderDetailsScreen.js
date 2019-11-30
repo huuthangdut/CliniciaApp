@@ -3,44 +3,34 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import {Avatar, Icon} from 'react-native-elements';
-import AppointmentStatus from './components/AppointmentStatus';
+import OrderHistoryStatus from './components/OrderHistoryStatus';
 import Button from '../../components/core/Button';
 import theme from '../../styles/theme';
 import Header from '../../components/core/Header';
+import { FlatList } from 'react-native-gesture-handler';
 
-const AppointmentDetailsScreen = props => {
+const OrderDetailsScreen = props => {
+
   return (
     <Fragment>
       <Header title='Order'/>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           <View style={styles.headerInfo}>
-            <View style={styles.image}>
-              <Avatar
-                size={60}
-                // rounded
-                // source={{
-                //   uri:
-                //     'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-                // }}
-              />
-            </View>
             <View style={styles.headerTextWrapper}>
               <Text style={styles.headerText}>High5 Coffee</Text>
-              <AppointmentStatus type="waitting" />
+              <OrderHistoryStatus type="waitting" />
             </View>
             <View style={styles.contact}>
-              <TouchableOpacity style={styles.iconWrapper} onPress={() => {}}>
+              {/* <TouchableOpacity style={styles.iconWrapper} onPress={() => {}}>
                 <Icon
                   iconStyle={styles.icon}
                   size={25}
                   name="heart"
                   type="feather"></Icon>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
               {/* <TouchableOpacity style={styles.iconWrapper}>
                 <Icon
                   iconStyle={styles.icon}
@@ -65,17 +55,16 @@ const AppointmentDetailsScreen = props => {
               <Text style={styles.smText}>0.31 mi away</Text>
             </View>
             <View style={styles.itemRow}>
-              <Text style={styles.smText}>Fee</Text>
+              <Text style={styles.smText}>Total</Text>
               <Text style={styles.lgText}>20000d</Text>
               <Text style={styles.smText}>1 item(s)</Text>
             </View>
-            {/* <View style={styles.itemRow}>
-              <Text style={styles.smText}>Need</Text>
-              <Text style={styles.lgText}>Treatment</Text>
-              <Text style={styles.smText}>Any kind of treatment</Text>
-            </View> */}
+            <View style={styles.itemRow}>
+              <Text style={styles.smText}>Payment Method</Text>
+              <Text style={styles.lgText}>COD</Text>
+            </View>
           </View>
-          <Button title="Cancel" secondary disabled style={styles.button} />
+          <Button title="Cancel Order" secondary disabled style={styles.button} />
         </View>
       </ScrollView>
     </Fragment>
@@ -90,28 +79,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20
   },
   headerInfo: {
-    width: '100%',
-    height: 80,
-    flexDirection: 'row',
-  },
-  image: {
-    justifyContent: 'center',
-    marginRight: 15,
+    height: 50,
   },
   headerTextWrapper: {
+    flexDirection: 'row',
+    alignItems:'center',
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
   },
   headerText: {
     fontSize: 20,
-    fontFamily: 'SF-Pro-Display-Bold',
-    marginBottom: 5,
+    fontWeight: 'bold',
+    flex: 1
   },
   contact: {
     width: 100,
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     alignItems: 'center',
   },
   iconWrapper: {
@@ -120,9 +103,6 @@ const styles = StyleSheet.create({
     marginRight: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    // borderWidth: 2,
-    // borderColor: theme.colors.lightGray,
-    // borderRadius: 40 / 2,
   },
   icon: {
     color: theme.colors.primary,
@@ -141,19 +121,19 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   smText: {
-    fontSize: 16,
+    fontSize: 13,
     fontFamily: 'SF-Pro-Text-Medium',
     color: theme.colors.gray,
-    lineHeight: 25,
+    lineHeight: 20,
   },
   lgText: {
-    fontSize: 19,
+    fontSize: 16,
     fontFamily: 'SF-Pro-Text-Medium',
-    lineHeight: 30,
+    lineHeight: 25,
   },
   button: {
     marginVertical: 5,
   },
 });
 
-export default AppointmentDetailsScreen;
+export default OrderDetailsScreen;

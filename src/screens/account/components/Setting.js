@@ -7,26 +7,19 @@ import {
 } from 'react-native'
 import { ListItem } from 'react-native-elements'
 import theme from '../../../styles/theme'
-import WithContext from '../../../AppProvider'
+import WithContext from '../../../components/core/WithContext'
 
 const Setting = (props) => {
+  const { context, navigation } = props
+  const { logout } = context
+
   const listSetting = [
-    {
-      title: 'Change Password',
-      icon: theme.tabIcons.lock,
-      onPress: () => props.navigation.navigate('ChangePassword'),
-      name: 'lock'
-    },
-    {
-      title: 'Notifications',
-      icon: theme.tabIcons.notificationSetting,
-      name: 'bell'
-    },
     {
       title: 'Sign Out',
       icon: theme.tabIcons.signOut,
       onPress: () => {
-
+        logout()
+        navigation.navigate('Login')
       },
       name: 'sign-out'
     },
@@ -34,7 +27,6 @@ const Setting = (props) => {
 
   return (
     <View style={styles.setting}>
-      <Text style={styles.headerLabel}>Settings</Text>
       <View style={styles.settingList}>
         {
           listSetting.map((item, i) => (
@@ -44,7 +36,6 @@ const Setting = (props) => {
                   <ListItem
                     key={i}
                     title={item.title}
-                    bottomDivider
                     chevron
                     leftIcon={{
                       type: 'font-awesome',
@@ -60,6 +51,7 @@ const Setting = (props) => {
                       }
                     }}
                     onPress={item.onPress}
+                    containerStyle={{backgroundColor: theme.colors.favorite.backgroundGray, borderRadius:10}}
                   />
                 </View>
               </View>
@@ -73,12 +65,16 @@ const Setting = (props) => {
 
 const styles = StyleSheet.create({
   setting: {
-    flexDirection: 'column'
+    flexDirection: 'column',
+    marginHorizontal: 10,
+    marginVertical: 15
   },
   settingItem: {
     display: 'flex',
+    
   },
   settingList: {
+
   },
   headerLabel: {
     fontSize: 16,
@@ -86,7 +82,9 @@ const styles = StyleSheet.create({
     fontFamily: theme.colors.black,
     backgroundColor: theme.colors.lightGray,
     color: theme.colors.darkGray,
-    lineHeight: 40
+    lineHeight: 40,
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10
   },
   leftIcon: {
     width: 11,
@@ -94,4 +92,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Setting
+export default WithContext(Setting)

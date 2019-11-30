@@ -16,9 +16,11 @@ const AccountScreen = props => {
     <ScrollView style={styles.container}>
       <View style={styles.container}>
         <UserInfo user={user}/>
-        <Option navigation={navigation} />
+        <View style={styles.content}>
+        {/* <Option navigation={navigation} /> */}
         <Address location={user.location} navigation={navigation}/>
         <Setting navigation={navigation} />
+        </View>
       </View>
     </ScrollView>
   );
@@ -29,6 +31,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.white
   },
+  content: {
+    marginHorizontal: 10
+  }
 });
 
 export default WithContext(AccountScreen);

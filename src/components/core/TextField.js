@@ -15,7 +15,7 @@ const TextField = forwardRef((props, ref) => {
 
 const styles = StyleSheet.create({
     textInput: {
-        borderRadius: 9,
+        borderRadius: 25,
         height: 45,
         borderWidth: 1,
         borderColor: theme.colors.lightGray,

@@ -6,14 +6,24 @@ const AppContext = React.createContext();
 class AppProvider extends React.PureComponent {
   constructor(props) {
     super(props);
+    const getPersistedUser = async () => {
+      try {
+        let persistedUser = await AsyncStorage.getItem('user')
+        const result = JSON.parse(persistedUser)
+        return result
+      } catch (error) {
+        alert(error)
+      }
+    }
     this.state = {
-      user: AsyncStorage.getItem('user'),
+      user: getPersistedUser().then(value => this.setState({
+        user: {...value}
+      })),
       temptLocation: this.getCurrentLocation(),
       carts: AsyncStorage.getItem('carts'),
+      reloadOrderList: false,
       isAuthenticated: async () => {
-        const token = await AsyncStorage.getItem('@access_token');
-
-        // check token expired here
+        const token = await AsyncStorage.getItem('@access_token')
         return token !== null;
       },
       login: async user => {
@@ -26,6 +36,7 @@ class AppProvider extends React.PureComponent {
           })
         } catch (error) {
           console.log(error)
+          alert(error)
         }
       },
       logout: async () => {
@@ -48,6 +59,11 @@ class AppProvider extends React.PureComponent {
           carts: _carts
         })
         await AsyncStorage.setItem('carts', JSON.stringify(_carts))
+      },
+      loadOrderList: () => {
+        this.setState({
+          reloadOrderList: this.state.reloadOrderList
+        })
       }
     };
   }

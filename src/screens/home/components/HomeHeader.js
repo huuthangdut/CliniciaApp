@@ -1,29 +1,48 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import {Icon, Image} from 'react-native-elements';
+import {Icon, Image, SearchBar} from 'react-native-elements';
 import theme from '../../../styles/theme';
 
 const HomeHeader = props => {
+  const [searchInputText, setSearchInputText] = useState('')
+  const [showSearchBar, setShowSearchBar] = useState(false)
+
   return (
+    <>
+    <Text 
+        style={{
+          position: 'absolute',
+          width: '100%',
+          height: '100%',
+          textAlign:'center',
+          fontSize: 35,
+          fontWeight: 'bold',
+          color: theme.colors.primary,
+        }}
+      >
+        ExFood
+      </Text>
     <View style={styles.header}>
-      <TouchableOpacity style={styles.location}>
-        <View style={styles.iconContainer}>
-          <Image
-            style={{width: 15, height: 19}}
-            source={theme.icons.mapMarker}
-            resizeMode="contain"
-          />
-        </View>
+      
+      {!showSearchBar && <TouchableOpacity style={styles.location}>
         <View style={styles.headerTextContainer}>
-          <Text style={styles.yourLocation}>Your Location</Text>
-          <Text style={styles.locationText}>Da Nang</Text>
+          {/* <Text style={styles.locationText}>in Da Nang</Text> */}
         </View>
-      </TouchableOpacity>
-      <View style={{flex: 1}}></View>
-      <TouchableOpacity style={styles.search}>
+      </TouchableOpacity>}
+      <View style={{flex: 1}}>
+        {showSearchBar && <SearchBar
+          containerStyle={styles.searchBar}
+          inputContainerStyle={styles.searchInput}
+          onChangeText={val => setSearchInputText(val)}
+          value={searchInputText}
+          searchIcon={false}
+        />}
+      </View>
+      <TouchableOpacity style={styles.search} onPress={() => setShowSearchBar(!showSearchBar)}>
         <Icon name="search" type="feather" size={20} />
       </TouchableOpacity>
     </View>
+    </>
   );
 };
 
@@ -53,11 +72,20 @@ const styles = StyleSheet.create({
   locationText: {
     fontSize: 13,
     fontFamily: 'SF-Pro-Text-Semibold',
+    color: theme.colors.primary
   },
   search: {
     width: 30,
     justifyContent: 'center',
   },
+  searchBar: {
+    backgroundColor: theme.colors.white,
+    borderBottomWidth: 0,
+    borderTopWidth: 0
+  },
+  searchInput: {
+    backgroundColor: theme.colors.lightGray
+  }
 });
 
 export default HomeHeader;

@@ -10,13 +10,8 @@ const UserInfo = props => {
       <View style={styles.infoAvatar}>
         <Avatar
           rounded
-          size={86}
-          source={{
-            uri:
-              'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-          }}
-          showEditButton
-        />
+          size={150}
+        ></Avatar>
       </View>
       <View style={styles.infoText}>
         <Text style={styles.infoTextName}>{user.fName + ' ' + user.lName}</Text>
@@ -29,17 +24,14 @@ const UserInfo = props => {
 const styles = StyleSheet.create({
   info: {
     backgroundColor: '#F9F9F9',
-    flexDirection: 'row',
     paddingTop: 30,
     paddingBottom: 20,
-    paddingHorizontal: 15
+    flexDirection: 'column',
+    alignItems: 'center'
   },
   avatar: {
-    paddingLeft: 16,
   },
   infoText: {
-    marginTop: 17,
-    marginLeft: 16,
   },
   infoTextName: {
     fontSize: 24,

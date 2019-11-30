@@ -8,7 +8,6 @@ const StoreItem = props => {
 
   return (
     <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('Store', {storeId: item._id})}>
-      {console.log(item)}
       <View style={styles.content}>
         <Text style={styles.name}>{item.name}</Text>
         <View style={styles.row}>
@@ -18,19 +17,11 @@ const StoreItem = props => {
             size={12}
             color="#C8C7CC"
           />
-          <Text style={styles.text}> km away</Text>
-          <Icon name="dot-single" type="entypo" size={12} color="#C8C7CC" />
           <Text style={styles.text}>{item.address}</Text>
+          <Icon name="dot-single" type="entypo" size={12} color="#C8C7CC" />
+          <Text style={styles.text}> km</Text>
         </View>
         <View style={styles.row}>
-          {/* <Rating
-            imageSize={10}
-            readonly
-            startingValue={5}
-            style={styles.rating}
-          />
-          <Text style={styles.text}>{item.ratingCount}</Text> */}
-          {/* <Icon name="dot-single" type="entypo" size={12} color="#C8C7CC" /> */}
           <Text>Average: </Text>
         </View>
       </View>
@@ -41,7 +32,7 @@ const StoreItem = props => {
 const styles = StyleSheet.create({
   item: {
     width: '100%',
-    height: 90,
+    height: 110,
     backgroundColor: theme.colors.white,
     flexDirection: 'row',
   },
@@ -53,7 +44,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     flex: 1,
     justifyContent: 'center',
-    marginLeft: 20
+    padding: 20,
+    backgroundColor: theme.colors.lightGray,
+    borderRadius: 10,
+    marginVertical: 5
   },
   name: {
     fontSize: 15,

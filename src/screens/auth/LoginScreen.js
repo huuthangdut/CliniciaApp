@@ -107,6 +107,7 @@ const LoginScreen = props => {
       },
       err => {
         console.log(err)
+        alert(err)
         setLoading(false)
       }
     )
@@ -118,11 +119,8 @@ const LoginScreen = props => {
         <View style={styles.form}>
         <ScrollView style={{flex: 1}}>
           <Text style={styles.heading}>Welcome to ExFood</Text>
-          
-
           <Text style={styles.title}>{signUpMode ? "Join with us" : "Sign in to continue"}</Text>
           <>
-            
             <TextField
               placeholder="Email"
               keyboardType="email-address"
@@ -176,21 +174,18 @@ const LoginScreen = props => {
               secureTextEntry={true}
             />}
           </>
-          
           <View
             style={{
               ...styles.row,
               marginBottom: 40,
             }}>
           </View>
-          
           {isLoading ? <ActivityIndicator size={50} color={theme.colors.white}/> 
           :
-          <Button title={signUpMode ? "Sign Up" :  "Sign In"} primary onPress={signUpMode ? handleSignUp : handleLogin} />
+          <Button title={signUpMode ? "Sign Up" :  "Login"} primary onPress={signUpMode ? handleSignUp : handleLogin} />
           }
           </ScrollView>
         </View>
-       
         <Text
           style={styles.signUpLabel}
           onPress={() => {

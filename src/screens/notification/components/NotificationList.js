@@ -25,7 +25,6 @@ const NotificationList = props => {
                 style={styles.list}
                 data={notifications}
                 showsVerticalScrollIndicator={false}
-                ItemSeparatorComponent={() => <FlatListItemSeperator marginVertical={0}/>}
                 renderItem={({item}) => <NotificationItem item={item} navigation={props.navigation}/>}
                 keyExtractor={item => item.id.toString()}
             />

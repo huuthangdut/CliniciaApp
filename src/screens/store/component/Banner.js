@@ -1,9 +1,10 @@
 import React from 'react'
 import { View, ImageBackground, Text, StyleSheet } from 'react-native'
 import { Icon } from 'react-native-elements'
-import theme from '../../../styles/theme'
 
 function Banner(props) {
+  const { storeName, address } = props
+
   return (
     <View>
       <ImageBackground
@@ -12,15 +13,16 @@ function Banner(props) {
       >
         <View style={{ backgroundColor: 'rgba(0,0,0,0.17)', flex: 1 }}>
           <View style={styles.container}>
-            <Text style={styles.title}>Mr.Lam</Text>
+            <Text style={styles.title}>{storeName}</Text>
             <View style={styles.location}>
               <Icon
                 type='material-community'
                 name='map-marker'
                 color='#fff'
+                size={15}
               />
               <Text style={styles.locationText}>
-                382 Ton Duc Thang, Lien Chieu, Da Nang
+                {address}
               </Text>
             </View>
           </View>

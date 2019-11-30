@@ -24,7 +24,7 @@ const getRestaurants = (responseCb, errorCb) => {
     .catch(errorCb)
 }
 
-const getStore = (storeId, responseCb, errorCb) => {
+const getMenu = (storeId, responseCb, errorCb) => {
   axios({
     url: API_URL,
     method: 'post',
@@ -50,8 +50,38 @@ const getStore = (storeId, responseCb, errorCb) => {
   .catch(errorCb)
 }
 
+const getStore = (storeId, responseCb, errorCb) => {
+  axios({
+    url: API_URL,
+    method: 'post',
+    data: {
+      query: `
+        query Menu($storeId: ID!) {
+          restaurantById(restaurantId: $storeId){
+            _id
+            name
+            address
+            menu_info{
+              name
+              foods{
+                name
+                price
+                _id
+              }
+            }
+          }
+        }
+      `,
+      variables: {
+        storeId
+      }
+    }
+  }).then(responseCb)
+  .catch(errorCb)
+}
+
 const StoreService = {
-  getRestaurants, getStore
+  getRestaurants, getMenu, getStore
 }
 
 export default StoreService

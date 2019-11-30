@@ -1,30 +1,61 @@
-import React, { Fragment, useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { TabView } from 'react-native-tab-view';
-import theme from '../../styles/theme';
-import AppointmentList from './components/AppointmentList';
-import Header from '../../components/core/Header';
+import React, { Fragment, useState, useEffect } from 'react'
+import { View, StyleSheet, Text, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { TabView } from 'react-native-tab-view'
+import theme from '../../styles/theme'
+import OrderList from './components/OrderList'
+import Header from '../../components/core/Header'
+import { OrderService } from '../../services/OrderService'
+import WithContext from '../../components/core/WithContext'
 
 const OrderHisToryScreen = props => {
+  const { context } = props
+  const { user, reloadOrderList } = context
+
   const [tabBarConfig, setTabBarConfig] = useState({
     index: 0,
     routes: [
-      { key: 'Upcoming', title: 'Proccessing' },
-      { key: 'Previous', title: 'Done' },
+      { key: 'Proccessing', title: 'Proccessing' },
+      { key: 'Done', title: 'Done' },
     ],
   });
+  const [listOrder, setListOrder] = useState([])
+  const [isReloadList, setReloadList] = useState(reloadOrderList)
+
+  useEffect(() => {
+    getOrders()
+  }, [])
+
+
+  const getOrders = () => {
+    OrderService.getOrdersOfUser(
+      user.userId,
+      res => {
+        setListOrder(res.data.data.ordersOfUser)
+      },
+      err => {
+        alert(err)
+      }
+    )
+  }
 
   const handleIndexChange = index => setTabBarConfig(...tabBarConfig, index);
 
   const renderScene = ({ route }) => {
+
     switch (route.key) {
-      case 'Upcoming':
+      case 'Proccessing':
         return (
-          <AppointmentList type="Upcoming" navigation={props.navigation} />
+          <>
+            {!listOrder.length > 0 && <ActivityIndicator size={50} style={{ marginTop: 220 }} />}
+            <OrderList type="Proccessing" listOrder={listOrder} navigation={props.navigation} />
+          </>
         );
-      case 'Previous':
+      case 'Done':
         return (
-          <AppointmentList type="Previous" navigation={props.navigation} />
+          <>
+            {!listOrder.length > 0 && <ActivityIndicator size={50} style={{ marginTop: 220 }} />}
+            <OrderList type="Proccessing" listOrder={listOrder} navigation={props.navigation} />
+          </>
         );
     }
   };
@@ -73,6 +104,7 @@ const OrderHisToryScreen = props => {
           renderScene={renderScene}
           renderTabBar={renderTabBar}
           onIndexChange={handleIndexChange}
+          style={styles.tabStyle}
         />
       </View>
     </Fragment>
@@ -99,9 +131,9 @@ const styles = StyleSheet.create({
     height: 44,
   },
   tabItem: {
-    marginRight: 20,
     paddingVertical: 5,
-    alignItems: 'flex-start',
+    flex: 1,
+    alignItems: 'center'
   },
   tabItemText: {
     fontSize: 18,
@@ -119,6 +151,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     backgroundColor: theme.colors.lightGray,
   },
+  tabStyle: {
+    flex: 1
+  }
 });
 
-export default OrderHisToryScreen;
+export default WithContext(OrderHisToryScreen);

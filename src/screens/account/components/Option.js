@@ -27,7 +27,6 @@ const Option = props => {
             <ListItem
               key={i}
               title={item.title}
-              bottomDivider
               chevron
               badge={{
                 value: '+' + 33,
@@ -36,6 +35,7 @@ const Option = props => {
                   backgroundColor: theme.colors.lightGray
                 }
               }}
+              containerStyle={styles.item}
             />
           </TouchableOpacity>
         ))
@@ -51,7 +51,19 @@ const styles = StyleSheet.create({
     fontFamily: theme.colors.black,
     backgroundColor: theme.colors.lightGray,
     color: theme.colors.darkGray,
-    lineHeight: 40
+    lineHeight: 40,
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10
+  },
+  option: {
+    marginHorizontal: 10,
+    marginBottom: 5,
+    marginTop: 10
+  },
+  item: {
+    backgroundColor: theme.colors.favorite.backgroundGray,
+    borderBottomRightRadius: 10,
+    borderBottomLeftRadius: 10
   }
 });
 

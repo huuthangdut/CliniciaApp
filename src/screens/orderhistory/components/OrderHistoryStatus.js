@@ -3,7 +3,7 @@ import {View, Text, StyleSheet} from 'react-native';
 import styled from 'styled-components/native';
 import theme from '../../../styles/theme';
 
-const AppointmentStatus = props => {
+const OrderHistoryStatus = props => {
   let statusText = '';
   let backgroundColor = '';
   switch (props.type) {
@@ -34,13 +34,13 @@ const styles = StyleSheet.create({
     height: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    width: 90
+    width: 80
   },
   statusText: {
     fontSize: 13,
-    fontFamily: 'SF-Pro-Text-Regular',
     color: 'white',
+    fontWeight: 'bold'
   },
 });
 
-export default AppointmentStatus;
+export default OrderHistoryStatus;

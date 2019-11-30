@@ -1,32 +1,33 @@
-import React from 'react';
-import { createStackNavigator } from 'react-navigation-stack';
-import { createBottomTabNavigator } from 'react-navigation-tabs';
-import theme from './styles/theme';
-import { createSwitchNavigator, createAppContainer } from 'react-navigation';
-import HomeScreen from './screens/home/HomeScreen';
-import OrderHisToryScreen from './screens/orderhistory/OrderHisToryScreen';
-import NotificationScreen from './screens/notification/NotificationScreen';
-import AccountScreen from './screens/account/AccountScreen';
-import AppointmentDetailsScreen from './screens/orderhistory/AppointmentDetailsScreen';
-import FavoriteScreen from './screens/favorite/FavoriteScreen';
-import SpecialtyScreen from './screens/specialty/SpecialtyScreen';
-import LoginScreen from './screens/auth/LoginScreen';
-import ClinicScreen from './screens/clinic/ClinicScreen';
-import ClinicDetailsScreen from './screens/clinic/ClinicDetailsScreen';
-import MakeAppointmentScreen from './screens/booking/make-appointment/MakeAppointmentScreen';
-import ReviewAppointmentScreen from './screens/booking/review-appointment/ReviewAppointmentScreen';
-import BookingSuccessScreen from './screens/booking/booking-success/BookingSuccessScreen';
-import ListStoreScreen from './screens/doctor/StoreScreen';
-import DoctorDetailsScreen from './screens/doctor/DoctorDetailsScreen';
-import ChangePasswordScreen from './screens/changepassword/ChangePasswordScreen';
+import React from 'react'
+import { createStackNavigator } from 'react-navigation-stack'
+import { createBottomTabNavigator } from 'react-navigation-tabs'
+import theme from './styles/theme'
+import { createSwitchNavigator, createAppContainer } from 'react-navigation'
+import HomeScreen from './screens/home/HomeScreen'
+import OrderHisToryScreen from './screens/orderhistory/OrderHisToryScreen'
+import NotificationScreen from './screens/notification/NotificationScreen'
+import AccountScreen from './screens/account/AccountScreen'
+import OrderDetailsScreen from './screens/orderhistory/OrderDetailsScreen'
+import FavoriteScreen from './screens/favorite/FavoriteScreen'
+import SpecialtyScreen from './screens/specialty/SpecialtyScreen'
+import LoginScreen from './screens/auth/LoginScreen'
+import ClinicScreen from './screens/clinic/ClinicScreen'
+import ClinicDetailsScreen from './screens/clinic/ClinicDetailsScreen'
+import MakeAppointmentScreen from './screens/booking/make-appointment/MakeAppointmentScreen'
+import ReviewAppointmentScreen from './screens/booking/review-appointment/ReviewAppointmentScreen'
+import BookingSuccessScreen from './screens/booking/booking-success/BookingSuccessScreen'
+import ListStoreScreen from './screens/doctor/StoreScreen'
+import DoctorDetailsScreen from './screens/doctor/DoctorDetailsScreen'
+import ChangePasswordScreen from './screens/changepassword/ChangePasswordScreen'
 import InitLocationScreen from './screens/location/InitLocationScreen'
 import FilterScreen from './screens/doctor/FilterScreen'
 import StoreScreen from './screens/store/StoreScreen'
-import ReviewOrderScreen from './screens/store/ReviewOrderScreen'
-import { Icon } from 'react-native-elements';
+import PaymentScreen from './screens/store/PaymentScreen'
+import { Icon } from 'react-native-elements'
 import CheckoutScreen from './screens/store/CheckoutScreen'
 import LocaltionPickerScreen from './screens/location/LocaltionPickerScreen'
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-community/async-storage'
+import AuthLoadingScreen from './screens/auth/AuthLoadingScreen'
 
 const FavoriteNavigator = createStackNavigator({
   Favorite: FavoriteScreen
@@ -40,12 +41,12 @@ const DoctorNavigator = createStackNavigator({
 }, {
   headerMode: 'none',
   initialRouteName: 'Stores'
-});
+})
 
 const OrderNavigator = createStackNavigator({
   Store: StoreScreen,
   Checkout: CheckoutScreen,
-  ReviewOrder: ReviewOrderScreen
+  ReviewOrder: PaymentScreen
 }, {
   headerMode: 'none',
   initialRouteName: 'Store'
@@ -58,16 +59,8 @@ OrderNavigator.navigationOptions = ({navigation}) => {
   }
   return {
     tabBarVisible,
-  }; 
+  }
 }
-
-// const BookingNavigator = createStackNavigator({
-//   MakeAppointment: MakeAppointmentScreen,
-//   ReviewAppointment: ReviewAppointmentScreen,
-//   BookingSuccess: BookingSuccessScreen,
-// }, {
-//   headerMode: 'none'
-// });
 
 const ClinicNavigator = createStackNavigator(
   {
@@ -77,7 +70,7 @@ const ClinicNavigator = createStackNavigator(
   {
     headerMode: 'none'
   },
-);
+)
 
 const SpecialtyNavigator = createStackNavigator(
   {
@@ -86,8 +79,7 @@ const SpecialtyNavigator = createStackNavigator(
   { 
     headerMode: 'none',
   },
-  
-);
+)
 
 const HomeNavigator = createStackNavigator(
   {
@@ -96,17 +88,17 @@ const HomeNavigator = createStackNavigator(
   {
     headerMode: 'none',
   },
-);
+)
 
 const OrderHisToryNavigator = createStackNavigator(
   {
     OrderHisTory: OrderHisToryScreen,
-    AppointmentDetails: AppointmentDetailsScreen
+    AppointmentDetails: OrderDetailsScreen
   },
   {
     headerMode: 'none',
   },
-);
+)
 
 OrderHisToryNavigator.navigationOptions = ({navigation}) => {
   let tabBarVisible = true;
@@ -125,7 +117,7 @@ const NotificationNavigator = createStackNavigator(
   {
     headerMode: 'none',
   },
-);
+)
 
 const AccountNavigator = createStackNavigator(
   {
@@ -140,7 +132,7 @@ const AccountNavigator = createStackNavigator(
     headerMode: 'none',
     initialRouteName: 'Account'
   }
-);
+)
 
 AccountNavigator.navigationOptions = ({navigation}) => {
   let tabBarVisible = true;
@@ -161,23 +153,9 @@ const TabNavigator = createBottomTabNavigator(
         tabBarIcon: ({ focused }) => (
           <Icon
             type='material-community'
-            name='home-heart'
+            name='home'
             size={30}
-            color={focused ? theme.colors.primary : theme.colors.darkGray}
-          />
-        ),
-      },
-    },
-    Appointment: {
-      screen: OrderHisToryNavigator,
-      navigationOptions: {
-        tabBarLabel: 'History',
-        tabBarIcon: ({ focused }) => (
-          <Icon
-            type='material-community'
-            name='history'
-            size={30}
-            color={focused ? theme.colors.primary : theme.colors.darkGray}
+            color={focused ? theme.colors.primary : theme.colors.gray}
           />
         ),
       },
@@ -191,11 +169,26 @@ const TabNavigator = createBottomTabNavigator(
             type='material-community'
             name='bell'
             size={30}
-            color={focused ? theme.colors.primary : theme.colors.darkGray}
+            color={focused ? theme.colors.primary : theme.colors.gray}
           />
         ),
       },
     },
+    Appointment: {
+      screen: OrderHisToryNavigator,
+      navigationOptions: {
+        tabBarLabel: 'History',
+        tabBarIcon: ({ focused }) => (
+          <Icon
+            type='material-community'
+            name='history'
+            size={30}
+            color={focused ? theme.colors.primary : theme.colors.gray}
+          />
+        ),
+      },
+    },
+   
     Account: {
       screen: AccountNavigator,
       navigationOptions: {
@@ -205,7 +198,7 @@ const TabNavigator = createBottomTabNavigator(
             type='material-community'
             name='account'
             size={30}
-            color={focused ? theme.colors.primary : theme.colors.darkGray}
+            color={focused ? theme.colors.primary : theme.colors.gray}
           />
         ),
       },
@@ -218,7 +211,7 @@ const TabNavigator = createBottomTabNavigator(
     },
     initialRouteName: 'Home'
   }
-);
+)
 
 const AppNavigator = createStackNavigator(
   {
@@ -233,19 +226,18 @@ const AppNavigator = createStackNavigator(
     headerMode: 'none',
     initialRouteName: 'Tab'
   }
-);
+)
 
 
 const AppSwitch = createSwitchNavigator(
   {
+    AuthLoading: AuthLoadingScreen,
     Login: LoginScreen,
     App: AppNavigator,
   },
   {
-    initialRouteName: isSignedIn ? 'App' : 'Login'
+    initialRouteName: 'AuthLoading'
   }
-);
-
-const isSignedIn = AsyncStorage.getItem('@access_token')
+)
 
 export default Navigator = createAppContainer(AppSwitch);

@@ -1,4 +1,4 @@
-package com.clinicia;
+package com.Clinicia;
 
 import com.facebook.react.ReactActivity;
 

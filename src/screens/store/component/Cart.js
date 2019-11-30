@@ -115,8 +115,8 @@ const Cart = props => {
         {cart.map(cartItem => {
           return (
             <ListItem
-              key={cartItem.title}
-              title={cartItem.title}
+              key={cartItem._id}
+              title={cartItem.name}
               subtitle={cartItem.price}
               containerStyle={styles.cartItem}
               rightElement={
@@ -124,7 +124,6 @@ const Cart = props => {
               }
             />
           )
-
         })}
       </View>
     )

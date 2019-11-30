@@ -330,7 +330,6 @@ const LocationPickerScreen = props => {
   }, [])
 
   const clearText = () => {
-    // console.log(inputLocationRef.current)
     inputLocationRef.current.setAddressText('')
   }
 
@@ -417,15 +416,15 @@ const LocationPickerScreen = props => {
             lat: location.lat,
             long: location.lng
           })
-          goToLocation(location.lat, location.lng)
           setAddressTextInput(inputLocationRef.current.state.text)
+          goToLocation(location.lat, location.lng)
         }}
 
         getDefaultValue={() => ''}
 
         query={{
           // available options: https://developers.google.com/places/web-service/autocomplete
-          key: 'AIzaSyBdBokLnUgj5RhQ15nJCWjsQ0HfeSnobe4',
+          key: 'AIzaSyCrL7txc_1d2P83b0MpSSdZb378Sbkjgq4',
           language: 'vi', // language of the results
           // types: '(cities)' // default: 'geocode'
         }}

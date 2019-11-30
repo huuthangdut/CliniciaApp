@@ -1,4 +1,4 @@
-package com.clinicia;
+package com.Clinicia;
 
 import android.app.Application;
 import android.content.Context;

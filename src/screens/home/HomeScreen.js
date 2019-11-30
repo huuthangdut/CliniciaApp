@@ -45,6 +45,7 @@ const HomeScreen = props => {
       },
       err => {
         console.log(err)
+        alert(err)
       }
     )
   }

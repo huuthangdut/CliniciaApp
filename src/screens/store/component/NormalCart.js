@@ -1,23 +1,40 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, SafeAreaView, StyleSheet, FlatList } from 'react-native';
+import { View, Text, SafeAreaView, StyleSheet, FlatList, Picker, PickerItem } from 'react-native';
 import { Icon, Button, Divider } from 'react-native-elements';
 import CostDetail from './CostDetail';
 import CartItem from './CartItem';
 import theme from '../../../styles/theme';
 import Header from '../../../components/core/Header'
+import { AuthService } from '../../../services/AuthService'
+import WithContext from '../../../components/core/WithContext'
 
 function NormalCart(props) {
-  const { navigation, cart, storeId } = props;
+  const { navigation, cart, storeId, context } = props
+  const { user } = context
 
   const [subTotal, setSubtotal] = useState(0)
   const [delivery, setDelivery] = useState(0)
   const [total, setTotal] = useState(0)
   const [discount, setDiscount] = useState(0)
   const [deliveryAddress, setDeliveryAddress] = useState(0)
+  const [addresses, setAddresses] = useState([])
 
   useEffect(() => {
+    getAddresses()
     getPrice()
-  })
+  },[])
+
+  const getAddresses = () => {
+    AuthService.getLocations(
+      user.userId,
+      res => {
+        setAddresses(res.data.data.user.location)
+      },
+      err => {
+        alert(err)
+      }
+    )
+  }
 
   const getPrice = () => {
     let sub = 0
@@ -32,34 +49,21 @@ function NormalCart(props) {
 
   return (
     <View>
-        <Header navigation={navigation}/>
+      <Header navigation={navigation} title='Checkout Cart' />
       <View style={styles.shadow}>
         <View style={styles.contentContainer}>
-          <View style={styles.storeInfo}>
-            <Text style={styles.storeName}>{cart.storeName}</Text>
-            <View style={styles.addressRow}>
-              <Icon
-                type="material-community"
-                name="map-marker"
-                color={theme.colors.gray}
-                size={18}
-              />
-              <Text style={styles.addressInfo} numberOfLines={1}>
-                {deliveryAddress}
-              </Text>
-            </View>
-            {/* <View
-              style={{
-                backgroundColor: theme.colors.primary,
-                alignSelf: 'flex-start',
-                paddingHorizontal: 12,
-                paddingVertical: 2,
-                borderRadius: 12,
-              }}
-            >
-              <Text style={{ color: '#fff', fontSize: 16 }}>Promotion</Text>
-            </View> */}
-          </View>
+          <Picker
+            itemStyle={styles.pickerItem}
+            style={styles.locationPicker}
+            selectedValue={deliveryAddress}
+            onValueChange={(itemValue) => setDeliveryAddress(itemValue)}
+          >
+            {addresses.map((item, index) => {
+              return(
+                <Picker.Item  label={item.address} value={item.address} key={index.toString()}/>
+              )
+            })}
+          </Picker>
           <FlatList
             data={cart}
             renderItem={({ item }) => <CartItem item={item} />}
@@ -76,7 +80,6 @@ function NormalCart(props) {
           title="Total"
           price={total}
           style={{
-            // fontFamily: theme.text.fonts['sfpt-bold'],
             fontSize: 20,
           }}
         />
@@ -89,7 +92,7 @@ function NormalCart(props) {
             marginTop: 16,
           }}
           activeOpacity={0.5}
-          onPress={() => navigation.navigate('ReviewOrder', { cart: cart,storeId: storeId})}
+          onPress={() => navigation.navigate('ReviewOrder', { cart: cart, storeId: storeId, deliveryAddress: deliveryAddress })}
         />
       </SafeAreaView>
     </View>
@@ -98,23 +101,14 @@ function NormalCart(props) {
 
 const styles = StyleSheet.create({
   storeName: {
-    // fontFamily: theme.text.fonts['sfpt-bold'],
     fontSize: 24,
   },
   storeInfo: {
-    paddingVertical: 16,
-    borderBottomWidth: 1,
-    borderColor: theme.colors.lightGray,
-    paddingHorizontal: 16,
-    backgroundColor: '#f3f3f3',
+    // backgroundColor: '#f3f3f3',
   },
-//   shadow: theme.shadow,
   contentContainer: {
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
     height: 400,
-    borderRadius: 8,
-    // marginTop: 16,
-    marginHorizontal: 16,
   },
   addressRow: {
     flexDirection: 'row',
@@ -122,11 +116,13 @@ const styles = StyleSheet.create({
     marginVertical: 8,
   },
   addressInfo: {
-    // fontFamily: theme.text.fonts['sfpt-medium'],
     fontSize: 18,
     color: theme.colors.gray,
   },
-  list: { paddingHorizontal: 16 },
+  list: { 
+    paddingHorizontal: 20,
+    marginTop: 10
+  },
   total: {
     marginTop: 100,
     paddingHorizontal: 16,
@@ -135,6 +131,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     height: '100%',
   },
-});
+  locationPicker: {
+    marginHorizontal: 20,
+    marginTop: 10,
+  },
+  pickerItem: {
+    
+  }
+})
 
-export default NormalCart;
+export default WithContext(NormalCart)

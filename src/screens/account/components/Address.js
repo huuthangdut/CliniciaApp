@@ -8,7 +8,7 @@ import {
 import { ListItem } from 'react-native-elements'
 import theme from '../../../styles/theme'
 import WithContext from '../../../components/core/WithContext'
-import {AuthService} from '../../../services/AuthService'
+import { AuthService } from '../../../services/AuthService'
 
 const Address = props => {
   const { navigation, context } = props
@@ -18,7 +18,7 @@ const Address = props => {
 
   useEffect(() => {
     getAddresses()
-  })
+  },[])
 
   const goToMapScreen = () => {
     navigation.navigate('LocationPicker')
@@ -40,15 +40,6 @@ const Address = props => {
     <View style={styles.setting}>
       <Text style={styles.headerLabel}>Address</Text>
       <View style={styles.addressList}>
-        <TouchableOpacity>
-          <View style={styles.addressItem}>
-            <ListItem
-              key={'myLocation'}
-              title={context.temptLocation.address}
-              bottomDivider
-            />
-          </View>
-        </TouchableOpacity>
         {
           addresses.length > 0 && addresses.map((item, i) => (
             <TouchableOpacity>
@@ -57,6 +48,7 @@ const Address = props => {
                   key={i}
                   title={item.address}
                   bottomDivider
+                  containerStyle={styles.items}
                 />
               </View>
             </TouchableOpacity>
@@ -72,10 +64,15 @@ const Address = props => {
             rightIcon={{
               type: 'material',
               name: 'add-circle',
-              color: theme.colors.primary
+              color: theme.colors.primary,
             }}
             style={{
               height: 45,
+            }}
+            containerStyle={{
+              backgroundColor: theme.colors.favorite.backgroundGray,
+              borderBottomLeftRadius: 10,
+              borderBottomRightRadius: 10,
             }}
           />
         </TouchableOpacity>
@@ -91,7 +88,9 @@ const styles = StyleSheet.create({
     fontFamily: theme.colors.black,
     backgroundColor: theme.colors.lightGray,
     color: theme.colors.darkGray,
-    lineHeight: 40
+    lineHeight: 40,
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10
   },
   addressTypeText: {
     paddingLeft: 15,
@@ -99,7 +98,13 @@ const styles = StyleSheet.create({
     fontFamily: 'SF-Pro-Text-Regular',
     color: theme.colors.darkGray,
     paddingTop: 15,
-    marginBottom: 0,
+  },
+  setting: {
+    marginHorizontal: 10,
+    marginTop: 15,
+  },
+  items: {
+    backgroundColor: theme.colors.favorite.backgroundGray
   }
 })
 

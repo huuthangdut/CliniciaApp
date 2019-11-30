@@ -28,28 +28,15 @@ function Header(props) {
         icon={
           <AnimatedIcon
             type='material-community'
-            name='arrow-left'
+            name='chevron-left'
             color={styleHeader.backBtnStyle}
             size={28}
-            
           />
         }
         onPress={() => props.navigation.navigate('Home')}
         buttonStyle={styles.btn}
       />
-      <Animated.Text style={{ color: theme.colors.primary, opacity: styleHeader.borderStyle }}>Mr.Lam</Animated.Text>
-      <Button
-        icon={
-          <AnimatedIcon
-            type='material-community'
-            name='bookmark-outline'
-            color={styleHeader.backBtnStyle}
-            size={28}
-          />
-        }
-        onPress={() => props.goBack()}
-        buttonStyle={styles.btn}
-      />
+      <Animated.Text style={{ color: theme.colors.primary, opacity: styleHeader.borderStyle }}></Animated.Text>
     </Animated.View>
   )
 }

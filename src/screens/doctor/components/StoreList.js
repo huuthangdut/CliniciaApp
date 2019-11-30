@@ -11,7 +11,6 @@ const StoreList = props => {
     <FlatList
       style={styles.list}
       showsVerticalScrollIndicator={false}
-      ItemSeparatorComponent={FlatListItemSeperator}
       data={items}
       renderItem={({item}) => (
         <StoreItem item={item} navigation={navigation} />
