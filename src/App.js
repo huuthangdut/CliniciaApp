@@ -5,7 +5,7 @@ import firebase from 'react-native-firebase';
 import {NavigationService} from './services/NavigationService';
 import {DeviceService} from './services/DeviceService';
 import DeviceInfo from 'react-native-device-info';
-import {Platform} from 'react-native';
+import {Platform, Alert} from 'react-native';
 
 const App = () => {
   const checkPermission = async () => {
@@ -41,6 +41,7 @@ const App = () => {
       .notifications()
       .onNotification(notification => {
         const {title, body, data} = notification;
+        Alert.alert(title);
       });
 
     /*

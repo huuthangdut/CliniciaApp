@@ -17,6 +17,7 @@ import Carousel from 'react-native-snap-carousel';
 import {UserService} from '../../services/UserService';
 import { AppContext } from '../../AppProvider';
 import {Utils} from '../../utilities/utils';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const MapStyle = [
   {
@@ -288,6 +289,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     height: 110,
     backgroundColor: theme.colors.white,
+    zIndex: 9999
   },
   addressContainer: {
     flexDirection: 'row',
@@ -296,6 +298,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    zIndex: 9999
   },
   addressText: {
     padding: 10,
@@ -305,7 +308,8 @@ const styles = StyleSheet.create({
   bottomButton: {
     height: 36,
     marginBottom: 15,
-    marginHorizontal: 30
+    marginHorizontal: 30,
+    zIndex: 9999
   },
   buttonTitle: {
     fontSize: 12,
@@ -377,8 +381,9 @@ const LocationPickerScreen = props => {
       selectedCoords.longitude &&
       selectedCoords.formattedAddress
     ) {
-      UserService.setLocation(selectedCoords.latitude, selectedCoords.longitude, selectedCoords.formattedAddress).then((result) => {
+      UserService.setLocation(selectedCoords.latitude, selectedCoords.longitude, selectedCoords.formattedAddress).then(async (result) => {
         if(result && result.accessToken) {
+          await AsyncStorage.setItem('@access_token', result.accessToken);
           context.authUser.set(Utils.getAuthUser(result.accessToken));
         }
 

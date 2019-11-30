@@ -1,4 +1,4 @@
-import React, {useState, useEffect, Fragment} from 'react';
+import React, {useState, useEffect, Fragment, useContext} from 'react';
 import {StyleSheet, View, ActivityIndicator} from 'react-native';
 
 import Reminder from './components/Reminder';
@@ -9,9 +9,12 @@ import Toolbar from './components/Toolbar';
 import DoctorList from '../doctor/components/DoctorList';
 import {SpecialtyService} from '../../services/SpecialtyService';
 import {DoctorService} from '../../services/DoctorService';
+import { AppContext } from '../../AppProvider';
 
 const HomeScreen = props => {
   const {navigation} = props;
+
+  const context = useContext(AppContext);
 
   const [specialties, setSpecialties] = useState([]);
   const [isLoadingSpecialties, setIsLoadingSpecialities] = useState(false);
@@ -65,7 +68,7 @@ const HomeScreen = props => {
 
   useEffect(() => {
     loadDoctors();
-  }, [sortDoctorBy]);
+  }, [sortDoctorBy, context.authUser.get]);
 
   return (
     <Fragment>
