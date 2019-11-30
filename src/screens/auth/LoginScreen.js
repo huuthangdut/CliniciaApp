@@ -11,9 +11,12 @@ import Button from '../../components/core/Button';
 import theme from '../../styles/theme';
 import {AuthService} from '../../services/AuthService';
 import AsyncStorage from '@react-native-community/async-storage';
+import { AppContext } from '../../AppProvider';
+import {Utils} from '../../utilities/utils';
 
 const LoginScreen = props => {
   const {navigation} = props;
+  const context = useContext(AppContext);
 
   const passwordRef = useRef();
 
@@ -34,6 +37,8 @@ const LoginScreen = props => {
       const result = await AuthService.login(username, password);
       if (result) {
         await AsyncStorage.setItem('@access_token', result.accessToken);
+        context.authUser.set(Utils.getAuthUser(result.accessToken));
+        
         navigation.navigate('App');
       }
       setIsLogging(false);

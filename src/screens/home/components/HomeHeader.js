@@ -1,41 +1,48 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {Icon, Image} from 'react-native-elements';
 import theme from '../../../styles/theme';
+import {AppContext} from '../../../AppProvider';
 
 const HomeHeader = props => {
+  const context = useContext(AppContext);
+  const authUser = context.authUser.get;
+  const {navigation} = props;
+
   return (
     <View style={styles.header}>
-      <TouchableOpacity style={styles.location}>
+      <TouchableOpacity style={styles.location} onPress={() => navigation.navigate('SetLocation', {shouldGoBack: true})}>
         <View style={styles.iconContainer}>
           <Image
-            style={{width: 15, height: 19}}
+            style={{width: 22, height: 24}}
             source={theme.icons.mapMarker}
             resizeMode="contain"
           />
         </View>
         <View style={styles.headerTextContainer}>
           <Text style={styles.yourLocation}>Vị trí của bạn</Text>
-          <Text style={styles.locationText}>16 Lý Thường Kiệt, Đà Nẵng</Text>
+          <Text numberOfLines={2} style={styles.locationText}>{authUser.address}</Text>
         </View>
       </TouchableOpacity>
-      <View style={{flex: 1}}></View>
+      {/* <View style={{flex: 1}}></View>
       <TouchableOpacity style={styles.search}>
         <Icon name="search" type="feather" size={20} />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   header: {
-    height: 55,
+    height: 60,
+    marginTop: 2,
     marginBottom: 5,
-    paddingHorizontal: 15,
-    flexDirection: 'row',
+    marginHorizontal: 15,
+    flexDirection: 'row'
   },
   location: {
     flexDirection: 'row',
+    flex: 1
   },
   iconContainer: {
     justifyContent: 'center',
@@ -44,6 +51,7 @@ const styles = StyleSheet.create({
   },
   headerTextContainer: {
     justifyContent: 'center',
+    flex: 1
   },
   yourLocation: {
     fontSize: 11,
@@ -51,7 +59,8 @@ const styles = StyleSheet.create({
     color: theme.colors.darkGray,
   },
   locationText: {
-    fontSize: 13,
+    fontSize: 12.5,
+    lineHeight: 17,
     fontFamily: 'SF-Pro-Text-Semibold',
   },
   search: {

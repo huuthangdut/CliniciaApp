@@ -1,10 +1,18 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, FlatList, Image} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+  FlatList,
+  Image,
+} from 'react-native';
 import theme from '../../../styles/theme';
 import {Icon} from 'react-native-elements';
 
 const Category = props => {
-  const {items, navigation} = props;
+  const {items, navigation, loading} = props;
 
   return (
     <View style={styles.container}>
@@ -12,37 +20,49 @@ const Category = props => {
         <Text style={[{flex: 3}, styles.alignLeft, styles.title]}>
           Chuyên khoa
         </Text>
-        <TouchableOpacity 
+        <TouchableOpacity
           onPress={() => navigation.navigate('Specialty')}
           style={[{flex: 1}, styles.alignRight, styles.row]}
           activeOpacity={0.7}>
           <Text style={styles.link}>Xem tất cả</Text>
           <Icon
-            name='chevron-right'
-            type='evilIcons'
+            name="chevron-right"
+            type="evilIcons"
             size={20}
             color={theme.colors.primary}></Icon>
         </TouchableOpacity>
       </View>
-      <View>
-        <FlatList
-          style={styles.list}
-          showsHorizontalScrollIndicator={false}
-          horizontal={true}
-          data={items}
-          renderItem={({item}) => (
-            <TouchableOpacity style={styles.item} activeOpacity={0.7} onPress={() => navigation.navigate('Doctor')}>
-              <View style={styles.iconWrapper}>
-                <Image style={{width: 40, height: 40}} resizeMode="contain" source={{uri: item.image}} />
-              </View>
-              <View style={styles.center}>
-                <Text style={styles.doctor}>{item.name}</Text>
-              </View>
-            </TouchableOpacity>
-          )}
-          keyExtractor={item => item.id.toString()}
-        />
-      </View>
+      {loading ? (
+          <View
+            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <ActivityIndicator size={30} style={{color: '#000'}} />
+          </View>
+        ) : (
+          <FlatList
+            style={styles.list}
+            showsHorizontalScrollIndicator={false}
+            horizontal={true}
+            data={items}
+            renderItem={({item}) => (
+              <TouchableOpacity
+                style={styles.item}
+                activeOpacity={0.7}
+                onPress={() => navigation.navigate('Doctor')}>
+                <View style={styles.iconWrapper}>
+                  <Image
+                    style={{width: 40, height: 40}}
+                    resizeMode="contain"
+                    source={{uri: item.image}}
+                  />
+                </View>
+                <View style={styles.center}>
+                  <Text style={styles.doctor}>{item.name}</Text>
+                </View>
+              </TouchableOpacity>
+            )}
+            keyExtractor={item => item.id.toString()}
+          />
+        )}
     </View>
   );
 };
@@ -56,13 +76,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   col: {
-    flex: 1
+    flex: 1,
   },
   alignLeft: {
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
   },
   alignRight: {
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   title: {
     fontSize: 18,
@@ -72,7 +92,7 @@ const styles = StyleSheet.create({
   link: {
     fontSize: 14,
     color: '#4486FF',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   list: {
     height: 120,
@@ -81,7 +101,7 @@ const styles = StyleSheet.create({
     width: 85,
     flexDirection: 'column',
     marginRight: 10,
-    marginVertical: 8
+    marginVertical: 8,
   },
   iconWrapper: {
     height: 85,
@@ -98,7 +118,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     fontSize: 14,
     fontFamily: 'SF-Pro-Text-Regular',
-  }
+  },
 });
 
 export default Category;

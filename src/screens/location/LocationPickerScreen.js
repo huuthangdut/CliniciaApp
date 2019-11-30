@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useContext} from 'react';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import MapView, {Polyline, Marker, Callout} from 'react-native-maps';
 import theme from '../../styles/theme';
@@ -15,6 +15,8 @@ import Button from '../../components/core/Button';
 import Geolocation from '@react-native-community/geolocation';
 import Carousel from 'react-native-snap-carousel';
 import {UserService} from '../../services/UserService';
+import { AppContext } from '../../AppProvider';
+import {Utils} from '../../utilities/utils';
 
 const MapStyle = [
   {
@@ -313,6 +315,8 @@ const styles = StyleSheet.create({
 
 const LocationPickerScreen = props => {
   const {navigation} = props;
+  const shouldGoBack = navigation.getParam('shouldGoBack');
+  const context = useContext(AppContext);
 
   const [currentCoords, setCurrentCoords] = useState({
     latitude: 0,
@@ -373,8 +377,16 @@ const LocationPickerScreen = props => {
       selectedCoords.longitude &&
       selectedCoords.formattedAddress
     ) {
-      UserService.setLocation(selectedCoords.latitude, selectedCoords.longitude, selectedCoords.formattedAddress).then(() => {
-        navigation.navigate('Tab');
+      UserService.setLocation(selectedCoords.latitude, selectedCoords.longitude, selectedCoords.formattedAddress).then((result) => {
+        if(result && result.accessToken) {
+          context.authUser.set(Utils.getAuthUser(result.accessToken));
+        }
+
+        if(shouldGoBack) {
+          navigation.goBack();
+        } else {
+          navigation.navigate('Tab');
+        }
       }).catch(e => {
         setIsSubmitting(false);
         console.log(e);

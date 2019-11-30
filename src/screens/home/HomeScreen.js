@@ -1,6 +1,5 @@
 import React, {useState, useEffect, Fragment} from 'react';
-import WithContext from '../../components/core/WithContext';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, ActivityIndicator} from 'react-native';
 
 import Reminder from './components/Reminder';
 import Category from './components/Category';
@@ -9,64 +8,18 @@ import HomeHeader from './components/HomeHeader';
 import Toolbar from './components/Toolbar';
 import DoctorList from '../doctor/components/DoctorList';
 import {SpecialtyService} from '../../services/SpecialtyService';
+import {DoctorService} from '../../services/DoctorService';
 
 const HomeScreen = props => {
   const {navigation} = props;
 
   const [specialties, setSpecialties] = useState([]);
+  const [isLoadingSpecialties, setIsLoadingSpecialities] = useState(false);
 
-  const [doctors, setDoctors] = useState([
-    {
-      id: 1,
-      image: '',
-      name: 'Barbara Michelle',
-      specialty: 'Pediatric',
-      pricePerHour: '48',
-      rating: 5,
-      ratingCount: 58,
-      distance: 15,
-    },
-    {
-      id: 2,
-      image: '',
-      name: 'Barbara Michelle',
-      specialty: 'Pediatric',
-      pricePerHour: '48',
-      rating: 5,
-      ratingCount: 58,
-      distance: 15,
-    },
-    {
-      id: 3,
-      image: '',
-      name: 'Barbara Michelle',
-      specialty: 'Pediatric',
-      pricePerHour: '48',
-      rating: 5,
-      ratingCount: 58,
-      distance: 15,
-    },
-    {
-      id: 4,
-      image: '',
-      name: 'Barbara Michelle',
-      specialty: 'Pediatric',
-      pricePerHour: '48',
-      rating: 5,
-      ratingCount: 58,
-      distance: 15,
-    },
-    {
-      id: 5,
-      image: '',
-      name: 'Barbara Michelle',
-      specialty: 'Pediatric',
-      pricePerHour: '48',
-      rating: 5,
-      ratingCount: 58,
-      distance: 15,
-    },
-  ]);
+  const [doctors, setDoctors] = useState([]);
+  const [isLoadingDoctors, setIsLoadingDoctors] = useState(false);
+
+  const [sortDoctorBy, setSortDoctorBy] = useState('Distance');
 
   const [reminder, setReminder] = useState({
     image: '',
@@ -77,12 +30,32 @@ const HomeScreen = props => {
   });
 
   const loadSpecialties = () => {
+    setIsLoadingSpecialities(true);
     SpecialtyService.getSpecialties(0, 10)
       .then(result => {
-        listSpecialties = result.items;
-        setSpecialties(listSpecialties);
+        setIsLoadingSpecialities(false);
+        setSpecialties(result.items);
       })
       .catch(e => {
+        setIsLoadingSpecialities(false);
+        console.log(e);
+      });
+  };
+
+  const loadDoctors = () => {
+    setIsLoadingDoctors(true);
+    DoctorService.getDoctors({
+      page: 0,
+      pageSize: 10,
+      sort: sortDoctorBy,
+    })
+      .then(result => {
+        setDoctors(result.items);
+        setIsLoadingDoctors(false);
+      })
+      .catch(e => {
+        setIsLoadingDoctors(false);
+        console.log(e);
       });
   };
 
@@ -90,15 +63,34 @@ const HomeScreen = props => {
     loadSpecialties();
   }, []);
 
+  useEffect(() => {
+    loadDoctors();
+  }, [sortDoctorBy]);
+
   return (
     <Fragment>
-      <HomeHeader />
+      <HomeHeader navigation={navigation}/>
       <ScrollView nestedScrollEnabled={true}>
         <View style={styles.container}>
           <Reminder item={reminder} />
-          <Category items={specialties} navigation={navigation} />
-          <Toolbar navigation={navigation}/>
-          <DoctorList items={doctors} navigation={navigation} />
+          <Category
+            items={specialties}
+            loading={isLoadingSpecialties}
+            navigation={navigation}
+          />
+          <Toolbar
+            navigation={navigation}
+            sortBy={sortDoctorBy}
+            onChangeSortBy={value => setSortDoctorBy(value)}
+          />
+          {isLoadingDoctors ? (
+            <View
+              style={{flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 40}}>
+              <ActivityIndicator size={30} style={{color: '#000'}} />
+            </View>
+          ) : (
+            <DoctorList items={doctors} navigation={navigation} />
+          )}
         </View>
       </ScrollView>
     </Fragment>
@@ -115,4 +107,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WithContext(HomeScreen);
+export default HomeScreen;

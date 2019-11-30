@@ -1,77 +1,40 @@
-import React, { useState ,} from 'react'
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity
-} from 'react-native';
-import { ListItem } from 'react-native-elements'
-import theme from '../../../styles/theme'
+import React, {useState, useContext} from 'react';
+import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import {ListItem} from 'react-native-elements';
+import theme from '../../../styles/theme';
+import {AppContext} from '../../../AppProvider';
 
-const Address = () => {
-  const [addresses, setAddresses] = useState([
-    {
-      type: 'Home',
-      address: '08 Hà Văn Tính, Liên Chiểu, Đà Nẵng',
-    },
-    {
-      type: 'Company',
-      address: '140 Nguyễn Giản Thanh ,quận Thanh Khê, Đà Nẵng'
-    },
-  ])
+const Address = (props) => {
+  const context = useContext(AppContext);
+  const {navigation} = props;
+  const {address} = context.authUser.get;
 
   return (
     <View style={styles.setting}>
       <Text style={styles.headerLabel}>Địa chỉ</Text>
       <View style={styles.addressList}>
         {
-          addresses.map((item, i) => (
-            <TouchableOpacity>
-              <View style={styles.addressItem}>
-                <View>
-                  <ListItem
-                    key={i}
-                    subtitle={item.address}
-                    title={item.type}
-                    titleStyle={{
-                      fontSize: 13,
-                      color: theme.colors.darkGray,
-                      fontFamily: 'SF-Pro-Text-Regular',
-                    }}
-                    subtitleStyle={{
-                      fontSize: 15,
-                      fontFamily: 'SF-Pro-Text-Regular',
-                      color: theme.colors.black
-                    }}
-                    bottomDivider
-                    chevron
-                  />
-                </View>
+          <TouchableOpacity onPress={() => navigation.navigate('SetLocation', {shouldGoBack: true})}>
+            <View style={styles.addressItem}>
+              <View>
+                <ListItem
+                  title={address}
+                  titleStyle={{
+                    fontSize: 15,
+                    fontFamily: 'SF-Pro-Text-Regular',
+                    color: theme.colors.black,
+                  }}
+                  bottomDivider
+                  chevron
+                />
               </View>
-            </TouchableOpacity>
-          ))
+            </View>
+          </TouchableOpacity>
         }
-        <TouchableOpacity>
-          <ListItem
-            key='add'
-            title='Thêm địa chỉ mới'
-            titleStyle={{
-              color: theme.colors.primary,
-            }}
-            rightIcon={{
-              type: 'material',
-              name: 'add-circle',
-              color: theme.colors.primary
-            }}
-            style={{
-              height: 45,
-            }}
-          />
-        </TouchableOpacity>
       </View>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   headerLabel: {
@@ -80,7 +43,7 @@ const styles = StyleSheet.create({
     fontFamily: theme.colors.black,
     backgroundColor: theme.colors.lightGray,
     color: theme.colors.darkGray,
-    lineHeight: 40
+    lineHeight: 40,
   },
   addressTypeText: {
     paddingLeft: 15,
@@ -88,8 +51,8 @@ const styles = StyleSheet.create({
     fontFamily: 'SF-Pro-Text-Regular',
     color: theme.colors.darkGray,
     paddingTop: 15,
-    marginBottom:0,
-  }
-})
+    marginBottom: 0,
+  },
+});
 
-export default Address
+export default Address;

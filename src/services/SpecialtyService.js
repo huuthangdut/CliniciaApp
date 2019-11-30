@@ -8,7 +8,7 @@ const getSpecialties = (page, pageSize) => {
       page,
       pageSize
     },
-    false
+    true
   );
 };
 

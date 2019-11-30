@@ -13,7 +13,7 @@ const AccountScreen = props => {
         {/* <Text style={styles.header}>Tài khoản</Text> */}
         <UserInfo />
         <Option navigation={props.navigation} />
-        <Address />
+        <Address navigation={props.navigation}/>
         <Setting navigation={props.navigation} />
     </ScrollView>
   );

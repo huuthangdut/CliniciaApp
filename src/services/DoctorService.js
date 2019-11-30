@@ -25,14 +25,15 @@ const getDoctors = ({
       price,
       availableToday,
     },
-    false,
+    true
   );
 };
 
 const getDoctor = id => {
   return Api.get(
     `${CONFIG.API_ROOT}/v${CONFIG.API_VERSION}/${CONFIG.API_URL.DOCTOR(id)}`,
-    false,
+    null,
+    true
   );
 };
 
@@ -42,7 +43,7 @@ const getWorkingTime = (doctorId, date) => {
     {
       date
     },
-    false,
+    true
   )
 }
 
@@ -50,7 +51,7 @@ const getCheckingServices = (doctorId) => {
   return Api.get(
     `${CONFIG.API_ROOT}/v${CONFIG.API_VERSION}/${CONFIG.API_URL.DOCTOR_CHECKING_SERVICES(doctorId)}`,
     null,
-    false,
+    true
   )
 }
 

@@ -13,14 +13,14 @@ const Option = props => {
 
   const listOption = [
     {
-      title: 'Bác sĩ yêu thích',
+      title: 'Yêu thích',
       screen: 'Favorite'
     }
   ]
 
   return (
     <View style={styles.option}>
-      <Text style={styles.headerLabel}>Danh sách</Text>
+      <Text style={styles.headerLabel}></Text>
       {
         listOption.map((item, i) => (
           <TouchableOpacity onPress={() => navigation.navigate(item.screen)}>

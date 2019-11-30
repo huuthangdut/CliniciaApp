@@ -29,17 +29,6 @@ import VerifyScreen from './screens/auth/VerifyScreen';
 import LocationPickerScreen from './screens/location/LocationPickerScreen';
 import DoctorMap from './screens/doctor/components/DoctorMap';
 
-const LocationNavigator = createStackNavigator(
-  {
-    InitLocation: InitLocationScreen,
-    SetLocation: LocationPickerScreen,
-  },
-  {
-    headerMode: 'none',
-    initialRouteName: 'InitLocation'
-  }
-)
-
 const FavoriteNavigator = createStackNavigator(
   {
     Favorite: FavoriteScreen,
@@ -223,7 +212,8 @@ const TabNavigator = createBottomTabNavigator(
 const AppNavigator = createStackNavigator(
   {
     Tab: TabNavigator,
-    Location: LocationNavigator,
+    InitLocation: InitLocationScreen,
+    SetLocation: LocationPickerScreen,
     Specialty: SpecialtyNavigator,
     Clinic: ClinicNavigator,
     Booking: BookingNavigator,

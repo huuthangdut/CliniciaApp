@@ -1,25 +1,26 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import {Avatar} from 'react-native-elements';
 import theme from '../../../styles/theme';
+import { AppContext } from '../../../AppProvider';
 
 const UserInfo = props => {
+  const context = useContext(AppContext);
+  const authUser = context.authUser.get;
+
   return (
     <View style={styles.info}>
       <View style={styles.infoAvatar}>
         <Avatar
           rounded
           size={86}
-          source={{
-            uri:
-              'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-          }}
+          source={{ uri: '' }}
           showEditButton
         />
       </View>
       <View style={styles.infoText}>
-        <Text style={styles.infoTextName}>Margaret Carson</Text>
-        <Text style={styles.infoTextMail}>margaret@mail.com</Text>
+        <Text style={styles.infoTextName}>{authUser.firstName + ' ' + authUser.lastName}</Text>
+        <Text style={styles.infoTextMail}>{authUser.phoneNumber}</Text>
       </View>
     </View>
   );

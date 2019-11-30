@@ -17,22 +17,26 @@ const Setting = (props) => {
   const context = useContext(AppContext);
 
   const listSetting = [
-    {
-      title: 'Đổi mật khẩu',
-      icon: theme.tabIcons.lock,
-      onPress: () => navigation.navigate('ChangePassword'),
-      name: 'lock'
-    },
+    // {
+    //   title: 'Đổi mật khẩu',
+    //   icon: theme.tabIcons.lock,
+    //   onPress: () => navigation.navigate('ChangePassword'),
+    //   name: 'lock'
+    // },
     {
       title: 'Thông báo',
       icon: theme.tabIcons.notificationSetting,
-      name: 'bell'
+      name: 'bell',
+      bottomDivider: true,
+      chevron: true
     },
     {
       title: 'Đăng xuất',
       icon: theme.tabIcons.signOut,
       onPress: async () => await logout(),
-      name: 'sign-out'
+      name: 'sign-out',
+      bottomDivider: false,
+      chevron: false
     },
   ]
 
@@ -55,8 +59,8 @@ const Setting = (props) => {
                   <ListItem
                     key={i}
                     title={item.title}
-                    bottomDivider
-                    chevron
+                    bottomDivider={item.bottomDivider}
+                    chevron={item.chevron}
                     leftIcon={{
                       type: 'font-awesome',
                       name: item.name,

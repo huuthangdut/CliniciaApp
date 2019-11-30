@@ -26,7 +26,7 @@ const DoctorItem = props => {
             size={12}
             color="#C8C7CC"
           />
-          <Text style={styles.text}>{item.distanceFromPatient} km away</Text>
+          <Text style={styles.text}>{item.distanceFromPatient} km</Text>
           <Icon name="dot-single" type="entypo" size={12} color="#C8C7CC" />
           <Text style={styles.text}>{item.specialty.name}</Text>
         </View>
@@ -39,7 +39,7 @@ const DoctorItem = props => {
           />
           <Text style={styles.text}>{item.ratingCount}</Text>
           <Icon name="dot-single" type="entypo" size={12} color="#C8C7CC" />
-          <Text>${item.price}/hour</Text>
+          {/* <Text>~ {item.price}/giờ</Text> */}
         </View>
       </View>
       <View style={styles.likeWrapper}>

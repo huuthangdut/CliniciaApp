@@ -5,7 +5,6 @@ import {Icon} from 'react-native-elements';
 
 const Toolbar = props => {
   const {navigation} = props;
-  const [sortBy, setSortBy] = useState('top');
 
   return (
     <View style={[styles.buttonGroup, styles.row]}>
@@ -13,12 +12,12 @@ const Toolbar = props => {
         <View style={styles.row}>
           <Picker
             mode="dropdown"
-            selectedValue={sortBy}
+            selectedValue={props.sortBy}
             style={[{flex: 1, marginLeft: 5}, styles.buttonText]}
             itemStyle={styles.buttonText}
-            onValueChange={(itemValue, itemIndex) => setSortBy(itemValue)}>
-            <Picker.Item label="Xếp hạng cao" value="top" />
-            <Picker.Item label="Gần tôi nhất" value="nearest" />
+            onValueChange={(itemValue, itemIndex) => props.onChangeSortBy(itemValue)}>
+              <Picker.Item label="Gần tôi nhất" value="+Distance" />
+              <Picker.Item label="Xếp hạng cao" value="-StarRating" />
           </Picker>
         </View>
       </TouchableOpacity>
