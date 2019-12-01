@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
 import {Avatar, Badge, Icon, withBadge} from 'react-native-elements';
@@ -28,6 +28,7 @@ import RegisterScreen from './screens/auth/RegisterScreen';
 import VerifyScreen from './screens/auth/VerifyScreen';
 import LocationPickerScreen from './screens/location/LocationPickerScreen';
 import DoctorMap from './screens/doctor/components/DoctorMap';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const FavoriteNavigator = createStackNavigator(
   {
@@ -83,11 +84,11 @@ const SpecialtyNavigator = createStackNavigator(
 const HomeNavigator = createStackNavigator(
   {
     Home: HomeScreen,
-    DoctorMap: DoctorMap
+    DoctorMap: DoctorMap,
   },
   {
     headerMode: 'none',
-    initialRouteName: 'Home'
+    initialRouteName: 'Home',
   },
 );
 
@@ -97,9 +98,9 @@ HomeNavigator.navigationOptions = ({navigation}) => {
     tabBarVisible = false;
   }
   return {
-    tabBarVisible
-  }
-}
+    tabBarVisible,
+  };
+};
 
 const AppointmentNavigator = createStackNavigator(
   {
@@ -164,7 +165,7 @@ const TabNavigator = createBottomTabNavigator(
     },
     Notification: {
       screen: NotificationNavigator,
-      navigationOptions: {
+      navigationOptions: ({screenProps, navigation}) => ({
         tabBarLabel: 'Thông báo',
         tabBarIcon: ({focused}) => (
           <View>
@@ -176,14 +177,16 @@ const TabNavigator = createBottomTabNavigator(
                   : theme.tabIcons.notification
               }
             />
-            <Badge
-              value="9"
-              status="error"
-              containerStyle={{position: 'absolute', top: -4, right: -13}}
-            />
+            {screenProps.notificationCount > 0 && (
+              <Badge
+                value={screenProps.notificationCount}
+                status="error"
+                containerStyle={{position: 'absolute', top: -4, right: -13}}
+              />
+            )}
           </View>
         ),
-      },
+      }),
     },
     Account: {
       screen: AccountNavigator,
@@ -209,6 +212,21 @@ const TabNavigator = createBottomTabNavigator(
   },
 );
 
+TabNavigator.navigationOptions = ({screenProps, navigation}) => {
+  const {setNotificationCount, notificationCount} = screenProps;
+
+  if(navigation.state.index === 2) {
+    setNotificationCount(0);
+  }
+
+  AsyncStorage.setItem('@notification_count', notificationCount + '');
+
+  return {
+    tabBarVisible: true
+  };
+};
+
+
 const AppNavigator = createStackNavigator(
   {
     Tab: TabNavigator,
@@ -226,23 +244,26 @@ const AppNavigator = createStackNavigator(
   },
 );
 
-const AuthNavigator = createStackNavigator({
-  Login: LoginScreen,
-  Register: RegisterScreen,
-  Verify: VerifyScreen
-}, {
-  headerMode: 'none',
-  initialRouteName: 'Login'
-})
+const AuthNavigator = createStackNavigator(
+  {
+    Login: LoginScreen,
+    Register: RegisterScreen,
+    Verify: VerifyScreen,
+  },
+  {
+    headerMode: 'none',
+    initialRouteName: 'Login',
+  },
+);
 
 const AppSwitch = createSwitchNavigator(
   {
     AuthLoading: AuthLoadingScreen,
     App: AppNavigator,
-    Auth: AuthNavigator
+    Auth: AuthNavigator,
   },
   {
-    initialRouteName: 'AuthLoading'
+    initialRouteName: 'AuthLoading',
   },
 );
 

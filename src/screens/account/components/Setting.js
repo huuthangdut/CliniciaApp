@@ -53,7 +53,7 @@ const Setting = (props) => {
       <View style={styles.settingList}>
         {
           listSetting.map((item, i) => (
-            <TouchableOpacity>
+            <TouchableOpacity key={i}>
               <View style={styles.settingItem}>
                 <View>
                   <ListItem

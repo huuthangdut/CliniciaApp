@@ -23,7 +23,7 @@ const Option = props => {
       <Text style={styles.headerLabel}></Text>
       {
         listOption.map((item, i) => (
-          <TouchableOpacity onPress={() => navigation.navigate(item.screen)}>
+          <TouchableOpacity key={i} onPress={() => navigation.navigate(item.screen)}>
             <ListItem
               key={i}
               title={item.title}

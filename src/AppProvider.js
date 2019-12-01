@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Utils } from './utilities/utils';
 
@@ -8,9 +8,7 @@ const AppProvider = props => {
   const [appointment, setAppointment] = useState({});
   const [notifications, setNotifications] = useState([]);
   const [notificationCount, setNotificationCount] = useState(0);
-  const [activeCounter, setActiveCounter] = useState(true);
   const [authUser, setAuthUser] = useState();
-  const [userLocation, setUserLocation] = useState();
 
   const isAuthenticated = async () => {
     const token = await AsyncStorage.getItem('@access_token');
@@ -21,7 +19,8 @@ const AppProvider = props => {
   };
 
   const addNotification = notification => {
-    setNotifications([notification, ...notifications]);
+    setNotificationCount(count => count + 1);
+    setNotifications(_list =>  [notification, ..._list]);
   };
 
   const store = {
@@ -29,7 +28,6 @@ const AppProvider = props => {
      * global state
      */
     authUser: {get: authUser, set: setAuthUser},
-    userLocation: {get: userLocation, set: setUserLocation},
     appointment: {get: appointment, set: setAppointment},
     notifications: {
       get: notifications,
@@ -37,13 +35,17 @@ const AppProvider = props => {
       add: addNotification,
     },
     notificationCount: {get: notificationCount, set: setNotificationCount},
-    activeCounter: {get: activeCounter, set: setActiveCounter},
-
     /**
      * global function
      */
     isAuthenticated: isAuthenticated
   };
+
+  useEffect(() => {
+    AsyncStorage.getItem('@notification_count').then(count => {
+      setNotificationCount(+count || 0);
+    });
+  }, []);
 
   return (
     <AppContext.Provider value={store}>{props.children}</AppContext.Provider>

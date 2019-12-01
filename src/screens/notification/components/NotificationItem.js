@@ -11,23 +11,23 @@ const NotificationItem = props => {
   const {item, navigation} = props;
   const context = useContext(AppContext);
 
-  const [notification, setNotification] = useState(item);
-
   const deleteNotification = () => {
-    NotificationService.deleteNotification(notification.id)
+    NotificationService.deleteNotification(item.id)
       .then(() => {
-        let notifications = [...context.notifications.get];
-        notifications = notifications.filter(i => i.id !== notification.id);
-        context.notifications.set(notifications);
+        context.notifications.set(list => [
+          ...list.filter(i => i.id !== item.id)
+        ]);
       }).catch(e => {
         console.log(e);
       });
   };
 
   const markAsRead = () => {
-    if(!notification.hasRead) {
-      NotificationService.markAsRead(notification.id).then(() => {
-        setNotification({ ...notification, hasRead: true });
+    if(!item.hasRead) {
+      NotificationService.markAsRead(item.id).then(() => {
+        const notifies = [...context.notifications.get];
+        notifies.find(i => i.id === item.id).hasRead = true;
+        context.notifications.set(notifies);
       }).catch(e => {
         console.log(e);
       });
@@ -49,15 +49,14 @@ const NotificationItem = props => {
     <Swipeout right={swipeBtns} autoClose={true} backgroundColor="transparent">
       <TouchableOpacity
         onPress={() => markAsRead()}
-        style={[styles.container, {backgroundColor: notification.hasRead ? 'white' : 'rgba(68, 134, 255, 0.1)'}]}
+        style={[styles.container, {backgroundColor: item.hasRead ? 'white' : 'rgba(68, 134, 255, 0.1)'}]}
         activeOpacity={0.7}>
         <View style={styles.image}>
-          <Avatar size={50} rounded source={{uri: notification.image}} />
+          <Avatar size={50} rounded source={{uri: item.image}} />
         </View>
         <View style={styles.content}>
-          <Text style={styles.title} numberOfLines={1}>{notification.title}</Text>
           <Text style={styles.text} numberOfLines={3}>
-            {notification.content}
+            {item.content}
           </Text>
           <View style={styles.timeFromNow}>
             <Icon
@@ -67,7 +66,7 @@ const NotificationItem = props => {
               type="antdesign"
             />
             <Text style={styles.timeFromNowText}>
-              {DateTime.toDateString(notification.notificationDate, 'HH:mm DD/MM/YYYY')}
+              {DateTime.toDateString(item.notificationDate, 'HH:mm DD/MM/YYYY')}
             </Text>
           </View>
         </View>
@@ -78,7 +77,7 @@ const NotificationItem = props => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 110,
+    height: 105,
     flexDirection: 'row',
     padding: 20,
   },
@@ -97,7 +96,7 @@ const styles = StyleSheet.create({
     fontFamily: 'SF-Pro-Display-Semibold'
   },
   text: {
-    fontSize: 15,
+    fontSize: 14,
     fontFamily: 'SF-Pro-Text-Regular',
     lineHeight: 22,
   },

@@ -1,6 +1,6 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useContext, useCallback} from 'react';
 import Navigator from './Navigator';
-import AppProvider from './AppProvider';
+import AppProvider, { AppContext } from './AppProvider';
 import firebase from 'react-native-firebase';
 import {NavigationService} from './services/NavigationService';
 import {DeviceService} from './services/DeviceService';
@@ -8,6 +8,8 @@ import DeviceInfo from 'react-native-device-info';
 import {Platform, Alert} from 'react-native';
 
 const App = () => {
+  const context = useContext(AppContext);
+
   const checkPermission = async () => {
     const enabled = await firebase.messaging().hasPermission();
     if (enabled) {
@@ -20,6 +22,7 @@ const App = () => {
   const getFcmToken = async () => {
     const fcmToken = await firebase.messaging().getToken();
     if (fcmToken) {
+      console.log(fcmToken);
       const deviceUuid = DeviceInfo.getUniqueId();
       await DeviceService.addOrUpdateDevice(fcmToken, Platform.OS, deviceUuid);
     } else {
@@ -33,16 +36,21 @@ const App = () => {
     } catch (error) {}
   };
 
+  const notificationCallback = useCallback(async (notification) => {
+    const {title, body, data} = notification;
+    console.log("received");
+    context.notifications.add({id: 'random' + Math.random(), title: 'Add' + Math.random(), content: 'Add', hasRead: false, notificationDate: new Date().toISOString()})
+    // await context.notifications.add({id: Math.random(), title: title + Math.random(), content: body, notificationDate: new Date(), hasRead: false})
+  }, []);
+
+  
   const messageListener = async () => {
     /*
      * Triggered when a particular notification has been received in foreground
      * */
     const notificationListener = firebase
       .notifications()
-      .onNotification(notification => {
-        const {title, body, data} = notification;
-        Alert.alert(title);
-      });
+      .onNotification(notificationCallback);
 
     /*
      * If your app is in background, you can listen for when a notification is clicked / tapped / opened as follows:
@@ -69,21 +77,28 @@ const App = () => {
     firebase.messaging().onMessage(message => {
       console.log('FCM Message Data:', message.data);
     });
+    return {
+      notificationListener
+    };
   };
 
   useEffect(() => {
     checkPermission();
     messageListener();
+    // navigation.setParams({ setNotificationCount: context.notificationCount.set })
   }, []);
 
   return (
-    <AppProvider>
-      <Navigator
-        ref={navigationRef =>
-          NavigationService.setTopLevelNavigator(navigationRef)
-        }
-      />
-    </AppProvider>
+    <Navigator
+      screenProps={
+        {
+          notificationCount: context.notificationCount.get, 
+          setNotificationCount: context.notificationCount.set
+        }}
+      ref={navigationRef =>
+        NavigationService.setTopLevelNavigator(navigationRef)
+      }
+    />
   );
 };
 

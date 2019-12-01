@@ -18,6 +18,7 @@ const Address = (props) => {
             <View style={styles.addressItem}>
               <View>
                 <ListItem
+                  key={1}
                   title={address}
                   titleStyle={{
                     fontSize: 15,
