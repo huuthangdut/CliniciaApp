@@ -10,7 +10,7 @@ const OrderList = props => {
         <View style={styles.container}>
             <FlatList
                 style={styles.list}
-                data={listOrder.reverse()}
+                data={listOrder}
                 showsVerticalScrollIndicator={false}
                 // ItemSeparatorComponent={FlatListItemSeperator}
                 renderItem={({item}) => <OrderHitoryItem item={item} navigation={props.navigation}/>}

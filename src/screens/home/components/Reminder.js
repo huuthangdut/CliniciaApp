@@ -1,70 +1,55 @@
-import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import theme from '../../../styles/theme';
-import { Avatar } from 'react-native-elements'
+import React, { useState } from 'react';
+import {View, Text, StyleSheet, TouchableOpacity, Dimensions} from 'react-native'
+import theme from '../../../styles/theme'
+import Carousel from 'react-native-snap-carousel'
+
+const { width: screenWidth } = Dimensions.get('window')
 
 const Reminder = props => {
   const {item} = props; 
+
+  const [data, setData] = useState([
+    { name: 'phuc', title: 'sss',  },
+    { name: 'phuc', title: 'sss',  },
+    { name: 'phuc', title: 'sss',  },
+    { name: 'phuc', title: 'sss',  }
+  ])
+
+  const _renderItem = ({ item, index }) => {
+    return (
+      <View style={styles.slide}>
+      </View>
+    )
+  }
   
   return (
-    <View style={styles.container}>
       <View style={styles.card}>
+      <Carousel
+        // ref={carouselRef}
+        sliderWidth={screenWidth}
+        itemWidth={screenWidth-60}
+        data={data}
+        renderItem={_renderItem}
+        hasParallaxImages
+        slideStyle={{
+          backgroundColor: theme.colors.primary,
+          borderRadius: 10
+        }}
+        containerCustomStyle={{
+          width: '100%',
+          flex: 1
+        }}
+      />
       </View>
-    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    height: 'auto',
-    marginBottom: 10
-  },
   card: {
-    flexDirection: 'row',
-    height: 150,
-    width: '100%',
-    paddingVertical: 20,
-    paddingHorizontal: 22,
-    backgroundColor: theme.colors.primary,
+    flexDirection: 'column',
+    height: 200,
     borderRadius: 12,
-    ...theme.styles.shadow,
-  },
-  content: {
-    flex: 1,
-    marginHorizontal: 20,
-  },
-  time: {
-    color: 'white',
-    fontSize: 15,
-    fontFamily: 'SF-Pro-Text-Regular',
-  },
-  doctor: {
-    color: 'white',
-    fontSize: 21,
-    fontFamily: 'SF-Pro-Display-Semibold',
-  },
-  row: {
-    flexDirection: 'row',
-    marginTop: 4,
-  },
-  col: {
-    flex: 1,
-    color: 'white',
-  },
-  text: {
-    color: 'white',
-    fontSize: 14,
-    fontFamily: 'SF-Pro-Text-Regular',
-  },
-  button: {
-    height: 24,
-    width: 60,
-    backgroundColor: '#FF9500',
-    borderRadius: 30,
-    marginTop: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  }
 });
 
 export default Reminder;

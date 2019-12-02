@@ -4,10 +4,10 @@ import MapView, { Polyline, Marker, Callout } from 'react-native-maps'
 import theme from '../../styles/theme'
 import { Icon } from 'react-native-elements'
 import { StyleSheet, Dimensions, Image, Text, View, Button } from "react-native";
-import Geolocation from '@react-native-community/geolocation';
+import Geolocation from '@react-native-community/geolocation'
 import Carousel from 'react-native-snap-carousel'
 import WithContext from '../../components/core/WithContext'
-import { AuthService } from '../../services/AuthService';
+import { AuthService } from '../../services/AuthService'
 
 const MapStyle = [
   {
@@ -225,13 +225,10 @@ const MapStyle = [
   }
 ]
 
-const { width: screenWidth } = Dimensions.get('window');
+const { width: screenWidth } = Dimensions.get('window')
 
 const styles = StyleSheet.create({
   container: {
-    // ...StyleSheet.absoluteFillObject,
-    // height: 400,
-    // width: 400,
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
@@ -241,13 +238,10 @@ const styles = StyleSheet.create({
   },
   mapContainer: {
     position: 'absolute',
-    // right: 10,
-    // left: 10,
     padding: 10,
     backgroundColor: 'transparent',
     zIndex: 1000,
     width: '100%',
-    // height: 30
   },
   listView: {
     backgroundColor: theme.colors.white,
@@ -256,9 +250,7 @@ const styles = StyleSheet.create({
   textInputContainer: {
     backgroundColor: theme.colors.white,
     borderRadius: 5,
-    // width: '80%',
     marginBottom: 7,
-    // alignItems: 'center'
   },
   poweredContainer: {
     display: 'none'
@@ -417,6 +409,7 @@ const LocationPickerScreen = props => {
             long: location.lng
           })
           setAddressTextInput(inputLocationRef.current.state.text)
+
           goToLocation(location.lat, location.lng)
         }}
 

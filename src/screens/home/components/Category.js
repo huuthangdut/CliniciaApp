@@ -1,27 +1,12 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, FlatList, Alert, Image} from 'react-native';
-import theme from '../../../styles/theme';
-import {Icon} from 'react-native-elements';
+import {View, Text, StyleSheet, TouchableOpacity, FlatList, Image} from 'react-native';
+import theme from '../../../styles/theme'
 
 const Category = props => {
   const {items, navigation} = props;
 
   return (
     <View style={styles.container}>
-      <View style={styles.row}>
-        <TouchableOpacity 
-          onPress={() => navigation.navigate('Specialty')}
-          style={[{flex: 1}, styles.alignRight, styles.row]}
-          activeOpacity={0.7}>
-          {/* <Text style={styles.link}>View all</Text> */}
-          {/* <Icon
-            name='chevron-right'
-            type='evilIcons'
-            size={20}
-            color={theme.colors.primary}></Icon> */}
-            
-        </TouchableOpacity>
-      </View>
       <View>
         <FlatList
           style={styles.list}
@@ -29,7 +14,7 @@ const Category = props => {
           horizontal={true}
           data={items}
           renderItem={({item}) => (
-            <TouchableOpacity style={styles.item} activeOpacity={0.7} onPress={() => navigation.navigate('Doctor')}>
+            <TouchableOpacity style={styles.item} activeOpacity={0.7} onPress={() => navigation.navigate('Stores', {category: item.key})}>
               <View style={styles.iconWrapper}>
                   <Image style={{width: 40, height: 40 }} source={item.icon} />
               </View>

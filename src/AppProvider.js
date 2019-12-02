@@ -62,7 +62,12 @@ class AppProvider extends React.PureComponent {
       },
       loadOrderList: () => {
         this.setState({
-          reloadOrderList: this.state.reloadOrderList
+          reloadOrderList: !this.state.reloadOrderList
+        })
+      },
+      setTempLocation: location => {
+        this.setState({
+          temptLocation: {...location}
         })
       }
     };
@@ -75,7 +80,7 @@ class AppProvider extends React.PureComponent {
           temptLocation: {
             lat: position.coords.latitude,
             long: position.coords.longitude,
-            address: 'Current Location (Default)'
+            address: 'TEMP'
           }
         })
       },

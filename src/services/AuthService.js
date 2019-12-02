@@ -16,6 +16,11 @@ const login = (email, password, responseCb, errorCb) => {
           userId
           email
           authToken
+          location{
+            address
+            lat
+            long
+          }
         }
       }
       `,

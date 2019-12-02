@@ -12,9 +12,9 @@ import { AuthService } from '../../../services/AuthService'
 
 const Address = props => {
   const { navigation, context } = props
-  const { user } = context
-
+  const { user, setTempLocation, temptLocation } = context
   const [addresses, setAddresses] = useState([])
+  const [choosenLocation, setChoosenLocation] = useState()
 
   useEffect(() => {
     getAddresses()
@@ -28,7 +28,15 @@ const Address = props => {
     AuthService.getLocations(
       user.userId,
       res => {
+        if(temptLocation && temptLocation.address !== 'TEMP') {
+          setChoosenLocation(temptLocation)
+        } else {
+          setChoosenLocation(res.data.data.user.location[0])
+        }
         setAddresses(res.data.data.user.location)
+        if(res.data.data.user.location.length > 0) {
+          setTempLocation(res.data.data.user.location[0])
+        }
       },
       err => {
         alert(err)
@@ -47,8 +55,17 @@ const Address = props => {
                 <ListItem
                   key={i}
                   title={item.address}
+                  titleProps={{
+                    numberOfLines:1
+                  }}
                   bottomDivider
+                  rightIcon={choosenLocation.address === item.address ? {
+                    type:'material-community',
+                    name:'check-circle',
+                    color: theme.colors.primary
+                  }: {}}
                   containerStyle={styles.items}
+                  onPress={() => setChoosenLocation(item)}
                 />
               </View>
             </TouchableOpacity>

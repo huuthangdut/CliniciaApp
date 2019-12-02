@@ -13,7 +13,11 @@ const getRestaurants = (responseCb, errorCb) => {
             restaurants
             {
               _id
-              address
+              location{
+                address
+                lat
+                long
+              }
               name
             }
           }
@@ -47,7 +51,7 @@ const getMenu = (storeId, responseCb, errorCb) => {
       }
     }
   }).then(responseCb)
-  .catch(errorCb)
+    .catch(errorCb)
 }
 
 const getStore = (storeId, responseCb, errorCb) => {
@@ -60,7 +64,9 @@ const getStore = (storeId, responseCb, errorCb) => {
           restaurantById(restaurantId: $storeId){
             _id
             name
-            address
+            location {
+              address
+            }
             menu_info{
               name
               foods{
@@ -77,11 +83,44 @@ const getStore = (storeId, responseCb, errorCb) => {
       }
     }
   }).then(responseCb)
-  .catch(errorCb)
+    .catch(errorCb)
+}
+
+const getStoreInCategory = (query, responseCb, errorCb) => {
+  axios({
+    url: API_URL,
+    method: 'post',
+    data: {
+      query: `
+      query GetCategory($query: String!){
+        searchRestaurant(query: $query)
+        {
+          _id
+          cuisines
+          name
+          location{
+            address
+            lat
+            long
+          }
+          menu_info{
+            foods{
+              name
+            }
+          }
+        }
+      }
+      `,
+      variables: {
+        query
+      }
+    }
+  }).then(responseCb)
+    .catch(errorCb)
 }
 
 const StoreService = {
-  getRestaurants, getMenu, getStore
+  getRestaurants, getMenu, getStore, getStoreInCategory
 }
 
 export default StoreService

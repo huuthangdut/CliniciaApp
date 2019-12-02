@@ -20,17 +20,30 @@ const OrderHisToryScreen = props => {
   });
   const [listOrder, setListOrder] = useState([])
   const [isReloadList, setReloadList] = useState(reloadOrderList)
+  const [beforeDoneList, setBeforeDoneList] = useState([])
+  const [doneList, setDoneList] = useState([])
 
   useEffect(() => {
     getOrders()
   }, [])
 
+  useEffect(() => {
+    getOrders()
+  }, [reloadOrderList])
 
   const getOrders = () => {
     OrderService.getOrdersOfUser(
       user.userId,
       res => {
         setListOrder(res.data.data.ordersOfUser)
+        let _beforeDoneList = []
+        let _doneList = []
+        if(res.data.data.ordersOfUser) {  
+          _beforeDoneList = res.data.data.ordersOfUser.filter(item => item.status === 'waitting' || item.status === 'confirmed')
+          _doneList = res.data.data.ordersOfUser.filter(item => item.status === 'rejected' || item.status === 'done')
+        }
+        setDoneList(_doneList.reverse())
+        setBeforeDoneList(_beforeDoneList.reverse())
       },
       err => {
         alert(err)
@@ -47,14 +60,14 @@ const OrderHisToryScreen = props => {
         return (
           <>
             {!listOrder.length > 0 && <ActivityIndicator size={50} style={{ marginTop: 220 }} />}
-            <OrderList type="Proccessing" listOrder={listOrder} navigation={props.navigation} />
+            <OrderList type="Proccessing" listOrder={beforeDoneList} navigation={props.navigation} />
           </>
         );
       case 'Done':
         return (
           <>
             {!listOrder.length > 0 && <ActivityIndicator size={50} style={{ marginTop: 220 }} />}
-            <OrderList type="Proccessing" listOrder={listOrder} navigation={props.navigation} />
+            <OrderList type="Done" listOrder={doneList} navigation={props.navigation} />
           </>
         );
     }

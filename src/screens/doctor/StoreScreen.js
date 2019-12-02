@@ -1,117 +1,35 @@
-import React, {useState, Fragment} from 'react';
-import {Text, View, StyleSheet} from 'react-native';
-import theme from '../../styles/theme';
-import StoreList from './components/StoreList';
-import Header from '../../components/core/Header';
+import React, { useState, Fragment, useEffect } from 'react'
+import { Text, View, StyleSheet } from 'react-native'
+import theme from '../../styles/theme'
+import StoreList from './components/StoreList'
+import Header from '../../components/core/Header'
+import StoreService from '../../services/StoreService'
 
 const StoreScreen = props => {
-  const {navigation} = props;
-  const [doctors, setDoctors] = useState([
-    {
-      id: 1,
-      image: '',
-      name: 'Barbara Michelle',
-      specialty: 'Pediatric',
-      pricePerHour: '48',
-      rating: 5,
-      ratingCount: 58,
-      distance: 15,
-    },
-    {
-      id: 2,
-      image: '',
-      name: 'Barbara Michelle',
-      specialty: 'Pediatric',
-      pricePerHour: '48',
-      rating: 5,
-      ratingCount: 58,
-      distance: 15,
-    },
-    {
-      id: 3,
-      image: '',
-      name: 'Barbara Michelle',
-      specialty: 'Pediatric',
-      pricePerHour: '48',
-      rating: 5,
-      ratingCount: 58,
-      distance: 15,
-    },
-    {
-      id: 4,
-      image: '',
-      name: 'Barbara Michelle',
-      specialty: 'Pediatric',
-      pricePerHour: '48',
-      rating: 5,
-      ratingCount: 58,
-      distance: 15,
-    },
-    {
-      id: 5,
-      image: '',
-      name: 'Barbara Michelle',
-      specialty: 'Pediatric',
-      pricePerHour: '48',
-      rating: 5,
-      ratingCount: 58,
-      distance: 15,
-    },
-    {
-      id: 6,
-      image: '',
-      name: 'Barbara Michelle',
-      specialty: 'Pediatric',
-      pricePerHour: '48',
-      rating: 5,
-      ratingCount: 58,
-      distance: 15,
-    },
-    {
-      id: 7,
-      image: '',
-      name: 'Barbara Michelle',
-      specialty: 'Pediatric',
-      pricePerHour: '48',
-      rating: 5,
-      ratingCount: 58,
-      distance: 15,
-    },
-    {
-      id: 8,
-      image: '',
-      name: 'Barbara Michelle',
-      specialty: 'Pediatric',
-      pricePerHour: '48',
-      rating: 5,
-      ratingCount: 58,
-      distance: 15,
-    },
-    {
-      id: 9,
-      image: '',
-      name: 'Barbara Michelle',
-      specialty: 'Pediatric',
-      pricePerHour: '48',
-      rating: 5,
-      ratingCount: 58,
-      distance: 15,
-    },
-    {
-      id: 10,
-      image: '',
-      name: 'Barbara Michelle',
-      specialty: 'Pediatric',
-      pricePerHour: '48',
-      rating: 5,
-      ratingCount: 58,
-      distance: 15,
-    },
-  ]);
+  const { navigation } = props
+  const { category } = navigation.state.params
+
+  const [doctors, setDoctors] = useState([])
+
+  useEffect(() => {
+    getStoreInCategory()
+  },[])
+
+  const getStoreInCategory = () => {
+    StoreService.getStoreInCategory(
+      category,
+      res => {
+        setDoctors(res.data.data.searchRestaurant)
+      },
+      err => {
+        alert(err)
+      }
+    )
+  }
 
   return (
     <Fragment>
-      <Header navigation={navigation} title={'Stores'}/>
+      <Header navigation={navigation} title={'Stores'} />
       <View style={styles.container}>
         <View style={styles.list}>
           <StoreList items={doctors} navigation={navigation} />
@@ -129,7 +47,6 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 34,
-    // fontFamily: 'SF-Pro-Display-Bold',
     fontWeight: 'bold',
     alignSelf: 'center'
   },

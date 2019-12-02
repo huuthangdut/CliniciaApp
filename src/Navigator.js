@@ -35,7 +35,7 @@ const FavoriteNavigator = createStackNavigator({
   headerMode: 'none'
 })
 
-const DoctorNavigator = createStackNavigator({
+const StoresNavigation = createStackNavigator({
   Stores: ListStoreScreen,
   Filter: FilterScreen
 }, {
@@ -93,7 +93,7 @@ const HomeNavigator = createStackNavigator(
 const OrderHisToryNavigator = createStackNavigator(
   {
     OrderHisTory: OrderHisToryScreen,
-    AppointmentDetails: OrderDetailsScreen
+    OrderDetail: OrderDetailsScreen
   },
   {
     headerMode: 'none',
@@ -219,7 +219,7 @@ const AppNavigator = createStackNavigator(
     Specialty: SpecialtyNavigator,
     Clinic: ClinicNavigator,
     Order: OrderNavigator,
-    Doctor: DoctorNavigator,
+    Stores: StoresNavigation,
     Favorite: FavoriteNavigator,
   },
   {

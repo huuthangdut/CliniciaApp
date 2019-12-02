@@ -15,7 +15,7 @@ const Toolbar = props => {
             name="map-marker-circle"
             type="material-community"
             size={30}></Icon>
-          <Text style={styles.buttonText}>View Nearby</Text>
+          <Text style={styles.buttonText}>View Nearby On Map</Text>
         </View>
       </TouchableOpacity>
     </View>

@@ -15,7 +15,9 @@ const getOrdersOfUser = (userId, responseCb, errorCb) => {
           _id 
           restaurant{
             name
-            address
+            location{
+              address
+            }
           }
           payment_method
           status
@@ -54,7 +56,9 @@ const createOrder = (data, responseCb, errorCb) => {
           delivery_address
           restaurant{
             name
-            address
+            location{
+              address
+            }
           }
           items{
             food{
@@ -77,6 +81,30 @@ const createOrder = (data, responseCb, errorCb) => {
     .catch(errorCb)
 }
 
+const changeOrderStatus = (orderId, status , responseCb, errorCb) => {
+  axios({
+    url: API_URL,
+    method: 'post',
+    data: {
+      query: `
+        mutation ChangeStatus($orderId: ID!, $status: String! ){
+          updateOrder(orderId: $orderId , status : $status)
+          {
+            _id
+            status
+          }
+        }
+      `,
+      variables: {
+        orderId,
+        status
+      }
+    },
+  })
+    .then(responseCb)
+    .catch(errorCb)
+}
+
 export const OrderService = {
-  getOrdersOfUser, createOrder
+  getOrdersOfUser, createOrder, changeOrderStatus
 }

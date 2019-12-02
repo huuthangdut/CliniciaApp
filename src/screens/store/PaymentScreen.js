@@ -52,7 +52,6 @@ const PaymentScreen = (props) => {
     OrderService.createOrder(
       data,
       res => {
-        console.log(res.data.data)
         loadOrderList()
       },
       err => {

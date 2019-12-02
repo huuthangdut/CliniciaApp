@@ -47,11 +47,6 @@ function StoreScreen(props) {
     navigation.navigate('Checkout', {cart: cart, storeId: storeId })
   }
 
-  const checkStatusBarColor = () => {
-    const check = scrollY._value < 180;
-    if (isLight !== check) setIsLight(check);
-  }
-
   const handleItem = async (item, value) => {
     let newCart = [...cart]
     let newItem = { ...item, quantity: 1 }
@@ -63,7 +58,7 @@ function StoreScreen(props) {
             newCart.splice(i, 1)
           }
           setCart(newCart)
-          await AsyncStorage.setItem('cart', JSON.stringify({cart: cart }))
+          // await AsyncStorage.setItem('cart', JSON.stringify({cart: cart, storeId }))
           return
         }
       }
@@ -155,7 +150,7 @@ function StoreScreen(props) {
               onScroll={Animated.event(
                 [{ nativeEvent: { contentOffset: { y: scrollY } } }]
               )}
-              ListHeaderComponent={<Banner storeName={store.name} address={store.address}/>}
+              ListHeaderComponent={<Banner storeName={store.name} address={store.location.address}/>}
             />
           </>
         )

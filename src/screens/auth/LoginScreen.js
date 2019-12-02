@@ -8,7 +8,7 @@ import { AuthService } from '../../services/AuthService';
 
 const LoginScreen = props => {
   const { navigation } = props
-  const { login, signUp } = props.context
+  const { login, signUp, setTempLocation } = props.context
 
   const passwordRef = useRef();
   const repasswordRef = useRef();
@@ -17,13 +17,10 @@ const LoginScreen = props => {
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [repassword, setRepassword] = useState('')
-
   const [signUpMode, setSignUpMode] = useState(false)
-
   const [isLoading, setLoading] = useState(false)
 
   const focusNext = () => {
@@ -58,6 +55,7 @@ const LoginScreen = props => {
         }
         if (res.data.data) {
           props.context && login(res.data.data.login)
+          setTempLocation(res.data.data.login.location[0])
           navigation.navigate('Tab');
         }
         setLoading(false)
@@ -102,7 +100,7 @@ const LoginScreen = props => {
         if (res.data.data) {
           setLoading(false)
           signUp(res.data.data.createUser)
-          navigation.navigate('Tab');
+          navigation.navigate('Tab', {from: 'signup'});
         }
       },
       err => {

@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-import { Avatar } from 'react-native-elements';
-import theme from '../../../styles/theme';
-import OrderHistoryStatus from './OrderHistoryStatus';
+import React, { useState, useEffect } from 'react'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
+import theme from '../../../styles/theme' 
+import OrderHistoryStatus from './OrderHistoryStatus'
+import FormatTime from '../../../helper/FormatTime'
 
 const OrderHitoryItem = props => {
   const { item, navigation } = props
@@ -28,19 +28,21 @@ const OrderHitoryItem = props => {
   }
 
   return (
-    <TouchableOpacity style={styles.container} activeOpacity={0.7} onPress={() => navigation.navigate('AppointmentDetails')}>
+    <TouchableOpacity style={styles.container} activeOpacity={0.7} onPress={() => navigation.navigate('OrderDetail', {orderDetail: item})}>
       <View style={styles.textWrapper}>
         <Text style={styles.doctorName}>{item.restaurant.name}</Text>
-        <Text numberOfLines={1} style={styles.clinicName}>{item.delivery_address}</Text>
-        <Text style={styles.date}>{new Date(parseInt(item.createdAt)).toUTCString()}</Text>
+        <Text numberOfLines={1} style={styles.clinicName}>{item.restaurant.location.address}</Text>
+        <Text style={styles.date}>{FormatTime.FormatTimeFromMili(parseInt(item.createdAt))}</Text>
         <Text style={styles.date}>{total}d, {totalQuantity} item(s)  </Text>
       </View>
       <View style={styles.timeStatusWrapper}>
-        <OrderHistoryStatus type="waitting" />
+        <OrderHistoryStatus type={item.status} />
       </View>
     </TouchableOpacity>
   );
 };
+
+
 
 const styles = StyleSheet.create({
   container: {

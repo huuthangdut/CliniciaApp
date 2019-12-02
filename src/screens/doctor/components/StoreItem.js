@@ -1,13 +1,14 @@
-import React from 'react';
-import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
-import theme from '../../../styles/theme';
-import {Avatar, Icon, Rating} from 'react-native-elements';
+import React from 'react'
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
+import theme from '../../../styles/theme'
+import { Icon } from 'react-native-elements'
+import WithContext from '../../../components/core/WithContext'
 
 const StoreItem = props => {
-  const {item, navigation} = props;
+  const { item, navigation, context } = props
 
   return (
-    <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('Store', {storeId: item._id})}>
+    <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('Store', { storeId: item._id })}>
       <View style={styles.content}>
         <Text style={styles.name}>{item.name}</Text>
         <View style={styles.row}>
@@ -17,9 +18,12 @@ const StoreItem = props => {
             size={12}
             color="#C8C7CC"
           />
-          <Text style={styles.text}>{item.address}</Text>
+          <Text numberOfLines={1} style={styles.text}>{item.location.address}</Text>
           <Icon name="dot-single" type="entypo" size={12} color="#C8C7CC" />
           <Text style={styles.text}> km</Text>
+        </View>
+        <View style={styles.row}>
+          <Text>About:  km </Text>
         </View>
         <View style={styles.row}>
           <Text>Average: </Text>
@@ -79,4 +83,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default StoreItem;
+export default WithContext(StoreItem)

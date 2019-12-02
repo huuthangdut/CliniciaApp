@@ -1,24 +1,26 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import styled from 'styled-components/native';
-import theme from '../../../styles/theme';
 
 const OrderHistoryStatus = props => {
   let statusText = '';
   let backgroundColor = '';
   switch (props.type) {
-    case 'confirmed':
-      statusText = 'Confirmed';
-      backgroundColor = theme.colors.secondary;
-      break;
-    case 'cancelled':
-      statusText = 'Cancelled';
-      backgroundColor = '#707070';
-      break;
+    case 'rejected':
+      statusText = 'Rejected';
+      backgroundColor = 'red';
+      break
     case 'waitting':
       statusText = 'Waitting';
-      backgroundColor = '#f5e025';
-      break;
+      backgroundColor = 'orange';
+      break
+    case 'confirmed':
+      statusText = 'Confirmed';
+      backgroundColor = 'green';
+      break
+    case 'canceled':
+      statusText = 'Canceled';
+      backgroundColor = 'gray';
+      break
   }
 
   return (
@@ -30,7 +32,7 @@ const OrderHistoryStatus = props => {
 
 const styles = StyleSheet.create({
   status: {
-    borderRadius: 10,
+    borderRadius: 30,
     height: 20,
     justifyContent: 'center',
     alignItems: 'center',

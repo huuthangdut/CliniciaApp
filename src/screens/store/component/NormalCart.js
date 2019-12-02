@@ -1,23 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, SafeAreaView, StyleSheet, FlatList, Picker, PickerItem } from 'react-native';
-import { Icon, Button, Divider } from 'react-native-elements';
-import CostDetail from './CostDetail';
-import CartItem from './CartItem';
-import theme from '../../../styles/theme';
+import React, { useState, useEffect } from 'react'
+import { 
+  View, 
+  SafeAreaView, 
+  StyleSheet,
+  FlatList, 
+  Picker,
+  ToastAndroid, 
+} from 'react-native'
+import { Icon, Button, Divider } from 'react-native-elements'
+import CostDetail from './CostDetail'
+import CartItem from './CartItem'
+import theme from '../../../styles/theme'
 import Header from '../../../components/core/Header'
 import { AuthService } from '../../../services/AuthService'
 import WithContext from '../../../components/core/WithContext'
+import AutoComplete from './AutoComplete'
 
 function NormalCart(props) {
   const { navigation, cart, storeId, context } = props
-  const { user } = context
+  const { user, temptLocation } = context
 
   const [subTotal, setSubtotal] = useState(0)
   const [delivery, setDelivery] = useState(0)
   const [total, setTotal] = useState(0)
   const [discount, setDiscount] = useState(0)
-  const [deliveryAddress, setDeliveryAddress] = useState(0)
+  const [deliveryAddress, setDeliveryAddress] = useState('')
   const [addresses, setAddresses] = useState([])
+  const [openAutoComplete, setOpenAutoComplete] = useState()
+  const addLabel = 'Or choose a new Label'
 
   useEffect(() => {
     getAddresses()
@@ -28,7 +38,7 @@ function NormalCart(props) {
     AuthService.getLocations(
       user.userId,
       res => {
-        setAddresses(res.data.data.user.location)
+        setAddresses([...res.data.data.user.location, {address: addLabel} ])
       },
       err => {
         alert(err)
@@ -47,22 +57,41 @@ function NormalCart(props) {
     setTotal(sub)
   }
 
+  const handleChangeValue = val => {
+    if(val === addLabel) {
+      setOpenAutoComplete(true)
+    } else {
+      setDeliveryAddress(val)
+    }
+  }
+
+  const getData = data => {
+    setDeliveryAddress(data.address)
+    ToastAndroid.show('New address have been choosen: ' + data.address, ToastAndroid.LONG)
+  }
+
+  const closeAutoComplete = () => {
+    setOpenAutoComplete(false)
+  }
+
   return (
     <View>
       <Header navigation={navigation} title='Checkout Cart' />
       <View style={styles.shadow}>
         <View style={styles.contentContainer}>
+          {openAutoComplete && <AutoComplete sendData={getData} closeAutoComplete={closeAutoComplete}/>}
           <Picker
             itemStyle={styles.pickerItem}
             style={styles.locationPicker}
             selectedValue={deliveryAddress}
-            onValueChange={(itemValue) => setDeliveryAddress(itemValue)}
-          >
+            onValueChange={(itemValue) => handleChangeValue(itemValue)}
+          > 
             {addresses.map((item, index) => {
-              return(
-                <Picker.Item  label={item.address} value={item.address} key={index.toString()}/>
-              )
+                return(
+                  <Picker.Item  label={item.address} value={item.address} key={index.toString()}/>
+                )
             })}
+            
           </Picker>
           <FlatList
             data={cart}
