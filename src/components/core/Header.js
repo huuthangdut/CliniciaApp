@@ -9,12 +9,14 @@ const CustomHeader = props => {
     title = '',
     hasBackIcon = true,
     hasRightMenu = false,
+    onPressLeft = () => {},
+    onPressRight = () => {}
   } = props;
 
   return (
     <View style={styles.header}>
       {hasBackIcon ? (
-        <TouchableOpacity style={styles.icon}>
+        <TouchableOpacity style={styles.icon} onPress={onPressLeft}>
           <Icon name="ios-arrow-back" type="ionicon" size={25} color={color} />
         </TouchableOpacity>
       ) : (
@@ -24,7 +26,7 @@ const CustomHeader = props => {
         <Text style={[{color}, styles.texTitle]}>{title}</Text>
       </View>
       {hasRightMenu ? (
-        <TouchableOpacity style={styles.icon}>
+        <TouchableOpacity style={styles.icon} onPress={onPressRight}>
           <Icon
             name="dots-horizontal"
             type="material-community"

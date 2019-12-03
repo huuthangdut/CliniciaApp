@@ -82,7 +82,7 @@ const LoginScreen = props => {
               ...styles.row,
               marginBottom: 16,
             }}>
-            <Text style={styles.forgotPasswordLabel}>Quên mật khẩu?</Text>
+            {/* <Text style={styles.forgotPasswordLabel}>Quên mật khẩu?</Text> */}
           </View>
           <Button title="Đăng nhập" primary onPress={login} loading={isLogging}/>
         </View>

@@ -3,29 +3,26 @@ import { StyleSheet, View } from 'react-native'
 import { ListItem } from 'react-native-elements'
 
 const Availability = props => {
-  const [isOn, setIsOn] = useState()
-
-  useEffect(() => {
-    setIsOn(true)
-  }, [])
+  const [enable, setEnable] = useState(false)
 
   const handleChange = () => {
-    setIsOn(!isOn)
+    props.onChange(!enable)
+    setEnable(!enable);
   }
 
   return (
     <View style={styles.container}>
       <ListItem
         key = 'title'
-        title='Availability'
+        title='Thời gian làm việc'
       />
       <ListItem
         key = 'switch'
         containerStyle = {styles.item}
-        title='Available Today'
+        title='Có thể đặt lịch hôm nay'
         bottomDivider
         switch= {{
-          value: isOn,
+          value: enable,
           onChange: handleChange 
         }}
         />

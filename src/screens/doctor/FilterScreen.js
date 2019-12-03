@@ -1,40 +1,39 @@
 import React, { useState}from 'react'
 import { StyleSheet, View, ScrollView } from 'react-native'
-import { ListItem, Text } from 'react-native-elements'
+import { ListItem, Text, Divider } from 'react-native-elements'
 import Availability from './components/Availability'
 import Header from '../../components/core/Header'
 import SortOption from './components/SortOption'
 import Gender from './components/Gender'
-import WorkExperience from './components/WorkExperience'
-import PriceRange from './components/PriceRange'
-import StarRating from './components/StarRating'
 import Button from '../../components/core/Button'
+import theme from '../../styles/theme'
 
-const FilterScreen = () => {
-  const [sortOptions, setSortOption] = useState([
-    { val: 'highRating', title: 'Star rating (Highest First)' },
-    { val: 'lowRating', title: 'Star rating (Lowest First)' },
-    { val: 'highPrice', title: 'Price (Highest First)' },
-    { val: 'lowPrice', title: 'Price (Lowest First)' }
-  ])
+const FilterScreen = (props) => {
+  const [availableToday, setAvailableToday] = useState(false);
+  const [sort, setSort] = useState();
+  const [gender, setGender] = useState();
+  const {navigation} = props;
 
   return (
-    <ScrollView>
+    <>
       <Header/>
-      <Text style={styles.header}>Filter</Text>
-      <Availability/>
-      <SortOption/>
-      <Gender/>
-      <WorkExperience/>
-      <PriceRange/>
-      <StarRating/>
+      <Text style={styles.header}>Lọc</Text>
+      <ScrollView style={{flex: 1}}>
+        <Availability onChange={(value) => setAvailableToday(value)}/>
+        <Divider style={styles.horizontalDivider} />
+        <SortOption onChange={(value) => setSort(value)}/>
+        <Divider style={styles.horizontalDivider} />
+        <Gender onChange={(value) => setGender(value)}/>
+      </ScrollView>
+      <View>
       <Button
         primary
-        title="Apply"
-        // onPress={() => navigation.navigate('ReviewAppointment')}
+        title="Áp dụng"
+        onPress={() => navigation.navigate('Doctor', {sort, gender, availableToday})}
         style={styles.button}
       />
-    </ScrollView>
+      </View>
+    </>
   )
 }
 
@@ -45,7 +44,12 @@ const styles = StyleSheet.create({
   },
   button: {
     marginHorizontal: 16,
-  }
+    marginBottom: 15
+  },
+  horizontalDivider: {
+    // marginVertical: 5,
+    backgroundColor: theme.colors.lightGray
+  },
 })
 
 export default FilterScreen

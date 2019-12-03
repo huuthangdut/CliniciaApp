@@ -104,13 +104,16 @@ const ReviewAppointmentScreen = props => {
             </View>
           </View>
         </View>
-        <Button
-          primary
-          title="Xác nhận"
-          style={styles.button}
-          onPress={() => handleNext()}
-        />
+       
       </ScrollView>
+      <View style={styles.mainContent}>
+        <Button
+            primary
+            title="Xác nhận"
+            style={styles.button}
+            onPress={() => handleNext()}
+          />
+      </View>
     </Fragment>
   );
 };
@@ -120,6 +123,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.white,
     paddingHorizontal: 15,
+  },
+  mainContent: {
+    paddingHorizontal: 20,
+    paddingVertical: 5,
   },
   content: {
     flex: 1,

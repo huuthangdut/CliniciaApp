@@ -4,31 +4,30 @@ import { ListItem, Text, CheckBox } from 'react-native-elements'
 import theme from '../../../styles/theme'
 
 const Gender = props => {
-  const [selectedOption, setSelectedOption] = useState('highRating')
+  const [selectedOption, setSelectedOption] = useState()
   const [sortOptions, setSortOption] = useState([
-    { value: 'male', title: 'Male' },
-    { value: 'female', title: 'Female' },
-  ])
+    { value: true, title: 'Nam' },
+    { value: false, title: 'Nữ' },
+  ]);
 
-  const chooseOption = value => {
-    setSelectedOption(value)
+  const handleChange = (value) => {
+    setSelectedOption(value);
+    props.onChange(value)
   }
 
   return (
     <View style={styles.container}>
       <ListItem
-        title='Sort Option'
-
+        title='Giới tính'
       />
       {
         sortOptions.map(item => {
           return (
-            <TouchableOpacity onPress={() => setSelectedOption(item.value)}>
+            <TouchableOpacity key={item.value} onPress={() => handleChange(item.value)}>
               <ListItem
                 key={item.value}
                 containerStyle={styles.item}
                 title={item.title}
-                bottomDivider
                 rightElement={
                   <CheckBox
                     containerStyle={styles.checkBox}
@@ -39,7 +38,7 @@ const Gender = props => {
                     right
                     uncheckedIcon="checkbox-blank-circle-outline"
                     checked={item.value === selectedOption}
-                    onPress={() => setSelectedOption(item.value)}
+                    onPress={() => handleChange(item.value)}
                   />
                 }
               />

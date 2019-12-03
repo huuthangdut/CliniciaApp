@@ -13,6 +13,7 @@ import {Rating, Icon, Button, Divider} from 'react-native-elements';
 import Header from '../../components/core/Header';
 import {DoctorService} from '../../services/DoctorService';
 
+
 const DoctorDetailsScreen = props => {
   const {navigation} = props;
   const doctorId = navigation.getParam('id');
@@ -52,7 +53,7 @@ const DoctorDetailsScreen = props => {
                   resizeMode="cover"
                   style={styles.avatar}
                   source={{
-                    uri: doctor.imageProfile,
+                    uri: doctor.imageProfile || 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg'
                   }}
                 />
                 <View style={styles.basicInfo}>
@@ -72,8 +73,8 @@ const DoctorDetailsScreen = props => {
               </View>
               <View style={styles.rowInfo}>
                 <View style={styles.col}>
-                  <Text style={styles.cardText}>{doctor.price} đ</Text>
-                  <Text style={styles.subText}>60 phút</Text>
+                  <Text style={styles.cardText}>{doctor.gender ? 'Nam' : 'Nữ'}</Text>
+                  <Text style={styles.subText}>Giới tính</Text>
                 </View>
                 <View style={styles.divider}></View>
                 <View style={styles.col}>
@@ -109,23 +110,28 @@ const DoctorDetailsScreen = props => {
             </View>
           </View>
           <View style={styles.content}>
-            <View style={styles.address}>
+            <View>
               <Text style={styles.subText}>Địa chỉ</Text>
               <Text style={styles.body} numberOfLines={2}>
-                {/* {doctor.location.address} */}
+                {doctor.location ? doctor.location.address : ''}
               </Text>
+              <Text style={styles.subText}>{doctor.distanceFromPatient} km</Text>
             </View>
             <Divider style={styles.horizontalDivider} />
             <View>
-              <Text style={styles.subText}>Education</Text>
+              <Text style={styles.subText}>Phòng khám</Text>
+              <Text style={styles.body}>{doctor.clinic}</Text>
+            </View>
+            <Divider style={styles.horizontalDivider} />
+            <View>
+              <Text style={styles.subText}>Học vấn</Text>
               <Text style={styles.body}>{doctor.medicalSchool}</Text>
             </View>
             <Divider style={styles.horizontalDivider} />
             <View>
-              <Text style={styles.subText}>Awards</Text>
-              <Text style={styles.body}>{doctor.awards}</Text>
+              <Text style={styles.subText}>Khám và điều trị</Text>
+              <Text style={styles.body}>{doctor.about}</Text>
             </View>
-            <Divider style={styles.horizontalDivider} />
           </View>
         </ScrollView>
       )}
@@ -200,13 +206,14 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
   cardText: {
-    fontSize: 17,
+    fontSize: 16,
     fontFamily: 'SF-Pro-Text-Semibold',
   },
   subText: {
     fontSize: 13,
     fontFamily: 'SF-Pro-Text-Regular',
     color: theme.colors.gray,
+    marginBottom: 4
   },
   buttonContainer: {
     flex: 1,
@@ -236,7 +243,7 @@ const styles = StyleSheet.create({
     color: '#C8C7CC',
   },
   content: {
-    padding: 15,
+    paddingHorizontal: 15,
   },
   address: {
     backgroundColor: '#FCFCFC',
@@ -246,6 +253,7 @@ const styles = StyleSheet.create({
   body: {
     fontSize: 15,
     fontFamily: 'SF-Pro-Text-Regular',
+    lineHeight: 21
   },
   horizontalDivider: {
     marginVertical: 16,

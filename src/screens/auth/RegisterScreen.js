@@ -38,16 +38,16 @@ const RegisterScreen = props => {
   const register = async () => {
     try {
       setIsRegistering(true);
-      const result  = await AuthService.register({ 
-        firstName, 
-        lastName, 
-        email, 
-        password, 
-        phoneNumber
+      const result = await AuthService.register({
+        firstName,
+        lastName,
+        email,
+        password,
+        phoneNumber,
       });
-      
-      if(result && result.token) {
-        navigation.navigate('Verify', { token: result.token });
+
+      if (result && result.token) {
+        navigation.navigate('Verify', {token: result.token});
       }
       setIsRegistering(false);
     } catch (error) {
@@ -58,61 +58,72 @@ const RegisterScreen = props => {
 
   return (
     <ScrollView>
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={styles.container}>
-        <View style={styles.form}>
-          <Text style={styles.heading}>Đăng ký</Text>
-          <Text style={styles.title}>Đăng ký tài khoản mới</Text>
-          <TextField
-            placeholder="Họ và tên đệm"
-            onChangeText={value => setFirstName(value)}
-            onSubmitEditing={focusLastName}
-            value={firstName}
-            returnKeyType="next"
-          />
-          <TextField
-            ref={lastNameRef}
-            placeholder="Tên"
-            onChangeText={value => setLastName(value)}
-            onSubmitEditing={focusEmail}
-            value={lastName}
-            returnKeyType="next"
-          />
-          <TextField
-            ref={emailRef}
-            placeholder="Email"
-            keyboardType="email-address"
-            onChangeText={value => setEmail(value)}
-            onSubmitEditing={focusPassword}
-            value={email}
-            returnKeyType="next"
-          />
-          <TextField
-            ref={phoneNumberRef}
-            placeholder="Số điện thoại"
-            keyboardType="phone-pad"
-            onChangeText={value => setPhoneNumber(value)}
-            onSubmitEditing={() => {}}
-            value={phoneNumber}
-            returnKeyType="next"
-          />
-          <TextField
-            ref={passwordRef}
-            placeholder="Mật khẩu"
-            onChangeText={value => setPassword(value)}
-            onSubmitEditing={focusPhoneNumber}
-            value={password}
-            returnKeyType="done"
-            secureTextEntry={true}
-          />
-          <Button title="Đăng ký" primary onPress={register} loading={isRegistering}/>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <View style={styles.container}>
+          <View style={styles.form}>
+            <Text style={styles.heading}>Đăng ký</Text>
+            <Text style={styles.title}>Đăng ký tài khoản mới</Text>
+            <TextField
+              placeholder="Họ và tên đệm"
+              onChangeText={value => setFirstName(value)}
+              onSubmitEditing={focusLastName}
+              value={firstName}
+              returnKeyType="next"
+            />
+            <TextField
+              ref={lastNameRef}
+              placeholder="Tên"
+              onChangeText={value => setLastName(value)}
+              onSubmitEditing={focusEmail}
+              value={lastName}
+              returnKeyType="next"
+            />
+            <TextField
+              ref={emailRef}
+              placeholder="Email"
+              keyboardType="email-address"
+              onChangeText={value => setEmail(value)}
+              onSubmitEditing={focusPassword}
+              value={email}
+              returnKeyType="next"
+            />
+            <TextField
+              ref={phoneNumberRef}
+              placeholder="Số điện thoại"
+              keyboardType="phone-pad"
+              onChangeText={value => setPhoneNumber(value)}
+              onSubmitEditing={() => {}}
+              value={phoneNumber}
+              returnKeyType="next"
+            />
+            <TextField
+              ref={passwordRef}
+              placeholder="Mật khẩu"
+              onChangeText={value => setPassword(value)}
+              onSubmitEditing={focusPhoneNumber}
+              value={password}
+              returnKeyType="done"
+              secureTextEntry={true}
+            />
+             <View
+              style={{
+                ...styles.row,
+                marginBottom: 16,
+              }}>
+          </View>
+            <Button
+              title="Đăng ký"
+              primary
+              onPress={register}
+              loading={isRegistering}
+            />
+          </View>
+          <Text style={styles.signInLabel} onPress={() => goToLogin()}>
+            Đã có tài khoản? Đăng nhập
+          </Text>
         </View>
-        <Text style={styles.signInLabel} onPress={() => goToLogin()}>
-          Đã có tài khoản? Đăng nhập
-        </Text>
-      </View>
-    </TouchableWithoutFeedback>
-     </ScrollView>
+      </TouchableWithoutFeedback>
+    </ScrollView>
   );
 };
 
@@ -121,7 +132,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     backgroundColor: '#fff',
-    padding: 25
+    padding: 25,
   },
   form: {
     flexGrow: 2,
@@ -140,10 +151,11 @@ const styles = StyleSheet.create({
   },
   signInLabel: {
     textAlign: 'center',
-    marginVertical: 8,
+    marginTop: 35,
+    marginBottom: 8,
     fontSize: 17,
     fontFamily: 'SF-Pro-Text-Regular',
-    color: theme.colors.gray
+    color: theme.colors.gray,
   },
 });
 

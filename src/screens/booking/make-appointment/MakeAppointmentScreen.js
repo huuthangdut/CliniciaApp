@@ -282,9 +282,11 @@ const MakeAppointmentScreen = props => {
               </View>
             </TouchableOpacity>
           </View>
-          <Button primary title="Tiếp tục" onPress={() => handleNext()} />
         </View>
       </ScrollView>
+      <View style={styles.mainContent}>
+        <Button primary title="Tiếp tục" onPress={() => handleNext()} />
+      </View>
     </Fragment>
   );
 };

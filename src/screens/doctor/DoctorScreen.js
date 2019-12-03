@@ -4,10 +4,13 @@ import theme from '../../styles/theme';
 import DoctorList from './components/DoctorList';
 import Header from '../../components/core/Header';
 import {DoctorService} from '../../services/DoctorService';
+import {SearchBar} from 'react-native-elements';
 
 const DoctorScreen = props => {
   const {navigation} = props;
-  const specialtyId = navigation.getParam('specialtyId');
+  const {specialtyId, sort, gender, availableToday} = navigation.state.params;
+
+  const [searchTerm, setSearchTerm] = useState('');
 
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -21,13 +24,14 @@ const DoctorScreen = props => {
       page,
       pageSize,
       specialtyId,
+      sort,
+      gender,
+      availableToday,
+      searchTerm
     })
       .then(result => {
-        const listDoctors = doctors;
-        listDoctors.push(...result.items);
-
         setLoading(false);
-        setDoctors(listDoctors);
+        setDoctors(list => [...list, ...result.items]);
         setHasMoreItems(result.hasNextPage);
       })
       .catch(e => {
@@ -47,9 +51,19 @@ const DoctorScreen = props => {
 
   return (
     <Fragment>
-      <Header />
+      <Header
+        hasRightMenu={true}
+        onPressRight={() => navigation.navigate('Filter')}
+      />
       <View style={styles.container}>
         <Text style={styles.header}>Bác sĩ</Text>
+        <SearchBar
+          platform="android"
+          placeholder="Tìm kiếm"
+          underlineColorAndroid={theme.colors.lightGray}
+          onChangeText={(text) => setSearchTerm(text)}
+          value={searchTerm}
+        />
         <View style={styles.list}>
           {loading && page == 0 ? (
             <View
@@ -58,10 +72,11 @@ const DoctorScreen = props => {
             </View>
           ) : (
             <DoctorList
-              items={doctors} 
+              items={doctors}
               loading={loading}
               onLoadMore={() => handleLoadMore()}
-              navigation={navigation} />
+              navigation={navigation}
+            />
           )}
         </View>
       </View>
@@ -81,7 +96,7 @@ const styles = StyleSheet.create({
   },
   list: {
     flex: 1,
-    marginTop: 16,
+    marginTop: 5
   },
 });
 
