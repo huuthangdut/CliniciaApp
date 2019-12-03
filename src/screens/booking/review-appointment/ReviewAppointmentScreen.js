@@ -19,7 +19,8 @@ const ReviewAppointmentScreen = props => {
       totalMinutes: appointment.checkingService.durationInMinutes,
       totalPrice: appointment.checkingService.price,
       doctorId: appointment.doctor.id,
-      checkingServiceId: appointment.checkingService.id
+      checkingServiceId: appointment.checkingService.id,
+      sendNotificationBeforeMinutes: appointment.reminderBefore.value
     };
   };
 
@@ -91,6 +92,13 @@ const ReviewAppointmentScreen = props => {
                 {appointment.checkingService.price
                   ? appointment.checkingService.price
                   : 'Miễn phí'}
+              </Text>
+              <Divider style={styles.divider} />
+            </View>
+            <View style={styles.listItem}>
+              <Text style={styles.text}>Nhắc nhở</Text>
+              <Text style={styles.body}>
+                  {appointment.reminderBefore.text}
               </Text>
               <Divider style={styles.divider} />
             </View>

@@ -1,4 +1,4 @@
-import React, {useState, Fragment, useEffect, useContext} from 'react';
+import React, {useState, Fragment, useEffect, useContext, useRef} from 'react';
 import {
   Text,
   View,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   FlatList,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import theme from '../../../styles/theme';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
@@ -16,6 +17,7 @@ import Header from '../../../components/core/Header';
 import {DoctorService} from '../../../services/DoctorService';
 import {DateTime} from '../../../utilities/date-time';
 import {AppContext} from '../../../AppProvider';
+import RNBottomActionSheet from 'react-native-bottom-action-sheet';
 
 const getDateString = date => date.toISOString().split('T')[0];
 
@@ -29,7 +31,36 @@ const MakeAppointmentScreen = props => {
   const [selectedTime, setSelectedTime] = useState();
   const [availableTimes, setAvailableTimes] = useState([]);
   const [checkingServices, setCheckingServices] = useState([]);
+  const [reminderBefore, setReminderBefore] = useState({text: 'Trước 1 phút', value: 1});
+
+  const [isLoadingTime, setIsLoadingTime] = useState(false);
+
   const minDate = getDateString(new Date());
+
+  const onSelectReminder = (value) => {
+
+  };
+
+  const reminderOptions = [
+    { title: "Trước 1 phút (test)", value: 1 },
+    { title: "Trước 15 phút", value: 15 },
+    { title: "Trước 30 phút", value: 30 },
+    { title: "Trước 45 phút", value: 45 },
+    { title: "Trước 1 giờ", value: 60 }
+  ]
+
+  let SheetView = RNBottomActionSheet.SheetView;
+
+  const onShowReminderOptions = () => {
+    SheetView.Show({
+      title: "Chọn thời gian nhắc nhở",
+      items: reminderOptions,
+      theme: "light",
+      onSelection: (index, value) => {
+          setReminderBefore({text: reminderOptions[index].title, value: value});
+      }
+    });
+  }
 
   const Loader = () => (
     <View
@@ -48,7 +79,9 @@ const MakeAppointmentScreen = props => {
   };
 
   const loadWorkingTime = (doctorId, date) => {
+    setIsLoadingTime(true);
     DoctorService.getWorkingTime(doctorId, date).then(result => {
+      setIsLoadingTime(false);
       setAvailableTimes(result.workingTimes);
     });
   };
@@ -64,7 +97,8 @@ const MakeAppointmentScreen = props => {
       date: selectedDate,
       time: selectedTime,
       checkingService: selectedService,
-      doctor: doctor
+      doctor: doctor,
+      reminderBefore: reminderBefore
     });
 
     navigation.navigate('ReviewAppointment');
@@ -156,7 +190,7 @@ const MakeAppointmentScreen = props => {
         <View style={styles.mainContent}>
           <View style={styles.availableTime}>
             <Text style={styles.title}>Chọn thời gian</Text>
-            {availableTimes.length > 0 ? (
+            {!isLoadingTime ? (
               <FlatList
                 style={styles.timeList}
                 horizontal={true}
@@ -184,6 +218,13 @@ const MakeAppointmentScreen = props => {
             ) : (
               <Loader />
             )}
+            {
+              availableTimes.length === 0  && !isLoadingTime && (
+                <View style={{justifyContent: 'center', alignItems: 'center', marginTop: -10}}>
+                  <Text style={styles.servicePrice}>Bác sĩ không làm việc ngày này.</Text>
+                </View>
+              )
+            }
           </View>
           <View style={styles.consulation}>
             <Text style={styles.title}>Chọn dịch vụ</Text>
@@ -228,10 +269,10 @@ const MakeAppointmentScreen = props => {
           </View>
           <View style={styles.reminder}>
             <Text style={styles.title}>Đặt lịch nhắc</Text>
-            <TouchableOpacity style={styles.listItem}>
+            <TouchableOpacity style={styles.listItem} onPress={() => onShowReminderOptions()}>
               <Text style={styles.body}>Thời gian</Text>
               <View style={styles.alert}>
-                <Text style={styles.alertText}>Trước 30 phút</Text>
+                <Text style={styles.alertText}>{reminderBefore.text}</Text>
                 <Icon
                   name="chevron-right"
                   type="entypo"
@@ -241,7 +282,6 @@ const MakeAppointmentScreen = props => {
               </View>
             </TouchableOpacity>
           </View>
-
           <Button primary title="Tiếp tục" onPress={() => handleNext()} />
         </View>
       </ScrollView>

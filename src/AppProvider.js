@@ -10,6 +10,8 @@ const AppProvider = props => {
   const [notificationCount, setNotificationCount] = useState(0);
   const [authUser, setAuthUser] = useState();
 
+  const [shouldReloadAppointmentList, setShouldReloadAppointmentList] = useState(false);
+
   const isAuthenticated = async () => {
     const token = await AsyncStorage.getItem('@access_token');
     if (token !== null) {
@@ -35,6 +37,7 @@ const AppProvider = props => {
       add: addNotification,
     },
     notificationCount: {get: notificationCount, set: setNotificationCount},
+    shouldReloadAppointmentList: { get: shouldReloadAppointmentList, set: setShouldReloadAppointmentList },
     /**
      * global function
      */

@@ -22,6 +22,7 @@ const NotificationList = props => {
   const [loading, setLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   let pageSize = 10;
+  let isFirstLoad = true;
 
   const renderFooter = () => {
     if (!loading) return null;
@@ -32,8 +33,15 @@ const NotificationList = props => {
     setLoading(true);
     NotificationService.getNotifications(page, pageSize)
       .then(result => {
-        const listNotifications = context.notifications.get;
-        context.notifications.set([...listNotifications, ...result.items]);
+        if(isFirstLoad) {
+          context.notifications.set(result.items);
+        } else {
+          const listNotifications = context.notifications.get;
+          context.notifications.set([...listNotifications, ...result.items]);
+        }
+
+        isFirstLoad = false;
+        
         setLoading(false);
         setHasMoreItems(result.hasNextPage);
       })

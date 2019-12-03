@@ -36,11 +36,9 @@ const App = () => {
     } catch (error) {}
   };
 
-  const notificationCallback = useCallback(async (notification) => {
+  const notificationCallback = useCallback((notification) => {
     const {title, body, data} = notification;
-    console.log("received");
-    context.notifications.add({id: 'random' + Math.random(), title: 'Add' + Math.random(), content: 'Add', hasRead: false, notificationDate: new Date().toISOString()})
-    // await context.notifications.add({id: Math.random(), title: title + Math.random(), content: body, notificationDate: new Date(), hasRead: false})
+    context.notifications.add({id: data.id, title: title, content: body, hasRead: false, notificationDate: data.notificationDate})
   }, []);
 
   

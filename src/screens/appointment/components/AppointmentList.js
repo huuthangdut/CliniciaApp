@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   View,
   Text,
@@ -11,9 +11,11 @@ import FlatListItemSeperator from '../../../components/core/FlatListItemSeperato
 import AppointmentItem from './AppointmentItem';
 import {AppointmentService} from '../../../services/AppointmentService';
 import {AppointmentStatus} from '../../../common/enums';
+import { AppContext } from '../../../AppProvider';
 
 const AppointmentList = props => {
   const {navigation, type} = props;
+  const context = useContext(AppContext);
 
   const [page, setPage] = useState(0);
   const [hasMoreItems, setHasMoreItems] = useState(true);
@@ -45,10 +47,8 @@ const AppointmentList = props => {
     setLoading(true);
     AppointmentService.getAppointments(page, pageSize, status)
       .then(result => {
-        const listAppointments = appointments;
-        listAppointments.push(...result.items);
+        setAppointments(prevAppointments => [...prevAppointments, ...result.items]);
         setLoading(false);
-        setAppointments(listAppointments);
         setHasMoreItems(result.hasNextPage);
       })
       .catch(e => {
@@ -78,12 +78,12 @@ const AppointmentList = props => {
         setIsRefreshing(false);
         console.log(e);
       });
-    
   };
 
   useEffect(() => {
-    loadAppointments(page, pageSize);
-  }, []);
+    setAppointments([]);
+    loadAppointments(0, pageSize);
+  }, [context.shouldReloadAppointmentList.get]);
 
   return (
     <View style={styles.container}>

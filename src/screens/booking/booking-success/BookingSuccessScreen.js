@@ -1,11 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {Text, View, StyleSheet, ScrollView} from 'react-native';
 import theme from '../../../styles/theme';
 import {Icon, Avatar} from 'react-native-elements';
 import Button from '../../../components/core/Button';
+import { AppContext } from '../../../AppProvider';
 
 const BookingSuccessScreen = props => {
   const { navigation } = props;
+  const context = useContext(AppContext);
+
+  const onComplete = () => {
+    context.shouldReloadAppointmentList.set(true);
+    navigation.navigate('Appointments');
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.textWrapper}>
@@ -51,7 +59,7 @@ const BookingSuccessScreen = props => {
             <Text style={styles.subTitle}>Cách vị trí của bạn 3km</Text>
           </View> */}
         {/* </View> */}
-        <Button primary title="Hoàn thành" onPress={() => navigation.navigate('Appointments')} style={styles.button}/>
+        <Button primary title="Hoàn thành" onPress={() => onComplete()} style={styles.button}/>
       </View>
     </View>
   );
