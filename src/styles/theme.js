@@ -16,6 +16,7 @@ const filter = require('../../assets/icons/ic-filter.png')
 const sort = require('../../assets/icons/ic-sort.png')
 const star = require('../../assets/icons/ic-star.png')
 const marker = require('../../assets/icons/ic-location.png')
+const empty = require('../../assets/icons/ic_empty.png')
 
 const tabIcons = {
     searchFocus, search, appointmentFocus, appointment, notificationFocus, notification,
@@ -24,7 +25,8 @@ const tabIcons = {
 };
 
 const icons = {
-    mapMarker
+    mapMarker,
+    empty
 }
 
 

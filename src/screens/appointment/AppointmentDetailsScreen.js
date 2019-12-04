@@ -1,21 +1,56 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useState, useContext} from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Linking,
+  Platform
 } from 'react-native';
 import {Avatar, Icon} from 'react-native-elements';
+import {AppointmentStatus as Status} from '../../common/enums';
 import AppointmentStatus from './components/AppointmentStatus';
 import Button from '../../components/core/Button';
 import theme from '../../styles/theme';
 import Header from '../../components/core/Header';
 import { DateTime } from '../../utilities/date-time';
+import {AppointmentService} from '../../services/AppointmentService';
+import {AppContext} from '../../AppProvider';
 
 const AppointmentDetailsScreen = props => {
   const { navigation } = props;
   const appointment = navigation.getParam('appointment');
+
+  const context = useContext(AppContext);
+
+  const [status, setStatus] = useState(appointment.status);
+
+  const [isCancelling, setIsCancelling] = useState(false);
+
+  const cancelAppointment = (id) => {
+    setIsCancelling(true);
+    AppointmentService.cancelAppointment(id).then(() => {
+      setIsCancelling(false);
+      setStatus(Status.Cancelled.value);
+      context.shouldReloadAppointmentList.set(value => !value);
+    }).catch(e => {
+      setIsCancelling(false);
+      console.log(e);
+    });
+  };
+
+  const text = (phoneNumber) => {
+    Linking.openURL('sms:' + phoneNumber).catch(e => console.log(e));
+  };
+
+  const dial = (phoneNumber) => {
+    if(Platform.OS === "android") {
+      Linking.openURL('tel:' + phoneNumber).catch(e => console.log(e));
+    } else {
+      Linking.openURL('telprompt:' + phoneNumber).catch(e => console.log(e));
+    }
+  };
 
   return (
     <Fragment>
@@ -32,17 +67,17 @@ const AppointmentDetailsScreen = props => {
             </View>
             <View style={styles.headerTextWrapper}>
               <Text style={styles.headerText}>{appointment.doctor.name}</Text>
-              <AppointmentStatus type={appointment.status} />
+              <AppointmentStatus type={status} />
             </View>
             <View style={styles.contact}>
-              <TouchableOpacity style={styles.iconWrapper}>
+              <TouchableOpacity style={styles.iconWrapper} onPress={() => text(appointment.doctor.phoneNumber)}>
                 <Icon
                   iconStyle={styles.icon}
                   size={25}
                   name="message-circle"
                   type="feather"></Icon>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.iconWrapper}>
+              <TouchableOpacity style={styles.iconWrapper} onPress={() => dial(appointment.doctor.phoneNumber)}>
                 <Icon
                   iconStyle={styles.icon}
                   size={25}
@@ -52,8 +87,7 @@ const AppointmentDetailsScreen = props => {
             </View>
           </View>
           <View style={styles.divider}></View>
-
-          <View style={styles.content}>
+          <ScrollView style={styles.content}>
             <View style={styles.itemRow}>
               <Text style={styles.smText}>Thời gian</Text>
               <Text style={styles.lgText}>{DateTime.toDateString(appointment.appointmentDate, 'DD/MM/YYYY')}</Text>
@@ -79,8 +113,21 @@ const AppointmentDetailsScreen = props => {
               <Text style={styles.smText}>Nhắc nhở</Text>
               <Text style={styles.lgText}>Trước {appointment.sendNotificationBeforeMinutes} phút</Text>
             </View>
-          </View>
-          <Button title="Cancel" secondary disabled style={styles.button} />
+          </ScrollView>
+          {
+            (status === Status.Confirming.value) ? (
+              <Button title="Huỷ lịch hẹn" 
+                primary 
+                style={styles.button} 
+                onPress={() => cancelAppointment(appointment.id)}
+                loading={isCancelling}
+                />
+            ) : (
+              status === Status.Confirmed.value && (
+                <Button title="Huỷ lịch hẹn" secondary disabled style={styles.button} />
+              )
+            )
+          }
         </View>
       </ScrollView>
     </Fragment>

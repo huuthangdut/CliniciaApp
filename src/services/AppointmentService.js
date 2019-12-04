@@ -29,12 +29,21 @@ const addAppointment = appointment => {
   return Api.post(
     `${CONFIG.API_ROOT}/v${CONFIG.API_VERSION}/${CONFIG.API_URL.APPOINTMENTS}`,
     appointment,
-    true,
+    true
   );
 };
+
+const cancelAppointment = (id) => {
+  return Api.post(
+    `${CONFIG.API_ROOT}/v${CONFIG.API_VERSION}/${CONFIG.API_URL.CANCEL_APPOINTMENT(id)}`,
+    null,
+    true
+  );
+}
 
 export const AppointmentService = {
     getAppointments,
     getAppointment,
-    addAppointment
+    addAppointment,
+    cancelAppointment
 };

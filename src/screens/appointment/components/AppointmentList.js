@@ -12,6 +12,7 @@ import AppointmentItem from './AppointmentItem';
 import {AppointmentService} from '../../../services/AppointmentService';
 import {AppointmentStatus} from '../../../common/enums';
 import { AppContext } from '../../../AppProvider';
+import EmptyList from '../../../components/core/EmptyList';
 
 const AppointmentList = props => {
   const {navigation, type} = props;
@@ -92,6 +93,7 @@ const AppointmentList = props => {
           <ActivityIndicator size={40} style={{color: '#000'}} />
         </View>
       ) : (
+        appointments.length > 0 ? (
         <FlatList
           style={styles.list}
           data={appointments}
@@ -111,6 +113,10 @@ const AppointmentList = props => {
             />
           }
         />
+        ) : (
+          <EmptyList text="Bạn không có lịch hẹn sắp tới."/>
+        )
+        
       )}
     </View>
   );

@@ -11,7 +11,7 @@ import FlatListItemSeperator from '../../../components/core/FlatListItemSeperato
 import NotificationItem from './NotificationItem';
 import {NotificationService} from '../../../services/NotificationService';
 import {AppContext} from '../../../AppProvider';
-import { Button } from 'react-native-elements';
+import EmptyList from '../../../components/core/EmptyList';
 
 const NotificationList = props => {
   const {navigation} = props;
@@ -85,7 +85,8 @@ const NotificationList = props => {
           <ActivityIndicator size={40} style={{color: '#000'}} />
         </View>
       ) : (
-        <FlatList
+        context.notifications.get.length > 0 ? (
+          <FlatList
           style={styles.list}
           data={context.notifications.get}
           showsVerticalScrollIndicator={false}
@@ -106,6 +107,10 @@ const NotificationList = props => {
             />
           }
         />
+        ) : (
+          <EmptyList text="Bạn không có thông báo nào."/>
+        )
+       
       )}
     </View>
   );
