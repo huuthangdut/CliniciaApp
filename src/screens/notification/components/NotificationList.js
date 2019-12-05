@@ -108,7 +108,7 @@ const NotificationList = props => {
           }
         />
         ) : (
-          <EmptyList text="Bạn không có thông báo nào."/>
+          <EmptyList text="Không có thông báo."/>
         )
        
       )}

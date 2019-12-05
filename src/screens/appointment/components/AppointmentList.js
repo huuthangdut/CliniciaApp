@@ -114,7 +114,7 @@ const AppointmentList = props => {
           }
         />
         ) : (
-          <EmptyList text="Bạn không có lịch hẹn sắp tới."/>
+          <EmptyList text="Không có lịch hẹn."/>
         )
         
       )}

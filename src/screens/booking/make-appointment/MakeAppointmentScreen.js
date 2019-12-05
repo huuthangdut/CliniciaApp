@@ -19,7 +19,9 @@ import {DateTime} from '../../../utilities/date-time';
 import {AppContext} from '../../../AppProvider';
 import RNBottomActionSheet from 'react-native-bottom-action-sheet';
 
-const getDateString = date => date.toISOString().split('T')[0];
+const getDateString = date => DateTime.toDateString(date, 'YYYY-MM-DD');
+
+const getTimeString = date => DateTime.toTimeString(date, 'HH:mm');
 
 const MakeAppointmentScreen = props => {
   const {navigation} = props;
@@ -31,36 +33,43 @@ const MakeAppointmentScreen = props => {
   const [selectedTime, setSelectedTime] = useState();
   const [availableTimes, setAvailableTimes] = useState([]);
   const [checkingServices, setCheckingServices] = useState([]);
-  const [reminderBefore, setReminderBefore] = useState({text: 'Trước 1 phút', value: 1});
+  const [reminderBefore, setReminderBefore] = useState({
+    text: 'Trước 1 phút',
+    value: 1,
+  });
 
   const [isLoadingTime, setIsLoadingTime] = useState(false);
 
+  const [currentTime, setCurrentTime] = useState(getTimeString(new Date()));
+  const [serviceDuration, setServiceDuration] = useState();
+
   const minDate = getDateString(new Date());
 
-  const onSelectReminder = (value) => {
-
+  const onSelectService = (item) => {
+    setSelectedService(item);
+    setServiceDuration(item.durationInMinutes);
   };
 
   const reminderOptions = [
-    { title: "Trước 1 phút (test)", value: 1 },
-    { title: "Trước 15 phút", value: 15 },
-    { title: "Trước 30 phút", value: 30 },
-    { title: "Trước 45 phút", value: 45 },
-    { title: "Trước 1 giờ", value: 60 }
-  ]
+    {title: 'Trước 1 phút (test)', value: 1},
+    {title: 'Trước 15 phút', value: 15},
+    {title: 'Trước 30 phút', value: 30},
+    {title: 'Trước 45 phút', value: 45},
+    {title: 'Trước 1 giờ', value: 60},
+  ];
 
   let SheetView = RNBottomActionSheet.SheetView;
 
   const onShowReminderOptions = () => {
     SheetView.Show({
-      title: "Chọn thời gian nhắc nhở",
+      title: 'Chọn thời gian nhắc nhở',
       items: reminderOptions,
-      theme: "light",
+      theme: 'light',
       onSelection: (index, value) => {
-          setReminderBefore({text: reminderOptions[index].title, value: value});
-      }
+        setReminderBefore({text: reminderOptions[index].title, value: value});
+      },
     });
-  }
+  };
 
   const Loader = () => (
     <View
@@ -78,9 +87,9 @@ const MakeAppointmentScreen = props => {
     setSelectedDate(day.dateString);
   };
 
-  const loadWorkingTime = (doctorId, date) => {
+  const loadWorkingTime = (doctorId, date, currentTime, serviceDuration) => {
     setIsLoadingTime(true);
-    DoctorService.getWorkingTime(doctorId, date).then(result => {
+    DoctorService.getWorkingTime(doctorId, date, currentTime, serviceDuration).then(result => {
       setIsLoadingTime(false);
       setAvailableTimes(result.workingTimes);
     });
@@ -98,7 +107,7 @@ const MakeAppointmentScreen = props => {
       time: selectedTime,
       checkingService: selectedService,
       doctor: doctor,
-      reminderBefore: reminderBefore
+      reminderBefore: reminderBefore,
     });
 
     navigation.navigate('ReviewAppointment');
@@ -107,8 +116,16 @@ const MakeAppointmentScreen = props => {
   useEffect(() => {
     setAvailableTimes([]);
     setSelectedTime(null);
-    loadWorkingTime(doctor.id, DateTime.toDateString(selectedDate, "YYYYMMDD"));
+    loadWorkingTime(doctor.id, DateTime.toDateString(selectedDate, 'YYYYMMDD'), currentTime, serviceDuration);
   }, [selectedDate]);
+
+  useEffect(() => {
+    if(availableTimes.length > 0) {
+      setAvailableTimes([]);
+      setSelectedTime(null);
+      loadWorkingTime(doctor.id, DateTime.toDateString(selectedDate, 'YYYYMMDD'), currentTime, serviceDuration);
+    }
+  }, [serviceDuration])
 
   useEffect(() => {
     loadCheckingServices(doctor.id);
@@ -218,13 +235,18 @@ const MakeAppointmentScreen = props => {
             ) : (
               <Loader />
             )}
-            {
-              availableTimes.length === 0  && !isLoadingTime && (
-                <View style={{justifyContent: 'center', alignItems: 'center', marginTop: -10}}>
-                  <Text style={styles.servicePrice}>Bác sĩ không làm việc ngày này.</Text>
-                </View>
-              )
-            }
+            {availableTimes.length === 0 && !isLoadingTime && (
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: -10,
+                }}>
+                <Text style={styles.servicePrice}>
+                  Bác sĩ không có thời gian trống ngày này.
+                </Text>
+              </View>
+            )}
           </View>
           <View style={styles.consulation}>
             <Text style={styles.title}>Chọn dịch vụ</Text>
@@ -234,14 +256,19 @@ const MakeAppointmentScreen = props => {
                   <View>
                     <TouchableOpacity
                       style={styles.listItem}
-                      onPress={() => setSelectedService(item)}>
+                      onPress={() => onSelectService(item)}>
                       <View style={styles.serviceContainer}>
                         <Text numberOfLines={2} style={styles.body}>
                           {item.name}
                         </Text>
-                        <Text style={styles.servicePrice}>
-                          {item.price ? item.price : 'Miễn phí'}
-                        </Text>
+                        <View style={{flexDirection: 'row'}}>
+                          <Text style={styles.servicePrice}>
+                            {item.durationInMinutes} phút -
+                          </Text>
+                          <Text style={styles.servicePrice}>
+                            {item.price ? item.price + 'đ' : 'Miễn phí'}
+                          </Text>
+                        </View>
                       </View>
                       <CheckBox
                         containerStyle={styles.checkBox}
@@ -269,7 +296,9 @@ const MakeAppointmentScreen = props => {
           </View>
           <View style={styles.reminder}>
             <Text style={styles.title}>Đặt lịch nhắc</Text>
-            <TouchableOpacity style={styles.listItem} onPress={() => onShowReminderOptions()}>
+            <TouchableOpacity
+              style={styles.listItem}
+              onPress={() => onShowReminderOptions()}>
               <Text style={styles.body}>Thời gian</Text>
               <View style={styles.alert}>
                 <Text style={styles.alertText}>{reminderBefore.text}</Text>
@@ -360,6 +389,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'SF-Pro-Text-Regular',
     color: theme.colors.gray,
+    paddingRight: 5,
   },
   body: {
     fontSize: 17,

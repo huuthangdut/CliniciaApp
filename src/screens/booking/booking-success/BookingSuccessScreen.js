@@ -10,7 +10,7 @@ const BookingSuccessScreen = props => {
   const context = useContext(AppContext);
 
   const onComplete = () => {
-    context.shouldReloadAppointmentList.set(true);
+    context.shouldReloadAppointmentList.set(val => !val);
     navigation.navigate('Appointments');
   }
 
