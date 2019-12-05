@@ -22,6 +22,8 @@ class AppProvider extends React.PureComponent {
       temptLocation: this.getCurrentLocation(),
       carts: AsyncStorage.getItem('carts'),
       reloadOrderList: false,
+      notifications: [],
+      notificationsCount: [],
       isAuthenticated: async () => {
         const token = await AsyncStorage.getItem('@access_token')
         return token !== null;
@@ -69,9 +71,28 @@ class AppProvider extends React.PureComponent {
         this.setState({
           temptLocation: {...location}
         })
-      }
+      },
+      addNotification: notification => {
+        this.setState(prevState => ({
+          notifications: {notification ,...prevState.notifications},
+          notificationCount: prevState.notificationCount+ 1
+        }))
+      },
+      setNotificationCount: count => {
+        this.setState({
+          notificationCount: count
+        })
+      },
     };
   }
+
+  componentDidMount() {
+    AsyncStorage.getItem('@notification_count').then(count => {
+      this.setState({
+        notificationsCount: +count || 0
+      })
+    });
+  }  
 
   getCurrentLocation = () => {
     Geolocation.getCurrentPosition(

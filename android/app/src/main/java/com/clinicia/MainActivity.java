@@ -1,4 +1,4 @@
-package com.Clinicia;
+package com.exfood;
 
 import com.facebook.react.ReactActivity;
 

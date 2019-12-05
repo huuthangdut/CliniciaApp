@@ -28,6 +28,7 @@ import CheckoutScreen from './screens/store/CheckoutScreen'
 import LocaltionPickerScreen from './screens/location/LocaltionPickerScreen'
 import AsyncStorage from '@react-native-community/async-storage'
 import AuthLoadingScreen from './screens/auth/AuthLoadingScreen'
+import { View } from 'react-native'
 
 const FavoriteNavigator = createStackNavigator({
   Favorite: FavoriteScreen
@@ -52,7 +53,7 @@ const OrderNavigator = createStackNavigator({
   initialRouteName: 'Store'
 })
 
-OrderNavigator.navigationOptions = ({navigation}) => {
+OrderNavigator.navigationOptions = ({ navigation }) => {
   let tabBarVisible = true;
   if (navigation.state.index > 0) {
     tabBarVisible = false;
@@ -76,7 +77,7 @@ const SpecialtyNavigator = createStackNavigator(
   {
     Specialty: SpecialtyScreen,
   },
-  { 
+  {
     headerMode: 'none',
   },
 )
@@ -100,7 +101,7 @@ const OrderHisToryNavigator = createStackNavigator(
   },
 )
 
-OrderHisToryNavigator.navigationOptions = ({navigation}) => {
+OrderHisToryNavigator.navigationOptions = ({ navigation }) => {
   let tabBarVisible = true;
   if (navigation.state.index > 0) {
     tabBarVisible = false;
@@ -134,7 +135,7 @@ const AccountNavigator = createStackNavigator(
   }
 )
 
-AccountNavigator.navigationOptions = ({navigation}) => {
+AccountNavigator.navigationOptions = ({ navigation }) => {
   let tabBarVisible = true;
   if (navigation.state.index > 0) {
     tabBarVisible = false;
@@ -162,17 +163,26 @@ const TabNavigator = createBottomTabNavigator(
     },
     Notification: {
       screen: NotificationNavigator,
-      navigationOptions: {
+      navigationOptions: ({ screenProps, navigation }) => ({
         tabBarLabel: 'Notifications',
         tabBarIcon: ({ focused }) => (
-          <Icon
-            type='material-community'
-            name='bell'
-            size={30}
-            color={focused ? theme.colors.primary : theme.colors.gray}
-          />
+          <View>
+            <Icon
+              type='material-community'
+              name='bell'
+              size={30}
+              color={focused ? theme.colors.primary : theme.colors.gray}
+            />
+            {screenProps.notificationCount > 0 && (
+              <Badge
+                value={screenProps.notificationCount}
+                status="error"
+                containerStyle={{ position: 'absolute', top: -4, right: -13 }}
+              />
+            )}
+          </View>
         ),
-      },
+      }),
     },
     Appointment: {
       screen: OrderHisToryNavigator,
@@ -188,7 +198,7 @@ const TabNavigator = createBottomTabNavigator(
         ),
       },
     },
-   
+
     Account: {
       screen: AccountNavigator,
       navigationOptions: {
@@ -212,6 +222,20 @@ const TabNavigator = createBottomTabNavigator(
     initialRouteName: 'Home'
   }
 )
+
+TabNavigator.navigationOptions = ({screenProps, navigation}) => {
+  const {setNotificationCount, notificationCount} = screenProps;
+
+  if(navigation.state.index === 2) {
+    setNotificationCount(0);
+  }
+
+  AsyncStorage.setItem('@notification_count', notificationCount + '');
+
+  return {
+    tabBarVisible: true
+  };
+};
 
 const AppNavigator = createStackNavigator(
   {

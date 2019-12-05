@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useEffect } from 'react'
+import React, { useState, Fragment, useEffect, useContext } from 'react'
 import WithContext from '../../components/core/WithContext'
 import { StyleSheet, View, ActivityIndicator } from 'react-native'
 import Reminder from './components/Reminder'
@@ -9,6 +9,7 @@ import Toolbar from './components/Toolbar'
 import StoreList from '../doctor/components/StoreList'
 import StoreService from '../../services/StoreService'
 import theme from '../../styles/theme'
+import { NotificationContext } from '../../components/core/NotificationsContext'
 
 
 const HomeScreen = props => {

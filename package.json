@@ -1,5 +1,5 @@
 {
-  "name": "Clinicia",
+  "name": "com.exfood",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -22,12 +22,14 @@
     "react-native-dynamic-vector-icons": "0.2.1",
     "react-native-elements": "^1.2.5",
     "react-native-extended-stylesheet": "^0.12.0",
+    "react-native-firebase": "^5.5.6",
     "react-native-gesture-handler": "^1.5.0",
     "react-native-google-places-autocomplete": "1.3.9",
     "react-native-improved-text-input": "0.0.1",
     "react-native-login-screen": "0.1.11",
     "react-native-maps": "0.26.1",
     "react-native-reanimated": "^1.4.0",
+    "react-native-rename": "^2.4.1",
     "react-native-snap-carousel": "3.8.4",
     "react-native-tab-view": "^2.10.0",
     "react-native-vector-icons": "^6.6.0",
