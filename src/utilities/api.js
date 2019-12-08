@@ -22,6 +22,13 @@ export class Api {
     return response.data.result;
   }
 
+  static async put(url, body, authorize) {
+    const config = await this.requestConfig(null, authorize);
+    const response = await axios.put(url, body, config).catch(this.handleError);
+
+    return response.data.result;
+  }
+
   static async delete(url, authorize) {
     const config = await this.requestConfig(null, authorize);
     const response = await axios.delete(url, config).catch(this.handleError);

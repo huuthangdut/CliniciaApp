@@ -9,24 +9,17 @@ const AppointmentScreen = props => {
   const [tabBarConfig, setTabBarConfig] = useState({
     index: 0,
     routes: [
-      {key: 'Upcoming', title: 'Sắp tới'},
-      {key: 'Previous', title: 'Lịch sử'},
+      {key: 'Confirming', title: 'Chưa xác nhận'},
+      {key: 'Upcoming', title: 'Đã xác nhận'},
+      {key: 'Done', title: 'Hoàn thành'},
+      {key: 'Cancelled', title: 'Đã huỷ'}
     ],
   });
 
   const handleIndexChange = index => setTabBarConfig(...tabBarConfig, index);
 
   const renderScene = ({route}) => {
-    switch (route.key) {
-      case 'Upcoming':
-        return (
-          <AppointmentList type="Upcoming" navigation={props.navigation} />
-        );
-      case 'Previous':
-        return (
-          <AppointmentList type="Previous" navigation={props.navigation} />
-        );
-    }
+    return <AppointmentList type={route.key} navigation={props.navigation} />
   };
 
   const renderTabBar = props => {
@@ -65,9 +58,9 @@ const AppointmentScreen = props => {
 
   return (
     <Fragment>
-      <Header hasBackIcon={false} hasRightMenu={true}/>
+      <Header hasBackIcon={false} hasRightMenu={true} />
       <View style={styles.container}>
-        <Text style={styles.header}>Lịch hẹn</Text>
+        <Text style={styles.header}>Quản lý lịch hẹn</Text>
         <TabView
           lazy
           navigationState={tabBarConfig}
@@ -85,10 +78,10 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     backgroundColor: 'white',
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
   header: {
-    fontSize: 34,
+    fontSize: 28,
     fontFamily: 'SF-Pro-Display-Bold',
   },
   tabBarContainer: {
@@ -100,12 +93,12 @@ const styles = StyleSheet.create({
     height: 44,
   },
   tabItem: {
-    marginRight: 20,
-    paddingVertical: 5,
+    marginRight: 15,
+    paddingVertical: 9,
     alignItems: 'flex-start',
   },
   tabItemText: {
-    fontSize: 18,
+    fontSize: 15,
     fontFamily: 'SF-Pro-Text-Regular',
   },
   highlight: {

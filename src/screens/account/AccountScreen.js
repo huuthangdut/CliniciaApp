@@ -10,10 +10,9 @@ import theme from '../../styles/theme';
 const AccountScreen = props => {
   return (
     <ScrollView style={styles.container}>
-        {/* <Text style={styles.header}>Tài khoản</Text> */}
         <UserInfo />
-        <Option navigation={props.navigation} />
         <Address navigation={props.navigation}/>
+        <Option navigation={props.navigation}/>
         <Setting navigation={props.navigation} />
     </ScrollView>
   );

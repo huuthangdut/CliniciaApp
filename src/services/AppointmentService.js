@@ -25,18 +25,12 @@ const getAppointment = id => {
   );
 };
 
-const addAppointment = appointment => {
+const setStatus = (id, status) => {
   return Api.post(
-    `${CONFIG.API_ROOT}/v${CONFIG.API_VERSION}/${CONFIG.API_URL.APPOINTMENTS}`,
-    appointment,
-    true
-  );
-};
-
-const cancelAppointment = (id) => {
-  return Api.post(
-    `${CONFIG.API_ROOT}/v${CONFIG.API_VERSION}/${CONFIG.API_URL.CANCEL_APPOINTMENT(id)}`,
-    null,
+    `${CONFIG.API_ROOT}/v${CONFIG.API_VERSION}/${CONFIG.API_URL.STATUS(id)}`,
+    {
+      status
+    },
     true
   );
 }
@@ -44,6 +38,5 @@ const cancelAppointment = (id) => {
 export const AppointmentService = {
     getAppointments,
     getAppointment,
-    addAppointment,
-    cancelAppointment
+    setStatus
 };

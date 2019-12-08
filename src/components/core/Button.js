@@ -8,8 +8,9 @@ const CustomButton = props => {
     onPress,
     title,
     primary,
+    secondary,
     disabled,
-    titleStyle = styles.title,
+    titleStyle = secondary ? [styles.title, styles.textTitle] : styles.title,
     style,
     loading,
   } = props;
@@ -41,6 +42,9 @@ const styles = StyleSheet.create({
     title: {
       fontSize: 17,
       fontFamily: 'SF-Pro-Text-Semibold'
+    },
+    textTitle: {
+      color: theme.colors.primary
     }
 });
 

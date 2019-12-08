@@ -29,6 +29,10 @@ import VerifyScreen from './screens/auth/VerifyScreen';
 import LocationPickerScreen from './screens/location/LocationPickerScreen';
 import DoctorMap from './screens/doctor/components/DoctorMap';
 import AsyncStorage from '@react-native-community/async-storage';
+import CheckingServiceScreen from './screens/checking-service/CheckingServiceScreen';
+import WorkingScheduleScreen from './screens/working-schedule/WorkingScheduleScreen';
+import AddCheckingServiceScreen from './screens/checking-service/AddCheckingServiceScreen';
+import UpdateCheckingServiceScreen from './screens/checking-service/UpdateCheckingServiceScreen';
 
 const FavoriteNavigator = createStackNavigator(
   {
@@ -121,10 +125,19 @@ const NotificationNavigator = createStackNavigator(
   },
 );
 
+const CheckingServiceNavigator = createStackNavigator({
+  CheckingService: CheckingServiceScreen,
+  AddCheckingService: AddCheckingServiceScreen,
+  UpdateCheckingService: UpdateCheckingServiceScreen
+}, {
+  headerMode: 'none'
+});
+
 const AccountNavigator = createStackNavigator(
   {
     Account: AccountScreen,
-    ChangePassword: ChangePasswordScreen,
+    CheckingService: CheckingServiceNavigator,
+    WorkingSchedule: WorkingScheduleScreen,
   },
   {
     headerMode: 'none',
@@ -133,48 +146,18 @@ const AccountNavigator = createStackNavigator(
 
 const TabNavigator = createBottomTabNavigator(
   {
-    Home: {
-      screen: HomeNavigator,
-      navigationOptions: {
-        tabBarLabel: 'Tìm kiếm',
-        tabBarIcon: ({focused}) => (
-          <Image
-            style={{width: 24, height: 24}}
-            source={
-              focused ? theme.tabIcons.searchFocus : theme.tabIcons.search
-            }
-          />
-        ),
-      },
-    },
     Appointment: {
       screen: AppointmentNavigator,
-      navigationOptions: {
-        tabBarLabel: 'Lịch hẹn',
-        tabBarIcon: ({focused}) => (
-          <Image
-            style={{width: 24, height: 24}}
-            source={
-              focused
-                ? theme.tabIcons.appointmentFocus
-                : theme.tabIcons.appointment
-            }
-          />
-        ),
-      },
-    },
-    Notification: {
-      screen: NotificationNavigator,
       navigationOptions: ({screenProps, navigation}) => ({
-        tabBarLabel: 'Thông báo',
+        tabBarLabel: 'Lịch hẹn',
         tabBarIcon: ({focused}) => (
           <View>
             <Image
               style={{width: 24, height: 24}}
               source={
                 focused
-                  ? theme.tabIcons.notificationFocus
-                  : theme.tabIcons.notification
+                ? theme.tabIcons.appointmentFocus
+                : theme.tabIcons.appointment
               }
             />
             {screenProps.notificationCount > 0 && (
@@ -208,7 +191,7 @@ const TabNavigator = createBottomTabNavigator(
       activeTintColor: theme.colors.primary,
       inactiveTintColor: theme.colors.gray,
     },
-    initialRouteName: 'Home',
+    initialRouteName: 'Appointment',
   },
 );
 

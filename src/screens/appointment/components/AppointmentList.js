@@ -11,7 +11,7 @@ import FlatListItemSeperator from '../../../components/core/FlatListItemSeperato
 import AppointmentItem from './AppointmentItem';
 import {AppointmentService} from '../../../services/AppointmentService';
 import {AppointmentStatus} from '../../../common/enums';
-import { AppContext } from '../../../AppProvider';
+import {AppContext} from '../../../AppProvider';
 import EmptyList from '../../../components/core/EmptyList';
 
 const AppointmentList = props => {
@@ -28,15 +28,13 @@ const AppointmentList = props => {
   let status;
 
   if (type === 'Upcoming') {
-    status = [
-      AppointmentStatus.Confirming.value,
-      AppointmentStatus.Confirmed.value,
-    ];
-  } else if (type === 'Previous') {
-    status = [
-      AppointmentStatus.Completed.value,
-      AppointmentStatus.Cancelled.value,
-    ];
+    status = AppointmentStatus.Confirmed.value;
+  } else if (type === 'Confirming') {
+    status = AppointmentStatus.Confirming.value;
+  } else if (type === 'Done') {
+    status = AppointmentStatus.Completed.value;
+  } else if (type === 'Cancelled') {
+    status = AppointmentStatus.Cancelled.value;
   }
 
   const renderFooter = () => {
@@ -48,7 +46,10 @@ const AppointmentList = props => {
     setLoading(true);
     AppointmentService.getAppointments(page, pageSize, status)
       .then(result => {
-        setAppointments(prevAppointments => [...prevAppointments, ...result.items]);
+        setAppointments(prevAppointments => [
+          ...prevAppointments,
+          ...result.items,
+        ]);
         setLoading(false);
         setHasMoreItems(result.hasNextPage);
       })
@@ -92,8 +93,7 @@ const AppointmentList = props => {
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <ActivityIndicator size={40} style={{color: '#000'}} />
         </View>
-      ) : (
-        appointments.length > 0 ? (
+      ) : appointments.length > 0 ? (
         <FlatList
           style={styles.list}
           data={appointments}
@@ -113,10 +113,8 @@ const AppointmentList = props => {
             />
           }
         />
-        ) : (
-          <EmptyList text="Không có lịch hẹn."/>
-        )
-        
+      ) : (
+        <EmptyList text="Không có dữ liệu." />
       )}
     </View>
   );

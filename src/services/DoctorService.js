@@ -49,17 +49,57 @@ const getWorkingTime = (doctorId, date, timeFrom, serviceDuration) => {
   )
 }
 
-const getCheckingServices = (doctorId) => {
+const getCheckingServices = () => {
   return Api.get(
-    `${CONFIG.API_ROOT}/v${CONFIG.API_VERSION}/${CONFIG.API_URL.DOCTOR_CHECKING_SERVICES(doctorId)}`,
+    `${CONFIG.API_ROOT}/v${CONFIG.API_VERSION}/${CONFIG.API_URL.CHECKING_SERVICES}`,
     null,
     true
   )
+}
+
+const addCheckingService = ({name, description, durationInMinutes, price, doctorId}) => {
+  return Api.post(
+    `${CONFIG.API_ROOT}/v${CONFIG.API_VERSION}/${CONFIG.API_URL.CHECKING_SERVICES}`,
+    {
+      name,
+      description,
+      durationInMinutes,
+      price,
+      doctorId
+    },
+    true
+  );
+}
+
+const updateCheckingService = ({id, name, description, durationInMinutes, price, doctorId}) => {
+  return Api.put(
+    `${CONFIG.API_ROOT}/v${CONFIG.API_VERSION}/${CONFIG.API_URL.CHECKING_SERVICES}`,
+    {
+      id,
+      name,
+      description,
+      durationInMinutes,
+      price,
+      doctorId
+    },
+    true
+  );
+}
+
+const deleteCheckingService = (id) => {
+  return Api.delete(
+    `${CONFIG.API_ROOT}/v${CONFIG.API_VERSION}/${CONFIG.API_URL.CHECKING_SERVICE(id)}`,
+    null,
+    true
+  );
 }
 
 export const DoctorService = {
   getDoctors,
   getDoctor,
   getWorkingTime,
-  getCheckingServices
+  getCheckingServices,
+  addCheckingService,
+  updateCheckingService,
+  deleteCheckingService
 };

@@ -1,26 +1,19 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
-import {Avatar} from 'react-native-elements';
 import theme from '../../../styles/theme';
-import AppointmentStatus from './AppointmentStatus';
-import {DateTime} from '../../../utilities/date-time';
+import { Icon } from 'react-native-elements';
 
-const AppointmentItem = props => {
+const CheckingServiceItem = props => {
   const {item, navigation} = props;
   return (
-    <TouchableOpacity style={styles.container} activeOpacity={0.7} onPress={() => props.navigation.navigate('AppointmentDetails', { appointment: item })}>
-      <View style={styles.image}>
-        <Avatar
-          size={75}
-          rounded
-          source={{uri: item.imageProfile}}
-        />
-      </View>
+    <TouchableOpacity style={styles.container} activeOpacity={0.7} onPress={() => navigation.navigate('UpdateCheckingService', { checkingService: item })}>
       <View style={styles.textWrapper}>
-        <Text style={styles.doctorName}>{item.patient.name}</Text>
-        <Text numberOfLines={1} style={styles.clinicName}>{item.patient.address}</Text>
-        <Text style={styles.date}>{DateTime.toDateString(item.appointmentDate, 'HH:mm DD/MM/YYYY')}</Text>
-        <Text style={styles.date}>{item.totalMinutes} phút</Text>
+        <Text style={styles.doctorName}>{item.name}</Text>
+        <Text numberOfLines={2} style={styles.clinicName}>{item.description}</Text>
+        <Text style={styles.date}>{item.price}đ - {item.durationInMinutes} phút</Text>
+      </View>
+      <View style={styles.rightButton}>
+        <Icon type="material" name="edit" color={theme.colors.primary}/>
       </View>
     </TouchableOpacity>
   );
@@ -29,7 +22,11 @@ const AppointmentItem = props => {
 const styles = StyleSheet.create({
   container: {
     height: 90,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    borderColor: theme.colors.lightGray,
+    borderWidth: 1,
+    borderRadius: 10,
+    marginVertical: 4
   },
   image: {
     justifyContent: 'center',
@@ -42,17 +39,17 @@ const styles = StyleSheet.create({
     marginHorizontal: 10
   },
   doctorName: {
-    fontSize: 16,
+    fontSize: 18,
     fontFamily: 'SF-Pro-Display-Semibold',
     lineHeight: 20
   },
   clinicName: {
-    fontSize: 13,
+    fontSize: 14,
     fontFamily: 'SF-Pro-Text-Regular',
     lineHeight: 20
   },
   date: {
-      fontSize: 13,
+      fontSize: 14,
       fontFamily: 'SF-Pro-Text-Regular',
       color: theme.colors.darkGray,
       lineHeight: 20
@@ -69,7 +66,12 @@ const styles = StyleSheet.create({
       fontFamily: 'SF-Pro-Text-Regular',
       color: theme.colors.darkGray,
       marginBottom: 15
+  },
+  rightButton: {
+      width: 40,
+      justifyContent: 'center',
+      alignItems: 'center'
   }
 });
 
-export default AppointmentItem;
+export default CheckingServiceItem;

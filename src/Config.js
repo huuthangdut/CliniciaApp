@@ -11,15 +11,17 @@ export const CONFIG = {
         DOCTOR: (id) => `doctors/${id}`,
         DOCTOR_WORKING_TIME: (doctorId) => `doctors/${doctorId}/workingTime`,
         DOCTOR_CHECKING_SERVICES: (doctorId) => `doctors/${doctorId}/checkingServices`,
-        APPOINTMENTS: 'appointments',
-        APPOINTMENT: (id) => `appointments/${id}`,
-        CANCEL_APPOINTMENT: (id) => `appointments/${id}/cancel`,
+        APPOINTMENTS: 'appointments/ofdoctor',
+        APPOINTMENT: (id) => `appointments/ofdoctor/${id}`,
+        STATUS: (id) => `appointments/ofdoctor/${id}/status`,
         DEVICES: 'devices',
         DEVICE_STATUS: (deviceUuid) => `devices/${deviceUuid}/status`,
         NOTIFICATIONS: 'notifications',
         NOTIFICATION_READ: (id) => `notifications/${id}/read`,
         NOTIFICATION_UNSEEN_COUNT: 'notifications/unseen/count',
         NOTIFICATION_UNSEEN_READ: 'notifications/unseen/read',
-        USER_LOCATION: 'users/location'
+        USER_LOCATION: 'users/location',
+        CHECKING_SERVICES: 'checkingServices',
+        CHECKING_SERVICE: (id) => `checkingServices/${id}`
     }
 }

@@ -13,14 +13,18 @@ const Option = props => {
 
   const listOption = [
     {
-      title: 'Yêu thích',
-      screen: 'Favorite'
+      title: 'Giờ làm việc',
+      screen: 'WorkingSchedule'
+    },
+    {
+      title: 'Dịch vụ khám',
+      screen: 'CheckingService'
     }
   ]
 
   return (
     <View style={styles.option}>
-      <Text style={styles.headerLabel}></Text>
+      <Text style={styles.headerLabel}>Quản lý</Text>
       {
         listOption.map((item, i) => (
           <TouchableOpacity key={i} onPress={() => navigation.navigate(item.screen)}>
@@ -29,13 +33,6 @@ const Option = props => {
               title={item.title}
               bottomDivider
               chevron
-              badge={{
-                value: '+' + 33,
-                textStyle: { color: theme.colors.darkGray },
-                badgeStyle: {
-                  backgroundColor: theme.colors.lightGray
-                }
-              }}
             />
           </TouchableOpacity>
         ))

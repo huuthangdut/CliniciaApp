@@ -15,13 +15,6 @@ const Setting = props => {
 
   const listSetting = [
     {
-      title: 'Thông báo',
-      icon: theme.tabIcons.notificationSetting,
-      name: 'bell',
-      bottomDivider: true,
-      switch: true,
-    },
-    {
       title: 'Đăng xuất',
       icon: theme.tabIcons.signOut,
       onPress: async () => await logout(),
