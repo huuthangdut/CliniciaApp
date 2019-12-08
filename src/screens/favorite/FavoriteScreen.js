@@ -5,8 +5,6 @@ import Header from '../../components/core/Header';
 import Toolbar from './components/Toolbar';
 
 const FavoriteScreen = () => {
-  const [listFavorite, setListFavorite] = useState([]);
-
   return (
     <Fragment>
       <View style={styles.container}>

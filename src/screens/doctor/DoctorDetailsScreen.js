@@ -1,4 +1,4 @@
-import React, {useState, useEffect, Fragment} from 'react';
+import React, {useState, useEffect, Fragment, useContext} from 'react';
 import {
   StyleSheet,
   View,
@@ -12,7 +12,8 @@ import theme from '../../styles/theme';
 import {Rating, Icon, Button, Divider} from 'react-native-elements';
 import Header from '../../components/core/Header';
 import {DoctorService} from '../../services/DoctorService';
-
+import {FavoriteService} from '../../services/FavoriteService';
+import {AppContext} from '../../AppProvider';
 
 const DoctorDetailsScreen = props => {
   const {navigation} = props;
@@ -20,12 +21,33 @@ const DoctorDetailsScreen = props => {
   const [doctor, setDoctor] = useState({});
   const [loading, setLoading] = useState(false);
 
+  const [isFavorited, setIsFavorited] = useState();
+
+  const context = useContext(AppContext);
+
+  const addOrRemoveFavorite = (id, isFavorited) => {
+    setIsFavorited(value => !value);
+    if(isFavorited) {
+      FavoriteService.removeFromFavorite(id).then(handleAddOrRemoveFavoriteSuccess).catch(handleAddOrRemoveFavoriteError);
+    } else {
+      FavoriteService.addToFavorite(id).then(handleAddOrRemoveFavoriteSuccess).catch(handleAddOrRemoveFavoriteError);
+    }
+  }
+
+  const handleAddOrRemoveFavoriteSuccess = () => {
+    context.shouldReloadFavorite.set(value => !value);
+  };
+
+  const handleAddOrRemoveFavoriteError = (e) => {
+    console.log(e);
+  };
+
   const loadDoctor = id => {
     setLoading(true);
     DoctorService.getDoctor(id)
       .then(result => {
         setDoctor(result);
-        console.log(result);
+        setIsFavorited(result.isFavorited);
         setLoading(false);
       })
       .catch(() => {
@@ -53,7 +75,7 @@ const DoctorDetailsScreen = props => {
                   resizeMode="cover"
                   style={styles.avatar}
                   source={{
-                    uri: doctor.imageProfile || 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg'
+                    uri: doctor.imageProfile
                   }}
                 />
                 <View style={styles.basicInfo}>
@@ -73,18 +95,21 @@ const DoctorDetailsScreen = props => {
               </View>
               <View style={styles.rowInfo}>
                 <View style={styles.col}>
+                <Text style={styles.subText}>Giới tính</Text>
                   <Text style={styles.cardText}>{doctor.gender ? 'Nam' : 'Nữ'}</Text>
-                  <Text style={styles.subText}>Giới tính</Text>
+      
                 </View>
                 <View style={styles.divider}></View>
                 <View style={styles.col}>
+                <Text style={styles.subText}>Kinh nghiệm</Text>
                   <Text style={styles.cardText}>{doctor.yearExperience} năm</Text>
-                  <Text style={styles.subText}>Kinh nghiệm</Text>
+                  
                 </View>
                 <View style={styles.divider}></View>
                 <View style={styles.col}>
+                <Text style={styles.subText}>Bệnh nhân</Text>
                   <Text style={styles.cardText}>{doctor.numberOfPatients}</Text>
-                  <Text style={styles.subText}>Bệnh nhân</Text>
+                 
                 </View>
               </View>
               <View style={styles.rowInfo}>
@@ -98,12 +123,12 @@ const DoctorDetailsScreen = props => {
                     buttonStyle={styles.button}
                   />
                 </View>
-                <TouchableOpacity style={styles.loveContainer}>
+                <TouchableOpacity style={styles.loveContainer} onPress={() => addOrRemoveFavorite(doctorId, isFavorited)}>
                   <Icon
                     name="heart"
                     type="antdesign"
                     size={22}
-                    iconStyle={styles.loveIcon}
+                    iconStyle={{color: isFavorited ? theme.colors.red : '#C8C7CC'}}
                   />
                 </TouchableOpacity>
               </View>

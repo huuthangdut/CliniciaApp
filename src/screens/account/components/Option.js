@@ -29,13 +29,6 @@ const Option = props => {
               title={item.title}
               bottomDivider
               chevron
-              badge={{
-                value: '+' + 33,
-                textStyle: { color: theme.colors.darkGray },
-                badgeStyle: {
-                  backgroundColor: theme.colors.lightGray
-                }
-              }}
             />
           </TouchableOpacity>
         ))

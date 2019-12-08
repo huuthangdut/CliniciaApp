@@ -1,54 +1,97 @@
-import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, Image, Text, Dimensions} from 'react-native';
+import React, {useState, useEffect, useContext} from 'react';
+import {
+  View,
+  StyleSheet,
+  Image,
+  Text,
+  Dimensions,
+  FlatList,
+  ActivityIndicator,
+} from 'react-native';
 import theme from '../../../styles/theme';
-import {FlatList} from 'react-native-gesture-handler';
 import {Avatar} from 'react-native-elements';
+import {FavoriteService} from '../../../services/FavoriteService';
+import EmptyList from '../../../components/core/EmptyList';
+import {AppContext} from '../../../AppProvider';
 
 const FavoriteList = props => {
-  const [dataSource, setDataSource] = useState({});
+  const [favorites, setFavorites] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const context = useContext(AppContext);
+
+  const removeFromFavorite = (id, index) => {
+    setFavorites(list => list.filter(x => x.doctor.id !== id));
+    FavoriteService.removeFromFavorite(id).catch(e => {
+      console.log(e);
+    });
+  };
 
   useEffect(() => {
-    let items = Array.apply(null, Array(20)).map((v, i) => {
-      return {id: i, src: 'http://placehold.it/200x200?text=' + (i + 1)};
-    });
-    setDataSource(items);
-  }, []);
+    setIsLoading(true);
+    FavoriteService.getFavorites(0, 100)
+      .then(result => {
+        setIsLoading(false);
+        console.log(result.items);
+        setFavorites(result.items);
+      })
+      .catch(e => {
+        setIsLoading(false);
+        console.log(e);
+      });
+  }, [context.shouldReloadFavorite.get]);
 
   return (
     <View style={styles.container}>
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        data={dataSource}
-        renderItem={({item}) => (
-          <View style={styles.itemContainer}>
-            <View style={styles.item}>
-              <Avatar
-                rounded
-                size={64}
-                showEditButton
-                editButton={{
-                  name: 'heart',
-                  type: 'font-awesome',
-                  color: 'red',
-                  size: 14,
-                  containerStyle: styles.loveIcon,
-                }}
-              />
-              <Text numberOfLines={2} style={styles.name}>
-                Edward Janowski
-              </Text>
-              <View style={styles.rating}>
-                <View style={styles.starWrapper}>
-                  <Image style={styles.starIcon} source={theme.tabIcons.star} />
+      {favorites.length === 0 && isLoading ? (
+        <ActivityIndicator
+          size={40}
+          style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}
+        />
+      ) : favorites.length === 0 && !isLoading ? (
+        <EmptyList text="Không có dữ liệu." />
+      ) : (
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          data={favorites}
+          renderItem={({item, index}) => (
+            <View style={styles.itemContainer}>
+              <View style={styles.item}>
+                <Avatar
+                  rounded
+                  size={64}
+                  showEditButton
+                  source={{uri: item.doctor.imageProfile}}
+                  editButton={{
+                    name: 'heart',
+                    type: 'font-awesome',
+                    color: theme.colors.red,
+                    size: 16,
+                    containerStyle: styles.loveIcon,
+                  }}
+                  onEditPress={() => removeFromFavorite(item.doctor.id, index)}
+                />
+                <Text numberOfLines={2} style={styles.name}>
+                  {item.doctor.name}
+                </Text>
+                <View style={styles.rating}>
+                  <View style={styles.starWrapper}>
+                    <Image
+                      style={styles.starIcon}
+                      source={theme.tabIcons.star}
+                    />
+                  </View>
+                  <Text style={styles.ratingText}>
+                    {item.doctor.rating || 0}
+                  </Text>
                 </View>
-                <Text style={styles.ratingText}>3.5</Text>
               </View>
             </View>
-          </View>
-        )}
-        numColumns={3}
-        keyExtractor={(item, index) => index.toString()}
-      />
+          )}
+          numColumns={3}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      )}
     </View>
   );
 };
@@ -57,12 +100,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 16,
+    marginHorizontal: 10,
     justifyContent: 'center',
-    alignItems: 'center',
+    // alignItems: 'flex-start',
   },
   itemContainer: {
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     paddingHorizontal: 8,
     marginBottom: 16,
   },
@@ -75,14 +119,14 @@ const styles = StyleSheet.create({
     height: 158,
     width: Dimensions.get('screen').width / 3.6,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   name: {
     fontSize: 13,
     fontFamily: 'SF-Pro-Text-Regular',
     textAlign: 'center',
     lineHeight: 20,
-    marginTop: 5
+    marginTop: 5,
   },
   rating: {
     flexDirection: 'row',

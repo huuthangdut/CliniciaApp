@@ -20,6 +20,7 @@ export const CONFIG = {
         NOTIFICATION_READ: (id) => `notifications/${id}/read`,
         NOTIFICATION_UNSEEN_COUNT: 'notifications/unseen/count',
         NOTIFICATION_UNSEEN_READ: 'notifications/unseen/read',
-        USER_LOCATION: 'users/location'
+        USER_LOCATION: 'users/location',
+        FAVORITE: 'favorites'
     }
 }

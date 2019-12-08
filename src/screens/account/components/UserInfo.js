@@ -14,7 +14,7 @@ const UserInfo = props => {
         <Avatar
           rounded
           size={86}
-          source={{ uri: '' }}
+          source={{ uri: authUser.imageProfile }}
           showEditButton
         />
       </View>
