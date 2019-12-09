@@ -18,8 +18,6 @@ const Reminder = props => {
     distance: item.doctor.distanceFromPatient,
     image: item.doctor.imageProfile || '',
   };
-
-  console.log(reminder);
   
   return (
     <View style={styles.container}>
@@ -46,7 +44,7 @@ const Reminder = props => {
             <Icon containerStyle={styles.col} name="dot-single" type="entypo" size={12} color="white" />
             <Text style={styles.col}>{reminder.specialty}</Text>
           </View>
-          <TouchableOpacity style={styles.button} activeOpacity={0.7} onPress={() => navigation.navigate('AppointmentDetails', { appointment: item })}>
+          <TouchableOpacity style={styles.button} activeOpacity={0.7} onPress={() => navigation.navigate('AppointmentDetails', { id: item.id })}>
             <Text style={styles.text}>Xem chi tiết</Text>
           </TouchableOpacity>
         </View>

@@ -80,7 +80,7 @@ const HomeScreen = props => {
 
   useEffect(() => {
     loadReminder();
-  }, []);
+  }, [context.shouldReloadReminder.get]);
 
   useEffect(() => {
     loadDoctors();

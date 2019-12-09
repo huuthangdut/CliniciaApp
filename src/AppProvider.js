@@ -12,6 +12,7 @@ const AppProvider = props => {
 
   const [shouldReloadAppointmentList, setShouldReloadAppointmentList] = useState(false);
   const [shouldReloadFavorite, setShouldReloadFavorite] = useState(false);
+  const [shouldReloadReminder, setShouldReloadReminder] = useState(false);
 
   const isAuthenticated = async () => {
     const token = await AsyncStorage.getItem('@access_token');
@@ -40,6 +41,7 @@ const AppProvider = props => {
     notificationCount: {get: notificationCount, set: setNotificationCount},
     shouldReloadAppointmentList: { get: shouldReloadAppointmentList, set: setShouldReloadAppointmentList },
     shouldReloadFavorite: { get: shouldReloadFavorite, set: setShouldReloadFavorite },
+    shouldReloadReminder: { get: shouldReloadReminder, set: setShouldReloadReminder},
     /**
      * global function
      */

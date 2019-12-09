@@ -32,6 +32,8 @@ const NotificationItem = props => {
         console.log(e);
       });
     }
+
+    navigation.navigate('AppointmentDetails', { id: item.appointmentId})
   };
 
   let swipeBtns = [

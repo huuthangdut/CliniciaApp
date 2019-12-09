@@ -38,7 +38,9 @@ const App = () => {
 
   const notificationCallback = useCallback((notification) => {
     const {title, body, data} = notification;
-    context.notifications.add({id: data.id, title: title, content: body, hasRead: false, notificationDate: data.notificationDate})
+    context.notifications.add({id: data.id, title: title, content: body, hasRead: false, notificationDate: data.notificationDate, image: data.image, appointmentId: data.appointmentId});
+    context.shouldReloadAppointmentList.set(val => !val);
+    context.shouldReloadReminder.set(val => !val);
   }, []);
 
   
