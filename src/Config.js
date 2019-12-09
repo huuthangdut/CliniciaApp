@@ -12,6 +12,7 @@ export const CONFIG = {
         DOCTOR_WORKING_TIME: (doctorId) => `doctors/${doctorId}/workingTime`,
         DOCTOR_CHECKING_SERVICES: (doctorId) => `doctors/${doctorId}/checkingServices`,
         APPOINTMENTS: 'appointments',
+        UPCOMING_APPOINTMENT: 'appointments/upcoming',
         APPOINTMENT: (id) => `appointments/${id}`,
         CANCEL_APPOINTMENT: (id) => `appointments/${id}/cancel`,
         DEVICES: 'devices',

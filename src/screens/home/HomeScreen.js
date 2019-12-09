@@ -1,5 +1,5 @@
 import React, {useState, useEffect, Fragment, useContext} from 'react';
-import {StyleSheet, View, ActivityIndicator} from 'react-native';
+import {StyleSheet, View, ActivityIndicator, Text} from 'react-native';
 
 import Reminder from './components/Reminder';
 import Category from './components/Category';
@@ -9,7 +9,9 @@ import Toolbar from './components/Toolbar';
 import DoctorList from '../doctor/components/DoctorList';
 import {SpecialtyService} from '../../services/SpecialtyService';
 import {DoctorService} from '../../services/DoctorService';
-import { AppContext } from '../../AppProvider';
+import {AppointmentService} from '../../services/AppointmentService';
+import {AppContext} from '../../AppProvider';
+import {DateTime} from '../../utilities/date-time';
 
 const HomeScreen = props => {
   const {navigation} = props;
@@ -24,13 +26,23 @@ const HomeScreen = props => {
 
   const [sortDoctorBy, setSortDoctorBy] = useState('Distance');
 
-  const [reminder, setReminder] = useState({
-    image: '',
-    scheduledTime: '23/10/2019 - 9:30',
-    doctor: 'Bs. Tiến Minh',
-    distance: '18 Đống Đa',
-    specialty: 'Nha khoa',
-  });
+  const [reminder, setReminder] = useState();
+  const [isLoadingReminder, setIsLoadingReminder] = useState(false);
+
+  const loadReminder = () => {
+    setIsLoadingReminder(true);
+    AppointmentService.getUpcomingAppointment()
+      .then(result => {
+        setIsLoadingReminder(false);
+        if (result) {
+          setReminder(result);
+        }
+      })
+      .catch(e => {
+        setIsLoadingReminder(false);
+        console.log(e);
+      });
+  };
 
   const loadSpecialties = () => {
     setIsLoadingSpecialities(true);
@@ -67,15 +79,24 @@ const HomeScreen = props => {
   }, []);
 
   useEffect(() => {
+    loadReminder();
+  }, []);
+
+  useEffect(() => {
     loadDoctors();
   }, [sortDoctorBy, context.authUser.get]);
 
   return (
     <Fragment>
-      <HomeHeader navigation={navigation}/>
+      <HomeHeader navigation={navigation} />
       <ScrollView nestedScrollEnabled={true}>
         <View style={styles.container}>
-          <Reminder item={reminder} />
+          {isLoadingReminder ? (
+            <ActivityIndicator size={30} style={{marginVertical: 5}}/>
+          ) : (
+            reminder && <Reminder item={reminder} navigation={navigation}/>
+          )}
+
           <Category
             items={specialties}
             loading={isLoadingSpecialties}
@@ -88,7 +109,12 @@ const HomeScreen = props => {
           />
           {isLoadingDoctors ? (
             <View
-              style={{flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 40}}>
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginTop: 40,
+              }}>
               <ActivityIndicator size={30} style={{color: '#000'}} />
             </View>
           ) : (
