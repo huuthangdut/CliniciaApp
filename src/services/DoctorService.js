@@ -57,9 +57,21 @@ const getCheckingServices = (doctorId) => {
   )
 }
 
+const getReviews = (doctorId, page, pageSize) => {
+  return Api.get(
+    `${CONFIG.API_ROOT}/v${CONFIG.API_VERSION}/${CONFIG.API_URL.DOCTOR_REVIEWS(doctorId)}`,
+    {
+      page,
+      pageSize
+    },
+    true
+  )
+};
+
 export const DoctorService = {
   getDoctors,
   getDoctor,
   getWorkingTime,
-  getCheckingServices
+  getCheckingServices,
+  getReviews
 };

@@ -14,12 +14,14 @@ import Header from '../../components/core/Header';
 import {DoctorService} from '../../services/DoctorService';
 import {FavoriteService} from '../../services/FavoriteService';
 import {AppContext} from '../../AppProvider';
+import {DateTime} from '../../utilities/date-time';
 
 const DoctorDetailsScreen = props => {
   const {navigation} = props;
   const doctorId = navigation.getParam('id');
   const [doctor, setDoctor] = useState({});
   const [loading, setLoading] = useState(false);
+  const [reviews, setReviews] = useState([]);
 
   const [isFavorited, setIsFavorited] = useState();
 
@@ -27,18 +29,22 @@ const DoctorDetailsScreen = props => {
 
   const addOrRemoveFavorite = (id, isFavorited) => {
     setIsFavorited(value => !value);
-    if(isFavorited) {
-      FavoriteService.removeFromFavorite(id).then(handleAddOrRemoveFavoriteSuccess).catch(handleAddOrRemoveFavoriteError);
+    if (isFavorited) {
+      FavoriteService.removeFromFavorite(id)
+        .then(handleAddOrRemoveFavoriteSuccess)
+        .catch(handleAddOrRemoveFavoriteError);
     } else {
-      FavoriteService.addToFavorite(id).then(handleAddOrRemoveFavoriteSuccess).catch(handleAddOrRemoveFavoriteError);
+      FavoriteService.addToFavorite(id)
+        .then(handleAddOrRemoveFavoriteSuccess)
+        .catch(handleAddOrRemoveFavoriteError);
     }
-  }
+  };
 
   const handleAddOrRemoveFavoriteSuccess = () => {
     context.shouldReloadFavorite.set(value => !value);
   };
 
-  const handleAddOrRemoveFavoriteError = (e) => {
+  const handleAddOrRemoveFavoriteError = e => {
     console.log(e);
   };
 
@@ -55,8 +61,19 @@ const DoctorDetailsScreen = props => {
       });
   };
 
+  const loadReviews = id => {
+    DoctorService.getReviews(id, 0, 10)
+      .then(result => {
+        setReviews(result.items);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
+
   useEffect(() => {
     loadDoctor(doctorId);
+    loadReviews(doctorId);
   }, []);
 
   return (
@@ -66,7 +83,7 @@ const DoctorDetailsScreen = props => {
           <ActivityIndicator size={40} style={{color: '#000'}} />
         </View>
       ) : (
-        <ScrollView style={styles.container}>
+        <View style={styles.container}>
           <View style={styles.headerContainer}>
             <Header title="Thông tin bác sĩ" color="white" />
             <View style={styles.card}>
@@ -75,14 +92,16 @@ const DoctorDetailsScreen = props => {
                   resizeMode="cover"
                   style={styles.avatar}
                   source={{
-                    uri: doctor.imageProfile
+                    uri: doctor.imageProfile,
                   }}
                 />
                 <View style={styles.basicInfo}>
                   <Text style={styles.name}>
                     {doctor.firstName + ' ' + doctor.lastName}
                   </Text>
-                  <Text style={styles.specialty}>{doctor.specialty ? doctor.specialty.name : '...'}</Text>
+                  <Text style={styles.specialty}>
+                    {doctor.specialty ? doctor.specialty.name : '...'}
+                  </Text>
                   <View style={styles.rating}>
                     <Rating
                       imageSize={10}
@@ -95,52 +114,61 @@ const DoctorDetailsScreen = props => {
               </View>
               <View style={styles.rowInfo}>
                 <View style={styles.col}>
-                <Text style={styles.subText}>Giới tính</Text>
-                  <Text style={styles.cardText}>{doctor.gender ? 'Nam' : 'Nữ'}</Text>
-      
+                  <Text style={styles.subText}>Giới tính</Text>
+                  <Text style={styles.cardText}>
+                    {doctor.gender ? 'Nam' : 'Nữ'}
+                  </Text>
                 </View>
                 <View style={styles.divider}></View>
                 <View style={styles.col}>
-                <Text style={styles.subText}>Kinh nghiệm</Text>
-                  <Text style={styles.cardText}>{doctor.yearExperience} năm</Text>
-                  
+                  <Text style={styles.subText}>Kinh nghiệm</Text>
+                  <Text style={styles.cardText}>
+                    {doctor.yearExperience} năm
+                  </Text>
                 </View>
                 <View style={styles.divider}></View>
                 <View style={styles.col}>
-                <Text style={styles.subText}>Bệnh nhân</Text>
+                  <Text style={styles.subText}>Bệnh nhân</Text>
                   <Text style={styles.cardText}>{doctor.numberOfPatients}</Text>
-                 
                 </View>
               </View>
               <View style={styles.rowInfo}>
                 <View style={styles.buttonContainer}>
                   <Button
                     TouchableComponent={TouchableOpacity}
-                    onPress={() => navigation.navigate('Booking', { doctor: doctor })}
+                    onPress={() =>
+                      navigation.navigate('Booking', {doctor: doctor})
+                    }
                     title="Đặt lịch"
                     type="solid"
                     titleStyle={styles.buttonText}
                     buttonStyle={styles.button}
                   />
                 </View>
-                <TouchableOpacity style={styles.loveContainer} onPress={() => addOrRemoveFavorite(doctorId, isFavorited)}>
+                <TouchableOpacity
+                  style={styles.loveContainer}
+                  onPress={() => addOrRemoveFavorite(doctorId, isFavorited)}>
                   <Icon
                     name="heart"
                     type="antdesign"
                     size={22}
-                    iconStyle={{color: isFavorited ? theme.colors.red : '#C8C7CC'}}
+                    iconStyle={{
+                      color: isFavorited ? theme.colors.red : '#C8C7CC',
+                    }}
                   />
                 </TouchableOpacity>
               </View>
             </View>
           </View>
-          <View style={styles.content}>
+          <ScrollView style={styles.content}>
             <View>
               <Text style={styles.subText}>Địa chỉ</Text>
               <Text style={styles.body} numberOfLines={2}>
                 {doctor.location ? doctor.location.address : ''}
               </Text>
-              <Text style={styles.subText}>{doctor.distanceFromPatient} km</Text>
+              <Text style={styles.subText}>
+                {doctor.distanceFromPatient} km
+              </Text>
             </View>
             <Divider style={styles.horizontalDivider} />
             <View>
@@ -157,8 +185,37 @@ const DoctorDetailsScreen = props => {
               <Text style={styles.subText}>Khám và điều trị</Text>
               <Text style={styles.body}>{doctor.about}</Text>
             </View>
-          </View>
-        </ScrollView>
+            <Divider style={styles.horizontalDivider} />
+            <View>
+              {reviews.length > 0 && (
+                <Text style={styles.subText}>Đánh giá</Text>
+              )}
+
+              <View>
+                {reviews.map((item, index) => (
+                  <View key={index} style={styles.reviewItem}>
+                    <Text style={styles.reviewText}>{item.patient.name}</Text>
+                    <View style={styles.row}>
+                      <Rating
+                        style={styles.reviewRating}
+                        imageSize={11}
+                        readonly
+                        startingValue={item.rating}
+                      />
+                      <Text style={styles.reviewDate}>
+                        {DateTime.toDateString(
+                          item.reviewDate,
+                          'HH:mm DD/MM/YYYY',
+                        )}
+                      </Text>
+                    </View>
+                    <Text style={styles.reviewText}>{item.comment}</Text>
+                  </View>
+                ))}
+              </View>
+            </View>
+          </ScrollView>
+        </View>
       )}
     </Fragment>
   );
@@ -171,7 +228,7 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     height: 320,
-    marginBottom: 50,
+    marginBottom: 20,
     width: '100%',
     backgroundColor: theme.colors.primary,
   },
@@ -189,6 +246,11 @@ const styles = StyleSheet.create({
   col: {
     flexDirection: 'column',
     flex: 1,
+  },
+  smallAvatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
   },
   avatar: {
     width: 86,
@@ -238,7 +300,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: 'SF-Pro-Text-Regular',
     color: theme.colors.gray,
-    marginBottom: 4
+    marginBottom: 4,
   },
   buttonContainer: {
     flex: 1,
@@ -276,12 +338,42 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   body: {
-    fontSize: 15,
+    fontSize: 14,
     fontFamily: 'SF-Pro-Text-Regular',
-    lineHeight: 21
+    lineHeight: 21,
   },
   horizontalDivider: {
-    marginVertical: 16,
+    marginVertical: 11,
+    backgroundColor: theme.colors.lightGray,
+  },
+  reviewItem: {
+    marginBottom: 10,
+    backgroundColor: '#FDFDFC',
+    borderRadius: 5,
+    paddingVertical: 8,
+    paddingHorizontal: 2
+  },
+  row: {
+    flexDirection: 'row',
+    // justifyContent: 'center',
+    alignItems: 'center',
+  },
+  reviewText: {
+    fontSize: 14,
+    fontFamily: 'SF-Pro-Text-Regular',
+    lineHeight: 22,
+  },
+  reviewRating: {
+    justifyContent: 'center',
+    marginRight: 10,
+    marginVertical: 4,
+  },
+  reviewDate: {
+    fontSize: 12,
+    fontFamily: 'SF-Pro-Text-Regular',
+    color: theme.colors.gray,
+    alignItems: 'center',
+    lineHeight: 18,
   },
 });
 

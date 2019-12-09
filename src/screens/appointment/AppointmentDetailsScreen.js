@@ -80,7 +80,6 @@ const AppointmentDetailsScreen = props => {
     <Fragment>
       <Header />
       {appointment ? (
-        <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.container}>
             <View style={styles.headerInfo}>
               <View style={styles.image}>
@@ -175,7 +174,7 @@ const AppointmentDetailsScreen = props => {
                 disabled
                 style={styles.button}
               />
-            ) : !appointment.hasReview && (
+            ) : appointment.status === Status.Completed.value && !appointment.hasReview && (
               <Button
                 onPress={() => onRating()}
                 icon={{
@@ -190,7 +189,6 @@ const AppointmentDetailsScreen = props => {
               />
             )}
           </View>
-        </ScrollView>
       ) : (
         <ActivityIndicator
           size={30}
@@ -207,6 +205,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: 'white',
     paddingHorizontal: 20,
+    marginBottom: 10
   },
   headerInfo: {
     width: '100%',
