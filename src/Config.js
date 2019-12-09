@@ -22,6 +22,7 @@ export const CONFIG = {
         NOTIFICATION_UNSEEN_COUNT: 'notifications/unseen/count',
         NOTIFICATION_UNSEEN_READ: 'notifications/unseen/read',
         USER_LOCATION: 'users/location',
-        FAVORITE: 'favorites'
+        FAVORITE: 'favorites',
+        REVIEWS: 'reviews'
     }
 }

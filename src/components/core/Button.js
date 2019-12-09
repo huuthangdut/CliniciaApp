@@ -12,6 +12,7 @@ const CustomButton = props => {
     titleStyle = styles.title,
     style,
     loading,
+    icon
   } = props;
 
   let backgroundColor = primary ? theme.colors.primary : theme.colors.lightGray;
@@ -19,6 +20,8 @@ const CustomButton = props => {
 
   return (
     <Button
+      icon={icon}
+      iconContainerStyle={styles.iconContainerStyle}
       onPress={onPress}
       title={title}
       type={type}
@@ -41,6 +44,12 @@ const styles = StyleSheet.create({
     title: {
       fontSize: 17,
       fontFamily: 'SF-Pro-Text-Semibold'
+    },
+    iconContainerStyle: {
+      marginTop: 2,
+      marginRight: 10,
+      justifyContent: 'center',
+      alignItems: 'center',
     }
 });
 

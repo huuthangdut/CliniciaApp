@@ -29,6 +29,7 @@ import VerifyScreen from './screens/auth/VerifyScreen';
 import LocationPickerScreen from './screens/location/LocationPickerScreen';
 import DoctorMap from './screens/doctor/components/DoctorMap';
 import AsyncStorage from '@react-native-community/async-storage';
+import RatingScreen from './screens/appointment/components/RatingModal';
 
 const FavoriteNavigator = createStackNavigator(
   {
@@ -106,11 +107,22 @@ const AppointmentNavigator = createStackNavigator(
   {
     Appointments: AppointmentScreen,
     AppointmentDetails: AppointmentDetailsScreen,
+    Rating: RatingScreen
   },
   {
     headerMode: 'none',
   },
 );
+
+AppointmentNavigator.navigationOptions = ({navigation}) => {
+  let tabBarVisible = true;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+  return {
+    tabBarVisible,
+  };
+};
 
 const NotificationNavigator = createStackNavigator(
   {

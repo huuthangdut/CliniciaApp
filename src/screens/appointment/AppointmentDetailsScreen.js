@@ -7,9 +7,9 @@ import {
   ScrollView,
   Linking,
   Platform,
-  ActivityIndicator,
+  ActivityIndicator
 } from 'react-native';
-import {Avatar, Icon} from 'react-native-elements';
+import {Avatar, Icon, Rating} from 'react-native-elements';
 import {AppointmentStatus as Status} from '../../common/enums';
 import AppointmentStatus from './components/AppointmentStatus';
 import Button from '../../components/core/Button';
@@ -28,6 +28,8 @@ const AppointmentDetailsScreen = props => {
   const [appointment, setAppointment] = useState();
 
   const [isCancelling, setIsCancelling] = useState(false);
+
+  const [ratingModalVisible, setRatingModalVisible] = useState(false);
 
   const cancelAppointment = id => {
     setIsCancelling(true);
@@ -56,6 +58,10 @@ const AppointmentDetailsScreen = props => {
     } else {
       Linking.openURL('telprompt:' + phoneNumber).catch(e => console.log(e));
     }
+  };
+
+  const onRating = () => {
+    navigation.navigate('Rating', {appointmentId: appointment.id, doctorId: appointment.doctor.id});
   };
 
   useEffect(() => {
@@ -162,15 +168,26 @@ const AppointmentDetailsScreen = props => {
                 onPress={() => cancelAppointment(appointment.id)}
                 loading={isCancelling}
               />
-            ) : (
-              appointment.status === Status.Confirmed.value && (
-                <Button
-                  title="Huỷ lịch hẹn"
-                  secondary
-                  disabled
-                  style={styles.button}
-                />
-              )
+            ) : appointment.status === Status.Confirmed.value ? (
+              <Button
+                title="Huỷ lịch hẹn"
+                secondary
+                disabled
+                style={styles.button}
+              />
+            ) : !appointment.hasReview && (
+              <Button
+                onPress={() => onRating()}
+                icon={{
+                  type: 'font-awesome',
+                  name: 'edit',
+                  size: 16,
+                  color: 'white',
+                }}
+                title="Đánh giá"
+                primary
+                style={styles.button}
+              />
             )}
           </View>
         </ScrollView>

@@ -34,9 +34,7 @@ const HomeScreen = props => {
     AppointmentService.getUpcomingAppointment()
       .then(result => {
         setIsLoadingReminder(false);
-        if (result) {
-          setReminder(result);
-        }
+        setReminder(result);
       })
       .catch(e => {
         setIsLoadingReminder(false);
