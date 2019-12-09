@@ -1,8 +1,20 @@
-import React, {useState} from 'react';
-import {ActivityIndicator, StyleSheet, FlatList, Text, Dimensions, View} from 'react-native';
+import React, {useState, useContext, useRef} from 'react';
+import {
+  ActivityIndicator,
+  StyleSheet,
+  FlatList,
+  Text,
+  Dimensions,
+  View,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import DoctorItem from './DoctorItem';
 import MapView, {Polyline, Marker, Callout} from 'react-native-maps';
 import Carousel from 'react-native-snap-carousel';
+import {AppContext} from '../../../AppProvider';
+import {Avatar, Icon, Rating} from 'react-native-elements';
+import theme from '../../../styles/theme';
 
 const MapStyle = [
   {
@@ -221,28 +233,74 @@ const MapStyle = [
 ];
 
 const DoctorMap = props => {
-  const {items, navigation, loading} = props;
+  const {navigation, loading} = props;
 
-  const [markers, setMarkers] = useState([
-    {id: '1', name: 'Bac si 1', latitude: 16.0226792, longitude: 108.2257474},
-    {id: '2', name: 'Bac si 2', latitude: 16.0236792, longitude: 108.2257474},
-    {id: '3', name: 'Bac si 3', latitude: 16.0246792, longitude: 108.2257474},
-    {id: '4', name: 'Bac si 4', latitude: 16.0257792, longitude: 108.2257474},
-    {id: '5', name: 'Bac si 5', latitude: 16.0265792, longitude: 108.2257474},
-    {id: '6', name: 'Bac si 6', latitude: 16.0276692, longitude: 108.2257474},
-  ]);
+  const context = useContext(AppContext);
+  const authUser = context.authUser.get;
 
-  const [showCarousel, setShowCarousel] = useState(false);
+  const items = navigation.getParam('items');
+
+  const [markers, setMarkers] = useState(items);
 
   const screenWidth = Dimensions.get('window').width;
 
+  const infoWindowRef = useRef();
+
   const _renderItem = ({item, index}) => {
     return (
-      <View style={styles.slide}>
-        <Text style={styles.title}>{item.name}</Text>
-        <Text style={styles.name}>{item.name}</Text>
-      </View>
+      <TouchableOpacity style={styles.slide} activeOpacity={0.7} onPress={() => navigation.navigate('DoctorDetails', {id: item.id})}>
+        <View style={styles.imageContainer}>
+          <Image
+            style={styles.image}
+            resizeMode="contain"
+            source={{
+              uri:
+                'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
+            }}
+          />
+        </View>
+        <View style={styles.info}>
+          <Text style={styles.title}>
+            {item.firstName + ' ' + item.lastName}
+          </Text>
+          <View style={styles.row}>
+            <Text numberOfLines={2} style={styles.address}>
+              {item.location.address}
+            </Text>
+          </View>
+          <View style={styles.row}>
+            <Icon
+              name="map-marker"
+              type="font-awesome"
+              size={12}
+              color="#C8C7CC"
+            />
+            <Text style={styles.text}>{item.distanceFromPatient} km</Text>
+          </View>
+          <View style={styles.row}>
+            <Rating
+              imageSize={10}
+              readonly
+              startingValue={item.rating}
+              style={styles.rating}
+            />
+            <Text style={styles.text}>{item.ratingCount}</Text>
+            <Icon
+              containerStyle={styles.text}
+              name="dot-single"
+              type="entypo"
+              size={12}
+              color={theme.colors.primary}
+            />
+            <Text style={styles.text}>{item.specialty.name}</Text>
+          </View>
+        </View>
+      </TouchableOpacity>
     );
+  };
+
+  const showInfoWindow = index => {
+    infoWindowRef.current.snapToItem(index, true);
   };
 
   return (
@@ -250,8 +308,8 @@ const DoctorMap = props => {
       <MapView
         style={styles.map}
         region={{
-          latitude: 16.0216792,
-          longitude: 108.2257474,
+          latitude: +authUser.latitude,
+          longitude: +authUser.longitude,
           latitudeDelta: 0.015,
           longitudeDelta: 0.0121,
         }}
@@ -261,38 +319,37 @@ const DoctorMap = props => {
         {markers.map((item, index) => (
           <Marker
             key={item.id}
-            coordinate={{latitude: item.latitude, longitude: item.longitude}}
-            title={item.name}
-            onPress={() => setShowCarousel(true)}
+            coordinate={{
+              latitude: item.location.latitude,
+              longitude: item.location.longitude,
+            }}
+            title={item.firstName + ' ' + item.lastName}
+            onPress={() => showInfoWindow(index)}
           />
         ))}
       </MapView>
-      {showCarousel && (
-        <Carousel
-          // ref={carouselRef}
-          sliderWidth={screenWidth}
-          itemWidth={screenWidth - 100}
-          data={markers}
-          renderItem={_renderItem}
-          hasParallaxImages
-          // slideStyle={{ marginLeft: -10, marginRight: 10 }}
-          containerCustomStyle={{
-            zIndex: 1000,
-            // backgroundColor: 'red',
-            position: 'absolute',
-            bottom: 80,
-          }}
-          slideStyle={{
-            backgroundColor: 'white',
-          }}
-          style={{
-            backfaceVisibility: 'visible',
-          }}
-          sliderHeight={300}
-          activeDotIndex={2}
-          dotsLength={markers.length}
-        />
-      )}
+      <Carousel
+        ref={infoWindowRef}
+        sliderWidth={screenWidth}
+        itemWidth={screenWidth - 65}
+        data={markers}
+        renderItem={_renderItem}
+        hasParallaxImages
+        containerCustomStyle={{
+          zIndex: 999,
+          position: 'absolute',
+          bottom: 70
+        }}
+        slideStyle={{
+          backgroundColor: 'white',
+        }}
+        style={{
+          backfaceVisibility: 'visible',
+        }}
+        sliderHeight={300}
+        activeDotIndex={2}
+        dotsLength={markers.length}
+      />
     </>
   );
 };
@@ -302,7 +359,47 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
   slide: {
-    height: 200,
+    height: 120,
+    flexDirection: 'row',
+    borderRadius: 6,
+  },
+  imageContainer: {
+    width: 110,
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  image: {
+    width: 90,
+    height: 90,
+    borderRadius: 4,
+  },
+  title: {
+    fontSize: 16,
+    fontFamily: 'SF-Pro-Text-Semibold',
+  },
+  info: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    marginHorizontal: 2,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 1,
+  },
+  text: {
+    fontSize: 11,
+    fontFamily: 'SF-Pro-Text-Regular',
+    color: theme.colors.darkGray,
+    paddingHorizontal: 4
+  },
+  address: {
+    fontSize: 11,
+    fontFamily: 'SF-Pro-Text-Regular',
+    color: theme.colors.darkGray,
+    lineHeight: 15,
   },
 });
 

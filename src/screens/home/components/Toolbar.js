@@ -4,7 +4,7 @@ import theme from '../../../styles/theme';
 import {Icon} from 'react-native-elements';
 
 const Toolbar = props => {
-  const {navigation} = props;
+  const {items, navigation} = props;
 
   return (
     <View style={[styles.buttonGroup, styles.row]}>
@@ -22,7 +22,7 @@ const Toolbar = props => {
         </View>
       </TouchableOpacity>
       <View style={styles.divider} />
-      <TouchableOpacity style={[styles.col, styles.center]} activeOpacity={0.5} onPress={() => navigation.navigate('DoctorMap')}>
+      <TouchableOpacity style={[styles.col, styles.center]} activeOpacity={0.5} onPress={() => navigation.navigate('DoctorMap', {items: items})}>
         <View style={styles.row}>
           <Icon
             iconStyle={styles.mapIcon}

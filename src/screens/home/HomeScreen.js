@@ -103,6 +103,7 @@ const HomeScreen = props => {
             navigation={navigation}
           />
           <Toolbar
+            items={doctors}
             navigation={navigation}
             sortBy={sortDoctorBy}
             onChangeSortBy={value => setSortDoctorBy(value)}
