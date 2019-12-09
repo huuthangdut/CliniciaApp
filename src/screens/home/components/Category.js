@@ -56,7 +56,7 @@ const Category = props => {
                   />
                 </View>
                 <View style={styles.center}>
-                  <Text style={styles.doctor}>{item.name}</Text>
+                  <Text numberOfLines={2} style={styles.doctor}>{item.name}</Text>
                 </View>
               </TouchableOpacity>
             )}
@@ -69,7 +69,7 @@ const Category = props => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 150,
+    height: 160,
     marginTop: 10,
   },
   row: {
@@ -116,8 +116,9 @@ const styles = StyleSheet.create({
   },
   doctor: {
     marginTop: 5,
-    fontSize: 14,
-    fontFamily: 'SF-Pro-Text-Regular',
+    paddingHorizontal: 1,
+    fontSize: 13,
+    fontFamily: 'SF-Pro-Text-Regular'
   },
 });
 

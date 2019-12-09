@@ -255,7 +255,7 @@ const DoctorMap = props => {
             resizeMode="contain"
             source={{
               uri:
-                'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
+                item.imageProfile
             }}
           />
         </View>

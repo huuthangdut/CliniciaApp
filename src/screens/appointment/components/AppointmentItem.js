@@ -13,7 +13,7 @@ const AppointmentItem = props => {
         <Avatar
           size={75}
           rounded
-          source={{uri: item.imageProfile}}
+          source={{uri: item.doctor.imageProfile}}
         />
       </View>
       <View style={styles.textWrapper}>
