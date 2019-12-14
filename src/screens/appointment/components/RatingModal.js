@@ -46,7 +46,7 @@ const RatingScreen = props => {
 
   return (
     <>
-      <Header title="Đánh giá bác sĩ và dịch vụ" />
+      <Header title="Đánh giá bác sĩ và dịch vụ" navigation={navigation}/>
       {showRatingSuccess ? (
         <View style={styles.container}>
           <Text style={styles.title}>Đánh giá thành công.</Text>

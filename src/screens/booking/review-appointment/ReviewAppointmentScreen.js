@@ -1,4 +1,4 @@
-import React, {Fragment, useContext} from 'react';
+import React, {Fragment, useContext, useState} from 'react';
 import {Text, View, StyleSheet, ScrollView} from 'react-native';
 import theme from '../../../styles/theme';
 import {Divider, Avatar} from 'react-native-elements';
@@ -13,6 +13,8 @@ const ReviewAppointmentScreen = props => {
   const context = useContext(AppContext);
   const appointment = context.appointment.get;
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const getAppointmentModel = () => {
     return {
       appointmentDate: DateTime.toDateString(appointment.date + ' ' + appointment.time),
@@ -25,14 +27,19 @@ const ReviewAppointmentScreen = props => {
   };
 
   const handleNext = () => {
+    setIsSubmitting(true);
     AppointmentService.addAppointment(getAppointmentModel()).then(() => {
-      navigation.replace('BookingSuccess');
-    }).catch(e => console.log(e));
+      setIsSubmitting(false);
+      navigation.navigate('BookingSuccess');
+    }).catch(e => {
+      setIsSubmitting(false);
+      console.log(e);
+    });
   };
 
   return (
     <Fragment>
-      <Header />
+      <Header navigation={navigation}/>
       <ScrollView style={styles.container}>
         <View style={styles.content}>
           <Text style={styles.header}>Xác nhận lịch đặt</Text>
@@ -109,6 +116,7 @@ const ReviewAppointmentScreen = props => {
       <View style={styles.mainContent}>
         <Button
             primary
+            loading={isSubmitting}
             title="Xác nhận"
             style={styles.button}
             onPress={() => handleNext()}

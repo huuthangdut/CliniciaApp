@@ -20,8 +20,8 @@ const HomeHeader = props => {
           />
         </View>
         <View style={styles.headerTextContainer}>
-          <Text style={styles.yourLocation}>Vị trí của bạn</Text>
-          <Text numberOfLines={2} style={styles.locationText}>{authUser.address}</Text>
+          <Text style={styles.yourLocation}>Địa chỉ của bạn</Text>
+          <Text numberOfLines={2} style={styles.locationText}>{authUser ? authUser.address : null}</Text>
         </View>
       </TouchableOpacity>
       {/* <View style={{flex: 1}}></View>

@@ -41,7 +41,7 @@ const SpecialtyScreen = props => {
 
   return (
     <Fragment>
-      <Header />
+      <Header navigation={navigation}/>
       <View style={styles.container}>
         <Text style={styles.header}>Chuyên khoa</Text>
         <View style={styles.list}>

@@ -30,7 +30,7 @@ const VerifyScreen = props => {
       const result = await AuthService.verify2fa(otpCode, token);
       if (result && result.accessToken) {
         await AsyncStorage.setItem('@access_token', result.accessToken);
-        navigation.navigate('Location');
+        navigation.navigate('InitLocation');
       }
       setIsVerifying(false);
     } catch(error) {

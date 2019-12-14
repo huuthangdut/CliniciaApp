@@ -31,61 +31,9 @@ import DoctorMap from './screens/doctor/components/DoctorMap';
 import AsyncStorage from '@react-native-community/async-storage';
 import RatingScreen from './screens/appointment/components/RatingModal';
 
-const FavoriteNavigator = createStackNavigator(
-  {
-    Favorite: FavoriteScreen,
-  },
-  {
-    headerMode: 'none',
-  },
-);
-
-const DoctorNavigator = createStackNavigator(
-  {
-    Doctor: DoctorScreen,
-    DoctorDetails: DoctorDetailsScreen,
-    Filter: FilterScreen,
-  },
-  {
-    headerMode: 'none',
-    initialRouteName: 'Doctor',
-  },
-);
-
-const BookingNavigator = createStackNavigator(
-  {
-    MakeAppointment: MakeAppointmentScreen,
-    ReviewAppointment: ReviewAppointmentScreen,
-    BookingSuccess: BookingSuccessScreen,
-  },
-  {
-    headerMode: 'none',
-  },
-);
-
-const ClinicNavigator = createStackNavigator(
-  {
-    Clinic: ClinicScreen,
-    ClinicDetails: ClinicDetailsScreen,
-  },
-  {
-    headerMode: 'none',
-  },
-);
-
-const SpecialtyNavigator = createStackNavigator(
-  {
-    Specialty: SpecialtyScreen,
-  },
-  {
-    headerMode: 'none',
-  },
-);
-
 const HomeNavigator = createStackNavigator(
   {
-    Home: HomeScreen,
-    DoctorMap: DoctorMap,
+    Home: HomeScreen
   },
   {
     headerMode: 'none',
@@ -136,12 +84,22 @@ const NotificationNavigator = createStackNavigator(
 const AccountNavigator = createStackNavigator(
   {
     Account: AccountScreen,
-    ChangePassword: ChangePasswordScreen,
+    Favorite: FavoriteScreen,
   },
   {
     headerMode: 'none',
   },
 );
+AccountNavigator.navigationOptions = ({navigation}) => {
+  let tabBarVisible = true;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+  return {
+    tabBarVisible,
+  };
+};
+
 
 const TabNavigator = createBottomTabNavigator(
   {
@@ -244,15 +202,24 @@ const AppNavigator = createStackNavigator(
     Tab: TabNavigator,
     InitLocation: InitLocationScreen,
     SetLocation: LocationPickerScreen,
-    Specialty: SpecialtyNavigator,
-    Clinic: ClinicNavigator,
-    Booking: BookingNavigator,
-    Doctor: DoctorNavigator,
-    Favorite: FavoriteNavigator,
+    DoctorMap: DoctorMap,
+    Specialty: SpecialtyScreen,
+    Doctor: DoctorScreen,
+    DoctorDetails: DoctorDetailsScreen,
+    Filter: FilterScreen,
+    MakeAppointment: MakeAppointmentScreen,
+    ReviewAppointment: ReviewAppointmentScreen,
+    BookingSuccess: BookingSuccessScreen,
+
+    
+    // Specialty: SpecialtyNavigator,
+    // Booking: BookingNavigator,
+    // Doctor: DoctorNavigator,
+    // Favorite: FavoriteNavigator,
   },
   {
     headerMode: 'none',
-    initialRouteName: 'Tab',
+    // initialRouteName: 'Tab',
   },
 );
 

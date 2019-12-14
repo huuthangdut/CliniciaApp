@@ -7,6 +7,7 @@ import {DateTime} from '../../../utilities/date-time';
 
 const AppointmentItem = props => {
   const {item, navigation} = props;
+  console.log(item.appointmentDate);
   return (
     <TouchableOpacity style={styles.container} activeOpacity={0.7} onPress={() => props.navigation.navigate('AppointmentDetails', { id: item.id })}>
       <View style={styles.image}>

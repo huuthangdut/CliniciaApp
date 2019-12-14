@@ -120,11 +120,9 @@ const MakeAppointmentScreen = props => {
   }, [selectedDate]);
 
   useEffect(() => {
-    if(availableTimes.length > 0) {
-      setAvailableTimes([]);
-      setSelectedTime(null);
-      loadWorkingTime(doctor.id, DateTime.toDateString(selectedDate, 'YYYYMMDD'), currentTime, serviceDuration);
-    }
+    setAvailableTimes([]);
+    setSelectedTime(null);
+    loadWorkingTime(doctor.id, DateTime.toDateString(selectedDate, 'YYYYMMDD'), currentTime, serviceDuration);
   }, [serviceDuration])
 
   useEffect(() => {
@@ -176,7 +174,7 @@ const MakeAppointmentScreen = props => {
 
   return (
     <Fragment>
-      <Header />
+      <Header navigation={navigation}/>
       <ScrollView style={styles.container}>
         <Calendar
           onDayPress={day => onDayPress(day)}
@@ -253,7 +251,7 @@ const MakeAppointmentScreen = props => {
             <View style={styles.selectWrapper}>
               {checkingServices.length > 0 ? (
                 checkingServices.map((item, index) => (
-                  <View>
+                  <View key={index}>
                     <TouchableOpacity
                       style={styles.listItem}
                       onPress={() => onSelectService(item)}>

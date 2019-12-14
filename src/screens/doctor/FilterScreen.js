@@ -16,7 +16,7 @@ const FilterScreen = (props) => {
 
   return (
     <>
-      <Header/>
+      <Header navigation={navigation}/>
       <Text style={styles.header}>Lọc</Text>
       <ScrollView style={{flex: 1}}>
         <Availability onChange={(value) => setAvailableToday(value)}/>

@@ -24,7 +24,7 @@ const App = () => {
     if (fcmToken) {
       console.log(fcmToken);
       const deviceUuid = DeviceInfo.getUniqueId();
-      await DeviceService.addOrUpdateDevice(fcmToken, Platform.OS, deviceUuid);
+      context.deviceToken.set(fcmToken);
     } else {
       console.log('No token received');
     }

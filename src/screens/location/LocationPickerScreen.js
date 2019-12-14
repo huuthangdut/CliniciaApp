@@ -18,6 +18,8 @@ import {UserService} from '../../services/UserService';
 import { AppContext } from '../../AppProvider';
 import {Utils} from '../../utilities/utils';
 import AsyncStorage from '@react-native-community/async-storage';
+import {DeviceService} from '../../services/DeviceService';
+import DeviceInfo from 'react-native-device-info';
 
 const MapStyle = [
   {
@@ -390,6 +392,7 @@ const LocationPickerScreen = props => {
         if(shouldGoBack) {
           navigation.goBack();
         } else {
+          await DeviceService.addOrUpdateDevice(context.deviceToken.get, Platform.OS, DeviceInfo.getUniqueId());
           navigation.navigate('Tab');
         }
       }).catch(e => {
@@ -453,7 +456,7 @@ const LocationPickerScreen = props => {
           }}
           getDefaultValue={() => ''}
           query={{
-            key: 'AIzaSyCrL7txc_1d2P83b0MpSSdZb378Sbkjgq4',
+            key: 'AIzaSyDozbjvHzEbLDhFmiwKNFF_4XsxxCq83co',
             language: 'vi',
           }}
           styles={{

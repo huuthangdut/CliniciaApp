@@ -19,7 +19,8 @@ const SpecialtyItem = props => {
       onPress={() => navigation.navigate('Doctor', { specialtyId: item.id })}>
       <View style={styles.row}>
         <View style={styles.imageWrapper}>
-          <Image style={{width: 40, height: 40}} resizeMode="contain" source={{uri: item.image}} />
+          {/* <Image style={{width: 40, height: 40}} resizeMode="contain" source={{uri: item.image}} /> */}
+          <Icon name="heartbeat" type="font-awesome" size={40} color="white"/>
         </View>
         <View style={styles.textWrapper}>
           <Text style={styles.title}>{item.name}</Text>

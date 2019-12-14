@@ -52,6 +52,7 @@ const DoctorScreen = props => {
   return (
     <Fragment>
       <Header
+        navigation={navigation}
         hasRightMenu={true}
         onPressRight={() => navigation.navigate('Filter')}
       />

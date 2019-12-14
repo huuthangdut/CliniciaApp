@@ -85,7 +85,7 @@ const DoctorDetailsScreen = props => {
       ) : (
         <View style={styles.container}>
           <View style={styles.headerContainer}>
-            <Header title="Thông tin bác sĩ" color="white" />
+            <Header title="Thông tin bác sĩ" color="white" navigation={navigation}/>
             <View style={styles.card}>
               <View style={styles.row}>
                 <Image
@@ -137,7 +137,7 @@ const DoctorDetailsScreen = props => {
                   <Button
                     TouchableComponent={TouchableOpacity}
                     onPress={() =>
-                      navigation.navigate('Booking', {doctor: doctor})
+                      navigation.navigate('MakeAppointment', {doctor: doctor})
                     }
                     title="Đặt lịch"
                     type="solid"
@@ -182,7 +182,7 @@ const DoctorDetailsScreen = props => {
             </View>
             <Divider style={styles.horizontalDivider} />
             <View>
-              <Text style={styles.subText}>Khám và điều trị</Text>
+              <Text style={styles.subText}>Giới thiệu</Text>
               <Text style={styles.body}>{doctor.about}</Text>
             </View>
             <Divider style={styles.horizontalDivider} />

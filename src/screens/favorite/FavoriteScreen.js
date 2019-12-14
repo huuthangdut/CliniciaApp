@@ -4,11 +4,13 @@ import FavoriteList from './components/FavoriteList';
 import Header from '../../components/core/Header';
 import Toolbar from './components/Toolbar';
 
-const FavoriteScreen = () => {
+const FavoriteScreen = (props) => {
+  const {navigation} = props;
+  
   return (
     <Fragment>
       <View style={styles.container}>
-        <Header />
+        <Header navigation={navigation}/>
         <Text style={styles.title}>Yêu thích</Text>
         {/* <Toolbar /> */}
         <FavoriteList />

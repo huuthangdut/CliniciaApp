@@ -48,7 +48,7 @@ const Setting = props => {
               <ListItem
                 key={i}
                 title={item.title}
-                switch={item.switch}
+                // switch={item.switch}
                 leftIcon={{
                   type: 'font-awesome',
                   name: item.name,

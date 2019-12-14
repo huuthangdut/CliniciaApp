@@ -13,6 +13,9 @@ import {AuthService} from '../../services/AuthService';
 import AsyncStorage from '@react-native-community/async-storage';
 import { AppContext } from '../../AppProvider';
 import {Utils} from '../../utilities/utils';
+import {DeviceService} from '../../services/DeviceService';
+import DeviceInfo from 'react-native-device-info';
+import { ApiErrorCode } from '../../common/enums';
 
 const LoginScreen = props => {
   const {navigation} = props;
@@ -38,6 +41,8 @@ const LoginScreen = props => {
       if (result) {
         await AsyncStorage.setItem('@access_token', result.accessToken);
         context.authUser.set(Utils.getAuthUser(result.accessToken));
+
+        await DeviceService.addOrUpdateDevice(context.deviceToken.get, Platform.OS, DeviceInfo.getUniqueId());
         
         navigation.navigate('App');
       }
@@ -46,6 +51,7 @@ const LoginScreen = props => {
       if(error.errorCode === ApiErrorCode.RequireConfirmedPhoneNumber) {
         AuthService.request2fa(username).then(result => {
           setIsLogging(false);
+          console.log(result);
           navigation.navigate('Verify', { token: result.token });
         });
         

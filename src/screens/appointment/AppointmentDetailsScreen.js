@@ -78,7 +78,7 @@ const AppointmentDetailsScreen = props => {
 
   return (
     <Fragment>
-      <Header />
+      <Header navigation={navigation}/>
       {appointment ? (
           <View style={styles.container}>
             <View style={styles.headerInfo}>

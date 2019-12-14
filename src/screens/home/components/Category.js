@@ -47,13 +47,14 @@ const Category = props => {
               <TouchableOpacity
                 style={styles.item}
                 activeOpacity={0.7}
-                onPress={() => navigation.navigate('Doctor')}>
+                onPress={() => navigation.navigate('Doctor', { specialtyId: item.id })}>
                 <View style={styles.iconWrapper}>
-                  <Image
+                  {/* <Image
                     style={{width: 40, height: 40}}
                     resizeMode="contain"
                     source={{uri: item.image}}
-                  />
+                  /> */}
+                  <Icon name="heartbeat" type="font-awesome" size={40} color="white"/>
                 </View>
                 <View style={styles.center}>
                   <Text numberOfLines={2} style={styles.doctor}>{item.name}</Text>
@@ -101,7 +102,7 @@ const styles = StyleSheet.create({
     width: 85,
     flexDirection: 'column',
     marginRight: 10,
-    marginVertical: 8,
+    marginVertical: 8
   },
   iconWrapper: {
     height: 85,
@@ -118,7 +119,8 @@ const styles = StyleSheet.create({
     marginTop: 5,
     paddingHorizontal: 1,
     fontSize: 13,
-    fontFamily: 'SF-Pro-Text-Regular'
+    fontFamily: 'SF-Pro-Text-Regular',
+    textAlign: 'center'
   },
 });
 

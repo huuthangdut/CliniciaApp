@@ -50,6 +50,8 @@ const DoctorItem = props => {
             color="#C8C7CC"
           />
           <Text style={styles.text}>{item.distanceFromPatient} km</Text>
+          {/* <Icon name="dot-single" type="entypo" size={12} color="#C8C7CC" />
+          <Text style={styles.text}>{item.specialty.name}</Text> */}
         </View>
         <View style={styles.row}>
           <Rating
