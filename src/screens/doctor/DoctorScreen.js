@@ -5,6 +5,7 @@ import DoctorList from './components/DoctorList';
 import Header from '../../components/core/Header';
 import {DoctorService} from '../../services/DoctorService';
 import {SearchBar} from 'react-native-elements';
+import EmptyList from '../../components/core/EmptyList';
 
 const DoctorScreen = props => {
   const {navigation} = props;
@@ -12,13 +13,14 @@ const DoctorScreen = props => {
 
   const [searchTerm, setSearchTerm] = useState('');
 
-  const [page, setPage] = useState(0);
+  // const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
   const [doctors, setDoctors] = useState([]);
   const [hasMoreItems, setHasMoreItems] = useState(true);
+  const page = 0;
   const pageSize = 10;
 
-  const loadDoctors = () => {
+  const loadDoctors = (refresh) => {
     setLoading(true);
     DoctorService.getDoctors({
       page,
@@ -31,7 +33,11 @@ const DoctorScreen = props => {
     })
       .then(result => {
         setLoading(false);
-        setDoctors(list => [...list, ...result.items]);
+        if(refresh) {
+          setDoctors(result.items);
+        } else {
+          setDoctors(list => [...list, ...result.items]);
+        }
         setHasMoreItems(result.hasNextPage);
       })
       .catch(e => {
@@ -41,20 +47,21 @@ const DoctorScreen = props => {
 
   const handleLoadMore = () => {
     if (!loading && hasMoreItems) {
-      setPage(page + 1);
+      page++;
+      loadDoctors();
     }
   };
 
   useEffect(() => {
-    loadDoctors();
-  }, [page]);
+    loadDoctors(true);
+  }, [searchTerm, sort, gender, availableToday]);
 
   return (
     <Fragment>
       <Header
         navigation={navigation}
         hasRightMenu={true}
-        onPressRight={() => navigation.navigate('Filter')}
+        onPressRight={() => navigation.navigate('Filter', {specialtyId, sort, gender, availableToday} )}
       />
       <View style={styles.container}>
         <Text style={styles.header}>Bác sĩ</Text>
@@ -72,13 +79,18 @@ const DoctorScreen = props => {
               <ActivityIndicator size={40} style={{color: '#000'}} />
             </View>
           ) : (
-            <DoctorList
+            doctors.length > 0 ? (
+<DoctorList
               items={doctors}
               showSpecialty={false}
               loading={loading}
               onLoadMore={() => handleLoadMore()}
               navigation={navigation}
             />
+            ): (
+              <EmptyList text="Không có bác sĩ."/>
+            )
+            
           )}
         </View>
       </View>

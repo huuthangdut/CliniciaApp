@@ -4,7 +4,9 @@ import { ListItem, Text, CheckBox } from 'react-native-elements'
 import theme from '../../../styles/theme'
 
 const SortOption = props => {
-  const [selectedOption, setSelectedOption] = useState()
+  const {value} = props;
+
+  const [selectedOption, setSelectedOption] = useState(value);
   const [sortOptions, setSortOption] = useState([
     { value: '-StarRating', title: 'Đánh giá cao' },
     { value: '+Distance', title: 'Gần nhất' }

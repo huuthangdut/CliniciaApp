@@ -3,7 +3,8 @@ import { StyleSheet, View } from 'react-native'
 import { ListItem } from 'react-native-elements'
 
 const Availability = props => {
-  const [enable, setEnable] = useState(false)
+  const {value} = props;
+  const [enable, setEnable] = useState(value);
 
   const handleChange = () => {
     props.onChange(!enable)

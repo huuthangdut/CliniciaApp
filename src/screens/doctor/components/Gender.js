@@ -4,7 +4,8 @@ import { ListItem, Text, CheckBox } from 'react-native-elements'
 import theme from '../../../styles/theme'
 
 const Gender = props => {
-  const [selectedOption, setSelectedOption] = useState()
+  const {value} = props;
+  const [selectedOption, setSelectedOption] = useState(value);
   const [sortOptions, setSortOption] = useState([
     { value: true, title: 'Nam' },
     { value: false, title: 'Nữ' },

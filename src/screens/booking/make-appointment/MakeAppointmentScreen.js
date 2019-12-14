@@ -17,7 +17,7 @@ import Header from '../../../components/core/Header';
 import {DoctorService} from '../../../services/DoctorService';
 import {DateTime} from '../../../utilities/date-time';
 import {AppContext} from '../../../AppProvider';
-import RNBottomActionSheet from 'react-native-bottom-action-sheet';
+import RBSheet from "react-native-raw-bottom-sheet";
 
 const getDateString = date => DateTime.toDateString(date, 'YYYY-MM-DD');
 
@@ -37,6 +37,8 @@ const MakeAppointmentScreen = props => {
     text: 'Trước 1 phút',
     value: 1,
   });
+
+  const RbSheet = useRef();
 
   const [isValid, setIsValid] = useState(false);
 
@@ -60,25 +62,21 @@ const MakeAppointmentScreen = props => {
   }
 
   const reminderOptions = [
-    {title: 'Trước 1 phút', value: 1},
-    {title: 'Trước 15 phút', value: 15},
-    {title: 'Trước 30 phút', value: 30},
-    {title: 'Trước 45 phút', value: 45},
-    {title: 'Trước 1 giờ', value: 60},
+    {text: 'Trước 1 phút', value: 1},
+    {text: 'Trước 15 phút', value: 15},
+    {text: 'Trước 30 phút', value: 30},
+    {text: 'Trước 45 phút', value: 45},
+    {text: 'Trước 1 giờ', value: 60}
   ];
 
-  let SheetView = RNBottomActionSheet.SheetView;
-
   const onShowReminderOptions = () => {
-    SheetView.Show({
-      title: 'Chọn thời gian nhắc nhở',
-      items: reminderOptions,
-      theme: 'light',
-      onSelection: (index, value) => {
-        setReminderBefore({text: reminderOptions[index].title, value: value});
-      },
-    });
+    RbSheet.current.open();
   };
+
+  const onSelectReminderOption = (item) => {
+    RbSheet.current.close();
+    setReminderBefore(item);
+  }
 
   const Loader = () => (
     <View
@@ -190,6 +188,28 @@ const MakeAppointmentScreen = props => {
   return (
     <Fragment>
       <Header navigation={navigation}/>
+      <RBSheet
+          ref={RbSheet}
+          height={250}
+          duration={250}
+          customStyles={{
+            container: {
+              paddingVertical: 20,
+              paddingHorizontal: 30
+            }
+          }}
+        >
+          {
+            reminderOptions.map((item, index) => (
+              <TouchableOpacity key={index} style={{flexDirection: 'row', marginVertical: 10}} onPress={() => onSelectReminderOption(item)}>
+                {
+                  reminderBefore.value === item.value && <Icon name="check" type="font-awsome" size={20} color={theme.colors.primary}/>
+                }
+                <Text style={[styles.body, reminderBefore.value === item.value ? {marginLeft: 10} : {marginLeft: 30}]}>{item.text}</Text>
+              </TouchableOpacity>
+            ))
+          }
+      </RBSheet>
       <ScrollView style={styles.container}>
         <Calendar
           onDayPress={day => onDayPress(day)}
