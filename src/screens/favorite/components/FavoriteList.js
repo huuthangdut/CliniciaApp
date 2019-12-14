@@ -7,6 +7,7 @@ import {
   Dimensions,
   FlatList,
   ActivityIndicator,
+  TouchableOpacity
 } from 'react-native';
 import theme from '../../../styles/theme';
 import {Avatar} from 'react-native-elements';
@@ -17,6 +18,8 @@ import {AppContext} from '../../../AppProvider';
 const FavoriteList = props => {
   const [favorites, setFavorites] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  const {navigation} = props;
 
   const context = useContext(AppContext);
 
@@ -55,7 +58,7 @@ const FavoriteList = props => {
           showsVerticalScrollIndicator={false}
           data={favorites}
           renderItem={({item, index}) => (
-            <View style={styles.itemContainer}>
+            <TouchableOpacity style={styles.itemContainer} onPress={() => navigation.navigate('DoctorDetails', {id: item.doctor.id})}>
               <View style={styles.item}>
                 <Avatar
                   rounded
@@ -63,8 +66,8 @@ const FavoriteList = props => {
                   showEditButton
                   source={{uri: item.doctor.imageProfile}}
                   editButton={{
-                    name: 'heart',
-                    type: 'font-awesome',
+                    name: 'md-heart-dislike',
+                    type: 'ionicon',
                     color: theme.colors.red,
                     size: 16,
                     containerStyle: styles.loveIcon,
@@ -86,7 +89,7 @@ const FavoriteList = props => {
                   </Text>
                 </View>
               </View>
-            </View>
+            </TouchableOpacity>
           )}
           numColumns={3}
           keyExtractor={(item, index) => index.toString()}

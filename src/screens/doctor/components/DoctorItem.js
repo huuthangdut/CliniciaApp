@@ -1,42 +1,56 @@
-import React, { useState, useContext } from 'react';
+import React, {useState, useContext} from 'react';
 import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import theme from '../../../styles/theme';
 import {Avatar, Icon, Rating} from 'react-native-elements';
 import {FavoriteService} from '../../../services/FavoriteService';
-import { AppContext } from '../../../AppProvider';
+import {AppContext} from '../../../AppProvider';
 
 const DoctorItem = props => {
-  const {item, navigation} = props;
+  const {item, navigation, showSpecialty} = props;
 
   const [isFavorited, setIsFavorited] = useState(item.isFavorited);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const context = useContext(AppContext);
 
   const addOrRemoveFavorite = (id, isFavorited) => {
-    setIsFavorited(value => !value);
-    if(isFavorited) {
-      FavoriteService.removeFromFavorite(id).then(handleAddOrRemoveFavoriteSuccess).catch(handleAddOrRemoveFavoriteError);
-    } else {
-      FavoriteService.addToFavorite(id).then(handleAddOrRemoveFavoriteSuccess).catch(handleAddOrRemoveFavoriteError);
+    if (isSubmitting) {
+      return;
     }
-  }
+
+    setIsSubmitting(true);
+    setIsFavorited(value => !value);
+    if (isFavorited) {
+      FavoriteService.removeFromFavorite(id)
+        .then(handleAddOrRemoveFavoriteSuccess)
+        .catch(handleAddOrRemoveFavoriteError);
+    } else {
+      FavoriteService.addToFavorite(id)
+        .then(handleAddOrRemoveFavoriteSuccess)
+        .catch(handleAddOrRemoveFavoriteError);
+    }
+  };
 
   const handleAddOrRemoveFavoriteSuccess = () => {
+    setIsSubmitting(false);
     context.shouldReloadFavorite.set(value => !value);
   };
 
-  const handleAddOrRemoveFavoriteError = (e) => {
+  const handleAddOrRemoveFavoriteError = e => {
+    setIsSubmitting(false);
     console.log(e);
-  }
+  };
 
   return (
-    <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('DoctorDetails', {id: item.id})}>
+    <TouchableOpacity
+      style={styles.item}
+      onPress={() => navigation.navigate('DoctorDetails', {id: item.id})}>
       <View style={styles.image}>
         <Avatar
           size={80}
           rounded
           source={{
-            uri: item.imageProfile
+            uri: item.imageProfile,
           }}
         />
       </View>
@@ -50,8 +64,12 @@ const DoctorItem = props => {
             color="#C8C7CC"
           />
           <Text style={styles.text}>{item.distanceFromPatient} km</Text>
-          {/* <Icon name="dot-single" type="entypo" size={12} color="#C8C7CC" />
-          <Text style={styles.text}>{item.specialty.name}</Text> */}
+          {showSpecialty && (
+            // <View>
+              // <Icon name="dot-single" type="entypo" size={12} color="#C8C7CC" />
+              <Text style={styles.text}>{item.specialty.name}</Text>
+            // </View>
+          )}
         </View>
         <View style={styles.row}>
           <Rating
@@ -63,8 +81,15 @@ const DoctorItem = props => {
           <Text style={styles.text}>{item.ratingCount}</Text>
         </View>
       </View>
-      <TouchableOpacity style={styles.likeWrapper} onPress={() => addOrRemoveFavorite(item.id, isFavorited)}>
-        <Icon name={isFavorited ? 'heart' : 'hearto'} type="antdesign" size={20} color={theme.colors.red} />
+      <TouchableOpacity
+        style={styles.likeWrapper}
+        onPress={() => addOrRemoveFavorite(item.id, isFavorited)}>
+        <Icon
+          name={isFavorited ? 'heart' : 'hearto'}
+          type="antdesign"
+          size={20}
+          color={theme.colors.red}
+        />
       </TouchableOpacity>
     </TouchableOpacity>
   );
@@ -112,7 +137,7 @@ const styles = StyleSheet.create({
   },
   likeWrapper: {
     width: 30,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
 });
 

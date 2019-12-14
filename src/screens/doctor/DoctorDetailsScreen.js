@@ -24,10 +24,16 @@ const DoctorDetailsScreen = props => {
   const [reviews, setReviews] = useState([]);
 
   const [isFavorited, setIsFavorited] = useState();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const context = useContext(AppContext);
 
   const addOrRemoveFavorite = (id, isFavorited) => {
+    if(isSubmitting) {
+      return;
+    }
+
+    setIsSubmitting(true);
     setIsFavorited(value => !value);
     if (isFavorited) {
       FavoriteService.removeFromFavorite(id)
@@ -41,10 +47,12 @@ const DoctorDetailsScreen = props => {
   };
 
   const handleAddOrRemoveFavoriteSuccess = () => {
+    setIsSubmitting(false);
     context.shouldReloadFavorite.set(value => !value);
   };
 
   const handleAddOrRemoveFavoriteError = e => {
+    setIsSubmitting(false);
     console.log(e);
   };
 

@@ -13,7 +13,7 @@ const UserInfo = props => {
       <View style={styles.infoAvatar}>
         <Avatar
           rounded
-          size={86}
+          size="large"
           source={{ uri: authUser.imageProfile }}
           showEditButton
         />
@@ -30,16 +30,15 @@ const styles = StyleSheet.create({
   info: {
     backgroundColor: '#F9F9F9',
     flexDirection: 'row',
+    alignItems: 'center',
     paddingTop: 30,
     paddingBottom: 20,
-    paddingHorizontal: 15
-  },
-  avatar: {
-    paddingLeft: 16,
+    paddingHorizontal: 18
   },
   infoText: {
-    marginTop: 17,
-    marginLeft: 16,
+    flex: 1,
+    justifyContent: 'center',
+    marginLeft: 16
   },
   infoTextName: {
     fontSize: 24,

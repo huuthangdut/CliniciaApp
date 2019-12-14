@@ -14,7 +14,8 @@ export class Utils {
             role: decodedToken['role'],
             latitude: decodedToken['latitude'],
             longitude: decodedToken['longitude'],
-            address: decodedToken['address']
+            address: decodedToken['address'],
+            imageProfile: decodedToken['image_profile']
         }
     }
 }

@@ -7,7 +7,7 @@ import {AppContext} from '../../../AppProvider';
 const Address = (props) => {
   const context = useContext(AppContext);
   const {navigation} = props;
-  const {address} = context.authUser.get;
+  const address = context.authUser.get ? context.authUser.get.address : '';
 
   return (
     <View style={styles.setting}>

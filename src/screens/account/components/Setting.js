@@ -10,17 +10,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 const Setting = props => {
   const {navigation} = props;
   const context = useContext(AppContext);
-  
-  const [notificationEnabled, setNotificationEnabled] = useState(true);
 
   const listSetting = [
-    {
-      title: 'Thông báo',
-      icon: theme.tabIcons.notificationSetting,
-      name: 'bell',
-      bottomDivider: true,
-      switch: true,
-    },
     {
       title: 'Đăng xuất',
       icon: theme.tabIcons.signOut,
@@ -38,6 +29,7 @@ const Setting = props => {
     navigation.navigate('Login');
   };
 
+
   return (
     <View style={styles.setting}>
       <Text style={styles.headerLabel}>Cài đặt</Text>
@@ -48,7 +40,6 @@ const Setting = props => {
               <ListItem
                 key={i}
                 title={item.title}
-                // switch={item.switch}
                 leftIcon={{
                   type: 'font-awesome',
                   name: item.name,

@@ -13,7 +13,7 @@ const FavoriteScreen = (props) => {
         <Header navigation={navigation}/>
         <Text style={styles.title}>Yêu thích</Text>
         {/* <Toolbar /> */}
-        <FavoriteList />
+        <FavoriteList navigation={navigation}/>
       </View>
     </Fragment>
   );

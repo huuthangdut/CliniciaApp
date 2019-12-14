@@ -74,6 +74,7 @@ const DoctorScreen = props => {
           ) : (
             <DoctorList
               items={doctors}
+              showSpecialty={false}
               loading={loading}
               onLoadMore={() => handleLoadMore()}
               navigation={navigation}

@@ -117,7 +117,7 @@ const HomeScreen = props => {
               <ActivityIndicator size={30} style={{color: '#000'}} />
             </View>
           ) : (
-            <DoctorList items={doctors} navigation={navigation} />
+            <DoctorList items={doctors} navigation={navigation} showSpecialty={true}/>
           )}
         </View>
       </ScrollView>

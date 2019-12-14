@@ -5,7 +5,7 @@ import FlatListItemSeperator from '../../../components/core/FlatListItemSeperato
 import DoctorItem from './DoctorItem';
 
 const DoctorList = props => {
-  const {items, navigation, loading} = props;
+  const {items, navigation, loading, showSpecialty} = props;
 
   const renderFooter = () => {
     if (!loading) return null;
@@ -24,7 +24,7 @@ const DoctorList = props => {
       ItemSeparatorComponent={FlatListItemSeperator}
       data={items}
       renderItem={({item}) => (
-        <DoctorItem item={item} navigation={navigation} />
+        <DoctorItem showSpecialty={showSpecialty} item={item} navigation={navigation} />
       )}
       keyExtractor={item => item.id.toString()}
       ListFooterComponent={() => renderFooter(props.loading)}
