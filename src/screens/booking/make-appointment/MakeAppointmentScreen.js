@@ -38,6 +38,8 @@ const MakeAppointmentScreen = props => {
     value: 1,
   });
 
+  const [isValid, setIsValid] = useState(false);
+
   const [isLoadingTime, setIsLoadingTime] = useState(false);
 
   const [currentTime, setCurrentTime] = useState(getTimeString(new Date()));
@@ -48,10 +50,17 @@ const MakeAppointmentScreen = props => {
   const onSelectService = (item) => {
     setSelectedService(item);
     setServiceDuration(item.durationInMinutes);
+
+    setIsValid(selectedTime != null);
   };
 
+  const onSelectTime = (item) => {
+    setSelectedTime(item);
+    setIsValid(selectedService != null);
+  }
+
   const reminderOptions = [
-    {title: 'Trước 1 phút (test)', value: 1},
+    {title: 'Trước 1 phút', value: 1},
     {title: 'Trước 15 phút', value: 15},
     {title: 'Trước 30 phút', value: 30},
     {title: 'Trước 45 phút', value: 45},
@@ -102,6 +111,10 @@ const MakeAppointmentScreen = props => {
   };
 
   const handleNext = () => {
+    if(!selectedDate || !selectedTime || !selectedService) {
+      return;
+    }
+
     context.appointment.set({
       date: selectedDate,
       time: selectedTime,
@@ -114,12 +127,14 @@ const MakeAppointmentScreen = props => {
   };
 
   useEffect(() => {
+    setIsValid(false);
     setAvailableTimes([]);
     setSelectedTime(null);
     loadWorkingTime(doctor.id, DateTime.toDateString(selectedDate, 'YYYYMMDD'), currentTime, serviceDuration);
   }, [selectedDate]);
 
   useEffect(() => {
+    setIsValid(false);
     setAvailableTimes([]);
     setSelectedTime(null);
     loadWorkingTime(doctor.id, DateTime.toDateString(selectedDate, 'YYYYMMDD'), currentTime, serviceDuration);
@@ -223,7 +238,7 @@ const MakeAppointmentScreen = props => {
                     <TouchableOpacity
                       disabled={item.isSlotFull}
                       style={wrapperStyles}
-                      onPress={() => setSelectedTime(item)}>
+                      onPress={() => onSelectTime(item)}>
                       <Text style={textStyles}>{item}</Text>
                     </TouchableOpacity>
                   );
@@ -312,7 +327,7 @@ const MakeAppointmentScreen = props => {
         </View>
       </ScrollView>
       <View style={styles.mainContent}>
-        <Button primary title="Tiếp tục" onPress={() => handleNext()} />
+        <Button primary title="Tiếp tục" disabled={!isValid} onPress={() => handleNext()} />
       </View>
     </Fragment>
   );
