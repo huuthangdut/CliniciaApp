@@ -7,11 +7,14 @@ import Header from '../../../components/core/Header';
 import {ReviewService} from '../../../services/ReviewService';
 import theme from '../../../styles/theme';
 import { AppContext } from '../../../AppProvider';
+import validate from '../../../common/validate';
 
 const RatingScreen = props => {
   const {navigation} = props;
   const [starRating, setStarRating] = useState(0);
   const [comment, setComment] = useState();
+
+  const [commentError, setCommentError] = useState();
 
   const context = useContext(AppContext);
 
@@ -22,6 +25,13 @@ const RatingScreen = props => {
   const [showRatingSuccess, setShowRatingSuccess] = useState(false);
 
   const onSubmit = () => {
+    const commentError = validate('review', comment);
+    setCommentError(commentError);
+
+    if(commentError || starRating === 0) {
+      return;
+    }
+
     setIsSubmitting(true);
     ReviewService.addReview({
       rating: starRating,
@@ -75,6 +85,9 @@ const RatingScreen = props => {
               multiline={true}
               numberOfLines={4}
               placeholder="Nhận xét"
+              value={comment}
+              error={commentError}
+              onBlur={() => setCommentError(validate('review', comment))}
               onChangeText={value => setComment(value)}
               returnKeyType="done"
               secureTextEntry={true}

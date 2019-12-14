@@ -11,20 +11,27 @@ import Button from '../../components/core/Button';
 import theme from '../../styles/theme';
 import AsyncStorage from '@react-native-community/async-storage';
 import {AuthService} from '../../services/AuthService';
+import validate from '../../common/validate';
 
 const VerifyScreen = props => {
   const {navigation} = props;
 
   const token = navigation.getParam('token');
   const [otpCode, setOtpCode] = useState();
+  const [otpCodeError, setOptCodeError] = useState();
   const [isVerifying, setIsVerifying] = useState(false);
 
   const onChangeOtpCode = (value) => {
-    value = value.replace(/[^0-9+]+/g, '');
     setOtpCode(value);
   };
 
   const verify = async () => {
+    const verifyCodeError = validate('verifyCode', otpCode);
+    setOptCodeError(verifyCodeError);
+    if(verifyCodeError) {
+      return;
+    }
+
     try {
       setIsVerifying(true);
       const result = await AuthService.verify2fa(otpCode, token);
@@ -49,8 +56,10 @@ const VerifyScreen = props => {
             placeholder="Mã xác thực"
             keyboardType="numeric"
             onChangeText={value => onChangeOtpCode(value)}
+            onBlur={() => setOptCodeError(validate('verifyCode', otpCode))}
             value={otpCode}
-            returnKeyType="next"
+            error={otpCodeError}
+            returnKeyType="done"
           />
           <Button title="Xác thực" primary onPress={verify} loading={isVerifying}/>
         </View>

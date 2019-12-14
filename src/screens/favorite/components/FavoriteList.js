@@ -32,7 +32,7 @@ const FavoriteList = props => {
     FavoriteService.getFavorites(0, 100)
       .then(result => {
         setIsLoading(false);
-        console.log(result.items);
+        // console.log(result.items);
         setFavorites(result.items);
       })
       .catch(e => {

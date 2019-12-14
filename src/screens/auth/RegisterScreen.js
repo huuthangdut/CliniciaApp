@@ -12,6 +12,7 @@ import TextField from '../../components/core/TextField';
 import Button from '../../components/core/Button';
 import theme from '../../styles/theme';
 import {AuthService} from '../../services/AuthService';
+import validate from '../../common/validate';
 
 const RegisterScreen = props => {
   const {navigation} = props;
@@ -22,10 +23,15 @@ const RegisterScreen = props => {
   const phoneNumberRef = useRef();
 
   const [firstName, setFirstName] = useState();
+  const [firstNameError, setFirstNameError] = useState();
   const [lastName, setLastName] = useState();
+  const [lastNameError, setLastNameError] = useState();
   const [email, setEmail] = useState();
+  const [emailError, setEmailError] = useState();
   const [password, setPassword] = useState();
+  const [passwordError, setPasswordError] = useState();
   const [phoneNumber, setPhoneNumber] = useState();
+  const [phoneNumberError, setPhoneNumberError] = useState();
   const [isRegistering, setIsRegistering] = useState(false);
 
   const focusLastName = () => lastNameRef.current.focus();
@@ -36,6 +42,22 @@ const RegisterScreen = props => {
   const goToLogin = () => navigation.replace({routeName: 'Login'});
 
   const register = async () => {
+    const firstNameError = validate('firstName', firstName);
+    const lastNameError = validate('lastName', lastName);
+    const phoneNumberError = validate('phoneNumber', phoneNumber);
+    const passwordError = validate('password', password);
+    const emailError = validate('email', email);
+
+    setFirstNameError(firstNameError);
+    setLastNameError(lastNameError);
+    setPhoneNumberError(phoneNumberError);
+    setPasswordError(passwordError);
+    setEmailError(emailError);
+
+    if(firstNameError || lastNameError || phoneNumberError || passwordError || emailError) {
+      return;
+    }
+
     try {
       setIsRegistering(true);
       const result = await AuthService.register({
@@ -66,16 +88,20 @@ const RegisterScreen = props => {
             <TextField
               placeholder="Họ và tên đệm"
               onChangeText={value => setFirstName(value)}
+              onBlur={() => setFirstNameError(validate('firstName', firstName))}
               onSubmitEditing={focusLastName}
               value={firstName}
+              error={firstNameError}
               returnKeyType="next"
             />
             <TextField
               ref={lastNameRef}
               placeholder="Tên"
               onChangeText={value => setLastName(value)}
+              onBlur={() => setLastNameError(validate('lastName', lastName))}
               onSubmitEditing={focusEmail}
               value={lastName}
+              error={lastNameError}
               returnKeyType="next"
             />
             <TextField
@@ -83,8 +109,10 @@ const RegisterScreen = props => {
               placeholder="Email"
               keyboardType="email-address"
               onChangeText={value => setEmail(value)}
-              onSubmitEditing={focusPassword}
+              onBlur={() => setEmailError(validate('email', email))}
+              onSubmitEditing={focusPhoneNumber}
               value={email}
+              error={emailError}
               returnKeyType="next"
             />
             <TextField
@@ -92,16 +120,19 @@ const RegisterScreen = props => {
               placeholder="Số điện thoại"
               keyboardType="phone-pad"
               onChangeText={value => setPhoneNumber(value)}
-              onSubmitEditing={() => {}}
+              onBlur={() => setPhoneNumberError(validate('phoneNumber', phoneNumber))}
+              onSubmitEditing={focusPassword}
               value={phoneNumber}
+              error={phoneNumberError}
               returnKeyType="next"
             />
             <TextField
               ref={passwordRef}
               placeholder="Mật khẩu"
               onChangeText={value => setPassword(value)}
-              onSubmitEditing={focusPhoneNumber}
+              onBlur={() => setPasswordError(validate('password', password))}
               value={password}
+              error={passwordError}
               returnKeyType="done"
               secureTextEntry={true}
             />

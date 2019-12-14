@@ -30,7 +30,7 @@ const NotificationList = props => {
   };
 
   const loadNotifications = (page, pageSize) => {
-    console.log("load page", page);
+    // console.log("load page", page);
     setLoading(true);
     NotificationService.getNotifications(page, pageSize)
       .then(result => {
