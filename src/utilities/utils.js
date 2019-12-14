@@ -18,4 +18,8 @@ export class Utils {
             imageProfile: decodedToken['image_profile']
         }
     }
+
+    static currencyFormat(value) {
+        return value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + "đ";
+    }
 }

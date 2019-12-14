@@ -18,6 +18,7 @@ import Header from '../../components/core/Header';
 import {DateTime} from '../../utilities/date-time';
 import {AppointmentService} from '../../services/AppointmentService';
 import {AppContext} from '../../AppProvider';
+import { Utils } from '../../utilities/utils';
 
 const AppointmentDetailsScreen = props => {
   const {navigation} = props;
@@ -142,7 +143,7 @@ const AppointmentDetailsScreen = props => {
             <View style={styles.itemRow}>
               <Text style={styles.smText}>Giá khám</Text>
               <Text style={styles.lgText}>
-                {appointment.price ? appointment.price + 'đ' : 'Miễn phí'}
+                {appointment.price ? Utils.currencyFormat(appointment.price) : 'Miễn phí'}
               </Text>
               <Text style={styles.smText}>{appointment.totalMinutes} phút</Text>
             </View>

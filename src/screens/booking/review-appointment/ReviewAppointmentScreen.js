@@ -7,6 +7,7 @@ import Header from '../../../components/core/Header';
 import {DateTime} from '../../../utilities/date-time';
 import {AppointmentService} from '../../../services/AppointmentService';
 import {AppContext} from '../../../AppProvider';
+import { Utils } from '../../../utilities/utils';
 
 const ReviewAppointmentScreen = props => {
   const {navigation} = props;
@@ -97,7 +98,7 @@ const ReviewAppointmentScreen = props => {
               <Text style={styles.text}>Giá khám</Text>
               <Text style={styles.body}>
                 {appointment.checkingService.price
-                  ? appointment.checkingService.price
+                  ? Utils.currencyFormat(appointment.checkingService.price)
                   : 'Miễn phí'}
               </Text>
               <Divider style={styles.divider} />

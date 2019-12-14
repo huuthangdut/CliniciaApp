@@ -18,6 +18,7 @@ import {DoctorService} from '../../../services/DoctorService';
 import {DateTime} from '../../../utilities/date-time';
 import {AppContext} from '../../../AppProvider';
 import RBSheet from "react-native-raw-bottom-sheet";
+import { Utils } from '../../../utilities/utils';
 
 const getDateString = date => DateTime.toDateString(date, 'YYYY-MM-DD');
 
@@ -299,7 +300,7 @@ const MakeAppointmentScreen = props => {
                             {item.durationInMinutes} phút -
                           </Text>
                           <Text style={styles.servicePrice}>
-                            {item.price ? item.price + 'đ' : 'Miễn phí'}
+                            {item.price ? Utils.currencyFormat(item.price) : 'Miễn phí'}
                           </Text>
                         </View>
                       </View>
