@@ -20,6 +20,7 @@ import {Utils} from '../../utilities/utils';
 import AsyncStorage from '@react-native-community/async-storage';
 import {DeviceService} from '../../services/DeviceService';
 import DeviceInfo from 'react-native-device-info';
+import {Toast} from '../../utilities/toast';
 
 const MapStyle = [
   {
@@ -347,7 +348,7 @@ const LocationPickerScreen = props => {
         const {latitude, longitude} = position.coords;
         setCurrentCoords({latitude, longitude});
       },
-      error => console.log(error.message),
+      error => Toast.error(error),
       {enableHighAccuracy: false, timeout: 200000, maximumAge: 1000},
     );
   }, []);
@@ -395,9 +396,9 @@ const LocationPickerScreen = props => {
           await DeviceService.addOrUpdateDevice(context.deviceToken.get, Platform.OS, DeviceInfo.getUniqueId());
           navigation.navigate('Tab');
         }
-      }).catch(e => {
+      }).catch(error => {
         setIsSubmitting(false);
-        console.log(e);
+        Toast.error(error.errorMessage);
       });
     }
   };

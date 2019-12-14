@@ -19,6 +19,7 @@ import {DateTime} from '../../utilities/date-time';
 import {AppointmentService} from '../../services/AppointmentService';
 import {AppContext} from '../../AppProvider';
 import { Utils } from '../../utilities/utils';
+import { Toast } from '../../utilities/toast';
 
 const AppointmentDetailsScreen = props => {
   const {navigation} = props;
@@ -43,21 +44,21 @@ const AppointmentDetailsScreen = props => {
         }));
         context.shouldReloadAppointmentList.set(value => !value);
       })
-      .catch(e => {
+      .catch(error => {
         setIsCancelling(false);
-        console.log(e);
+        Toast.error(error.errorMessage);
       });
   };
 
   const text = phoneNumber => {
-    Linking.openURL('sms:' + phoneNumber).catch(e => console.log(e));
+    Linking.openURL('sms:' + phoneNumber).catch(e => Toast.error(e));
   };
 
   const dial = phoneNumber => {
     if (Platform.OS === 'android') {
-      Linking.openURL('tel:' + phoneNumber).catch(e => console.log(e));
+      Linking.openURL('tel:' + phoneNumber).catch(e => Toast.error(e));
     } else {
-      Linking.openURL('telprompt:' + phoneNumber).catch(e => console.log(e));
+      Linking.openURL('telprompt:' + phoneNumber).catch(e => Toast.error(e));
     }
   };
 
@@ -75,8 +76,8 @@ const AppointmentDetailsScreen = props => {
           setAppointment(result);
         }
       })
-      .catch(e => {
-        console.log(e);
+      .catch(error => {
+        Toast.error(error.errorMessage);
       });
   }, []);
 

@@ -15,6 +15,7 @@ import {DoctorService} from '../../services/DoctorService';
 import {FavoriteService} from '../../services/FavoriteService';
 import {AppContext} from '../../AppProvider';
 import {DateTime} from '../../utilities/date-time';
+import { Toast } from '../../utilities/toast';
 
 const DoctorDetailsScreen = props => {
   const {navigation} = props;
@@ -51,9 +52,9 @@ const DoctorDetailsScreen = props => {
     context.shouldReloadFavorite.set(value => !value);
   };
 
-  const handleAddOrRemoveFavoriteError = e => {
+  const handleAddOrRemoveFavoriteError = error => {
     setIsSubmitting(false);
-    console.log(e);
+    Toast.error(error.errorMessage);
   };
 
   const loadDoctor = id => {
@@ -64,8 +65,9 @@ const DoctorDetailsScreen = props => {
         setIsFavorited(result.isFavorited);
         setLoading(false);
       })
-      .catch(() => {
+      .catch((error) => {
         setLoading(false);
+        Toast.error(error.errorMessage);
       });
   };
 
@@ -74,8 +76,8 @@ const DoctorDetailsScreen = props => {
       .then(result => {
         setReviews(result.items);
       })
-      .catch(e => {
-        console.log(e);
+      .catch(error => {
+        Toast.error(error.errorMessage);
       });
   };
 

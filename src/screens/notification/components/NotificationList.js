@@ -12,6 +12,7 @@ import NotificationItem from './NotificationItem';
 import {NotificationService} from '../../../services/NotificationService';
 import {AppContext} from '../../../AppProvider';
 import EmptyList from '../../../components/core/EmptyList';
+import {Toast} from '../../../utilities/toast';
 
 const NotificationList = props => {
   const {navigation} = props;
@@ -44,9 +45,9 @@ const NotificationList = props => {
         setLoading(false);
         setHasMoreItems(result.hasNextPage);
       })
-      .catch(e => {
+      .catch(error => {
         setLoading(false);
-        console.log(e);
+        Toast.error(error.errorMessage);
       });
   };
 
@@ -67,9 +68,9 @@ const NotificationList = props => {
         setIsRefreshing(false);
         setHasMoreItems(result.hasNextPage);
       })
-      .catch(e => {
+      .catch(error => {
         setIsRefreshing(false);
-        console.log(e);
+        Toast.error(error.errorMessage);
       });
   };
 

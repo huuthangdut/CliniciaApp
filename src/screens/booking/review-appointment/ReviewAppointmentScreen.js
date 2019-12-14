@@ -8,6 +8,7 @@ import {DateTime} from '../../../utilities/date-time';
 import {AppointmentService} from '../../../services/AppointmentService';
 import {AppContext} from '../../../AppProvider';
 import { Utils } from '../../../utilities/utils';
+import { Toast } from '../../../utilities/toast';
 
 const ReviewAppointmentScreen = props => {
   const {navigation} = props;
@@ -32,9 +33,9 @@ const ReviewAppointmentScreen = props => {
     AppointmentService.addAppointment(getAppointmentModel()).then(() => {
       setIsSubmitting(false);
       navigation.navigate('BookingSuccess');
-    }).catch(e => {
+    }).catch(error => {
       setIsSubmitting(false);
-      console.log(e);
+      Toast.error(error.errorMessage);
     });
   };
 

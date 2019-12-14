@@ -13,6 +13,7 @@ import {AppointmentService} from '../../../services/AppointmentService';
 import {AppointmentStatus} from '../../../common/enums';
 import { AppContext } from '../../../AppProvider';
 import EmptyList from '../../../components/core/EmptyList';
+import { Toast } from '../../../utilities/toast';
 
 const AppointmentList = props => {
   const {navigation, type} = props;
@@ -52,9 +53,9 @@ const AppointmentList = props => {
         setLoading(false);
         setHasMoreItems(result.hasNextPage);
       })
-      .catch(e => {
+      .catch(error => {
         setLoading(false);
-        console.log(e);
+        Toast.error(error.errorMessage);
       });
   };
 
@@ -75,9 +76,9 @@ const AppointmentList = props => {
         setIsRefreshing(false);
         setHasMoreItems(result.hasNextPage);
       })
-      .catch(e => {
+      .catch(error => {
         setIsRefreshing(false);
-        console.log(e);
+        Toast.error(error.errorMessage);
       });
   };
 

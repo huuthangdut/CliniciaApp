@@ -12,6 +12,7 @@ import {DoctorService} from '../../services/DoctorService';
 import {AppointmentService} from '../../services/AppointmentService';
 import {AppContext} from '../../AppProvider';
 import {DateTime} from '../../utilities/date-time';
+import { Toast } from '../../utilities/toast';
 
 const HomeScreen = props => {
   const {navigation} = props;
@@ -36,9 +37,9 @@ const HomeScreen = props => {
         setIsLoadingReminder(false);
         setReminder(result);
       })
-      .catch(e => {
+      .catch(error => {
         setIsLoadingReminder(false);
-        console.log(e);
+        Toast.error(error.errorMessage);
       });
   };
 
@@ -49,9 +50,9 @@ const HomeScreen = props => {
         setIsLoadingSpecialities(false);
         setSpecialties(result.items);
       })
-      .catch(e => {
+      .catch(error => {
         setIsLoadingSpecialities(false);
-        console.log(e);
+        Toast.error(error.errorMessage);
       });
   };
 
@@ -66,9 +67,9 @@ const HomeScreen = props => {
         setDoctors(result.items);
         setIsLoadingDoctors(false);
       })
-      .catch(e => {
+      .catch(error => {
         setIsLoadingDoctors(false);
-        console.log(e);
+        Toast.error(error.errorMessage);
       });
   };
 

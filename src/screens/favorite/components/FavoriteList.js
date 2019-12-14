@@ -14,6 +14,7 @@ import {Avatar} from 'react-native-elements';
 import {FavoriteService} from '../../../services/FavoriteService';
 import EmptyList from '../../../components/core/EmptyList';
 import {AppContext} from '../../../AppProvider';
+import { Toast } from '../../../utilities/toast';
 
 const FavoriteList = props => {
   const [favorites, setFavorites] = useState([]);
@@ -25,8 +26,8 @@ const FavoriteList = props => {
 
   const removeFromFavorite = (id, index) => {
     setFavorites(list => list.filter(x => x.doctor.id !== id));
-    FavoriteService.removeFromFavorite(id).catch(e => {
-      console.log(e);
+    FavoriteService.removeFromFavorite(id).catch(error => {
+      Toast.error(error.errorMessage);
     });
   };
 
@@ -38,9 +39,9 @@ const FavoriteList = props => {
         // console.log(result.items);
         setFavorites(result.items);
       })
-      .catch(e => {
+      .catch(error => {
         setIsLoading(false);
-        console.log(e);
+        Toast.error(error.errorMessage);
       });
   }, [context.shouldReloadFavorite.get]);
 

@@ -12,6 +12,7 @@ import theme from '../../styles/theme';
 import AsyncStorage from '@react-native-community/async-storage';
 import {AuthService} from '../../services/AuthService';
 import validate from '../../common/validate';
+import { Toast } from '../../utilities/toast';
 
 const VerifyScreen = props => {
   const {navigation} = props;
@@ -42,7 +43,7 @@ const VerifyScreen = props => {
       setIsVerifying(false);
     } catch(error) {
       setIsVerifying(false);
-      console.log(error);
+      Toast.error(error.errorMessage);
     }
   }
 

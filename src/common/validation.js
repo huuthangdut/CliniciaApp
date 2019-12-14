@@ -40,7 +40,7 @@ const validation = {
       message: '^Vui lòng nhập mã xác thực',
     },
     format: {
-      pattern: '^[0-9]{1,6}$',
+      pattern: '^[0-9]{6}$',
       message: '^Vui lòng nhập mã xác thực gồm 6 số'
     }
   },

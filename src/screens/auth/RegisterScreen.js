@@ -13,6 +13,7 @@ import Button from '../../components/core/Button';
 import theme from '../../styles/theme';
 import {AuthService} from '../../services/AuthService';
 import validate from '../../common/validate';
+import { Toast } from '../../utilities/toast';
 
 const RegisterScreen = props => {
   const {navigation} = props;
@@ -74,7 +75,7 @@ const RegisterScreen = props => {
       setIsRegistering(false);
     } catch (error) {
       setIsRegistering(false);
-      console.log(error);
+      Toast.error(error.errorMessage);
     }
   };
 

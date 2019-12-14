@@ -6,6 +6,7 @@ import {DateTime} from '../../../utilities/date-time';
 import Swipeout from 'react-native-swipeout';
 import { NotificationService } from '../../../services/NotificationService';
 import {AppContext} from '../../../AppProvider';
+import { Toast } from '../../../utilities/toast';
 
 const NotificationItem = props => {
   const {item, navigation} = props;
@@ -17,8 +18,8 @@ const NotificationItem = props => {
         context.notifications.set(list => [
           ...list.filter(i => i.id !== item.id)
         ]);
-      }).catch(e => {
-        console.log(e);
+      }).catch(error => {
+        Toast.error(error.errorMessage);
       });
   };
 
@@ -28,8 +29,8 @@ const NotificationItem = props => {
         const notifies = [...context.notifications.get];
         notifies.find(i => i.id === item.id).hasRead = true;
         context.notifications.set(notifies);
-      }).catch(e => {
-        console.log(e);
+      }).catch(error => {
+        Toast.error(error.errorMessage);
       });
     }
 

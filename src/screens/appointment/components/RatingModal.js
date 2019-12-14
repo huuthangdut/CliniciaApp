@@ -8,6 +8,7 @@ import {ReviewService} from '../../../services/ReviewService';
 import theme from '../../../styles/theme';
 import { AppContext } from '../../../AppProvider';
 import validate from '../../../common/validate';
+import { Toast } from '../../../utilities/toast';
 
 const RatingScreen = props => {
   const {navigation} = props;
@@ -43,9 +44,9 @@ const RatingScreen = props => {
         setIsSubmitting(false);
         setShowRatingSuccess(true);
       })
-      .catch(e => {
+      .catch(error => {
         setIsSubmitting(false);
-        console.log(e);
+        Toast.error(error.errorMessage);
       });
   };
 

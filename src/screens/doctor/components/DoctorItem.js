@@ -4,6 +4,7 @@ import theme from '../../../styles/theme';
 import {Avatar, Icon, Rating} from 'react-native-elements';
 import {FavoriteService} from '../../../services/FavoriteService';
 import {AppContext} from '../../../AppProvider';
+import { Toast } from '../../../utilities/toast';
 
 const DoctorItem = props => {
   const {item, navigation, showSpecialty} = props;
@@ -36,9 +37,9 @@ const DoctorItem = props => {
     context.shouldReloadFavorite.set(value => !value);
   };
 
-  const handleAddOrRemoveFavoriteError = e => {
+  const handleAddOrRemoveFavoriteError = error => {
     setIsSubmitting(false);
-    console.log(e);
+    Toast.error(error.errorMessage);
   };
 
   return (

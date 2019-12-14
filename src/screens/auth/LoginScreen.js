@@ -17,6 +17,7 @@ import {DeviceService} from '../../services/DeviceService';
 import DeviceInfo from 'react-native-device-info';
 import { ApiErrorCode } from '../../common/enums';
 import validate from '../../common/validate';
+import { Toast } from '../../utilities/toast';
 
 const LoginScreen = props => {
   const {navigation} = props;
@@ -73,7 +74,7 @@ const LoginScreen = props => {
         
       } else {
         setIsLogging(false);
-        console.log(error);
+        Toast.error(error.errorMessage);
       }
     }
   };
