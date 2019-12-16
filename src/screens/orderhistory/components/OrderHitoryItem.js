@@ -21,7 +21,7 @@ const OrderHitoryItem = props => {
       _totalQuantity += foodItem.qty
       _total += foodItem.qty * foodItem.food.price
     })
-
+    _total += item.shipping_fee
     setTotal(_total)
     setTotalQuantity(_totalQuantity)
 
@@ -30,10 +30,10 @@ const OrderHitoryItem = props => {
   return (
     <TouchableOpacity style={styles.container} activeOpacity={0.7} onPress={() => navigation.navigate('OrderDetail', {orderDetail: item})}>
       <View style={styles.textWrapper}>
-        <Text style={styles.doctorName}>{item.restaurant.name}</Text>
-        <Text numberOfLines={1} style={styles.clinicName}>{item.restaurant.location.address}</Text>
+        <Text style={styles.doctorName}>{item.user.firstName} {item.user.lastName}</Text>
+        <Text numberOfLines={1} style={styles.clinicName}>{item.delivery_address}</Text>
         <Text style={styles.date}>{FormatTime.FormatTimeFromMili(parseInt(item.createdAt))}</Text>
-        <Text style={styles.date}>{total}d, {totalQuantity} item(s)  </Text>
+        <Text style={styles.date}>{total}d, {totalQuantity} item(s)</Text>
       </View>
       <View style={styles.timeStatusWrapper}>
         <OrderHistoryStatus type={item.status} />
@@ -42,8 +42,6 @@ const OrderHitoryItem = props => {
   );
 };
 
-
-
 const styles = StyleSheet.create({
   container: {
     height: 90,
@@ -51,7 +49,8 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.lightGray,
     padding: 10,
     borderRadius: 10,
-    marginVertical: 5
+    marginVertical: 5,
+    marginHorizontal: 10
   },
   image: {
     justifyContent: 'center',

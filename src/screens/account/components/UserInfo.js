@@ -14,7 +14,7 @@ const UserInfo = props => {
         ></Avatar>
       </View>
       <View style={styles.infoText}>
-        <Text style={styles.infoTextName}>{user.fName + ' ' + user.lName}</Text>
+        <Text style={styles.infoTextName}>{user.firstName + ' ' + user.lastName}</Text>
         <Text style={styles.infoTextMail}>{user.email}</Text>
       </View>
     </View>

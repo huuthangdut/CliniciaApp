@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { TouchableWithoutFeedback, View, Text, Keyboard, StyleSheet, Alert, ImageBackground, Dimensions, ActivityIndicator, ScrollView } from 'react-native';
+import { TouchableWithoutFeedback, View, Text, Keyboard, StyleSheet, Alert, ImageBackground, Dimensions, ActivityIndicator, ScrollView, ToastAndroid } from 'react-native';
 import TextField from '../../components/core/TextField';
 import Button from '../../components/core/Button';
 import theme from '../../styles/theme';
@@ -46,9 +46,14 @@ const LoginScreen = props => {
   const handleLogin = async () => {
     setLoading(true)
 
+    const merchantApp = true
+
     AuthService.login(
-      'phuc@mail.com',
-      'phuc',
+      username,
+      password,
+      '',
+      '',
+      merchantApp,
       res => {
         if (res.data.errors) {
           handleErr(res.data.errors)
@@ -56,7 +61,7 @@ const LoginScreen = props => {
         if (res.data.data) {
           props.context && login(res.data.data.login)
           setTempLocation(res.data.data.login.location[0])
-          navigation.navigate('Tab');
+          navigation.navigate('ChooseStore', {userId: res.data.data.login.userId})
         }
         setLoading(false)
       },
@@ -84,23 +89,25 @@ const LoginScreen = props => {
     setLoading(true)
 
     let data = {
-      fName: firstName,
-      lName: lastName,
+      firstName: firstName,
+      lastName: lastName,
       email: username,
       password: password,
-      repassword: repassword
+      repassword: repassword,
     }
 
     AuthService.signUp(
       data,
+      true,
       res => {
+        console.log(res.data)
         if (res.data.errors) {
           handleErr(res.data.errors)
         }
         if (res.data.data) {
           setLoading(false)
-          signUp(res.data.data.createUser)
-          navigation.navigate('Tab', {from: 'signup'});
+          setSignUpMode(false)
+          ToastAndroid.show('Create account successfully', ToastAndroid.SHORT)
         }
       },
       err => {

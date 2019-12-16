@@ -10,16 +10,12 @@ const OrderHistoryStatus = props => {
       backgroundColor = 'red';
       break
     case 'waitting':
-      statusText = 'Waitting';
+      statusText = 'New';
       backgroundColor = 'orange';
       break
     case 'confirmed':
       statusText = 'Confirmed';
       backgroundColor = 'green';
-      break
-    case 'canceled':
-      statusText = 'Canceled';
-      backgroundColor = 'gray';
       break
   }
 

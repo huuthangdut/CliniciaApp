@@ -34,7 +34,7 @@ const OrderDetailsScreen = props => {
       accumulator += currentValue.qty * currentValue.food.price
       return accumulator
     }, 0)
-    _total+= orderDetail.shipping_fee
+
     setTotal(_total)
   }
 
@@ -47,25 +47,10 @@ const OrderDetailsScreen = props => {
     setItemsQuan(_total)
   }
 
-  const rejectOrder = () => {
+  const cancelOrder = () => {
     OrderService.changeOrderStatus(
       orderDetail._id,
-      'rejected',
-      res => {
-        setStatus(res.data.data.updateOrder.status)
-        loadOrderList()
-        navigation.navigate('OrderHisTory')
-      },
-      err => {
-        alert(err)
-      }
-    )
-  }
-
-  const confirmOrder = () => {
-    OrderService.changeOrderStatus(
-      orderDetail._id,
-      'confirmed',
+      'canceled',
       res => {
         setStatus(res.data.data.updateOrder.status)
         loadOrderList()
@@ -79,13 +64,11 @@ const OrderDetailsScreen = props => {
 
   return (
     <Fragment>
-      {console.log(orderDetail)}
-      <Header title='Order detail' />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           <View style={styles.headerInfo}>
             <View style={styles.headerTextWrapper}>
-              <Text style={styles.headerText}>{orderDetail.user.firstName} {orderDetail.user.lastName}</Text>
+              <Text style={styles.headerText}>{orderDetail.restaurant.name}</Text>
 
             </View>
           </View>
@@ -95,12 +78,12 @@ const OrderDetailsScreen = props => {
               <OrderHistoryStatus type={status} />
             </View>
             <View style={styles.itemRow}>
-              <Text style={styles.smText}>Delivery address</Text>
-              <Text style={styles.lgText}>{orderDetail.delivery_address}</Text>
-              <Text style={styles.smText}>{orderDetail.distance} km away</Text>
+              <Text style={styles.smText}>Address</Text>
+              <Text style={styles.lgText}>{orderDetail.restaurant.location.address}</Text>
+              <Text style={styles.smText}>0.31 km away</Text>
             </View>
             <View style={styles.itemRow}>
-              <Text style={styles.lgText}>{"Order Items"}</Text>
+              <Text style={styles.lgText}>{total}</Text>
               <Text style={styles.smText}>{itemsQuan} item(s)</Text>
             </View>
             <View style={styles.listFood}>
@@ -109,72 +92,20 @@ const OrderDetailsScreen = props => {
                   return (
                     <ListItem
                       key={index.toString()}
-                      title={item.food.name}
+                      title={item.food.name + " x " + item.food.price + "d" + " x " + item.qty}
                       containerStyle={{
                         height: 15,
                         width: '100%',
-                        backgroundColor: theme.colors.lightGray,
-                        paddingHorizontal: 0
+                        backgroundColor: theme.colors.lightGray
                       }}
                       titleStyle={{
                         fontSize: 15,
-                        // textAlign:'center'
+                        textAlign: 'center'
                       }}
-                      bottomDivider={index === orderDetail.items.length -1 ? true : false}
-                      rightElement={
-                        <Text>
-                          {item.qty} x {item.food.price} d
-                      </Text>
-                      }
                     />
                   )
                 })
               }
-              <ListItem
-                key={'shipping_fee'}
-                title='Shipping fee'
-                containerStyle={{
-                  height: 15,
-                  width: '100%',
-                  backgroundColor: theme.colors.lightGray,
-                  paddingHorizontal: 0,
-                  marginBottom: 5
-                }}
-                bottomDivider
-                titleStyle={{
-                  fontSize: 15,
-                  // textAlign:'center'
-                }}
-                rightElement={
-                  <Text>
-                    {orderDetail.shipping_fee} d
-                      </Text>
-                }
-              />
-              <ListItem
-                key={'total'}
-                title='Total'
-                containerStyle={{
-                  height: 15,
-                  width: '100%',
-                  backgroundColor: theme.colors.lightGray,
-                  paddingHorizontal: 0
-                }}
-                titleStyle={{
-                  fontSize: 25,
-                  fontWeight: 'bold',
-                  color: theme.colors.primary
-                }}
-                rightElement={
-                  <Text style={{
-                    fontSize: 25,
-                    fontWeight: 'bold',
-                    color: theme.colors.primary
-                  }}>
-                    {total} d
-                  </Text>
-                }
-              />
             </View>
             <View style={styles.itemRow}>
               <Text style={styles.smText}>Payment Method</Text>
@@ -183,20 +114,18 @@ const OrderDetailsScreen = props => {
           </View>
           {
             orderDetail && orderDetail.status === 'waitting' && (
-              <View style={styles.groupBtn}>
+              <>
                 <Button
-                  title="Reject Order"
-                  onPress={() => rejectOrder()}
-                  style={styles.cancelBtn}
-                  titleStyle={{ color: theme.colors.primary }} />
+                  title="Cancel Order"
+                  onPress={() => cancelOrder()}
+                  style={styles.button} />
                 <Button
-                  title="Confirm Order"
-                  onPress={() => confirmOrder()}
-                  primary
-                  style={{ ...styles.confirmBtn, }}
-                />
-              </View>
+                  title="Cancel Order"
+                  onPress={() => cancelOrder()}
+                  style={styles.button} />
+              </>
             )
+
           }
         </View>
       </ScrollView>
@@ -221,10 +150,7 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 20,
     fontWeight: 'bold',
-    flex: 1,
-    textTransform: "uppercase",
-    color: theme.colors.darkGray,
-    marginLeft: 20
+    flex: 1
   },
   contact: {
     width: 100,
@@ -269,26 +195,20 @@ const styles = StyleSheet.create({
     fontFamily: 'SF-Pro-Text-Medium',
     lineHeight: 25,
   },
-  cancelBtn: {
-    marginVertical: 15,
-    width: 180,
-  },
-  confirmBtn: {
-    marginVertical: 15,
-    width: 180,
+  button: {
+    marginVertical: 5,
   },
   listFood: {
     backgroundColor: theme.colors.lightGray,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20,
+    padding: 5
   },
   firstRow: {
     flexDirection: 'row',
     justifyContent: 'space-between'
-  },
-  groupBtn: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
   }
-})
+});
 
-export default WithContext(OrderDetailsScreen)
+export default WithContext(OrderDetailsScreen);

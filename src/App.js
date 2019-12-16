@@ -9,7 +9,6 @@ import { NavigationService } from './services/NavigationService';
 
 const App = () => {
   const notificationContext = useContext(NotificationContext)
-  console.log(notificationContext)
 
   const checkPermission = async () => {
     const enabled = await firebase.messaging().hasPermission();
@@ -47,7 +46,7 @@ const App = () => {
       .onNotification(notification => {
         const { title, body, data } = notification;
         Alert.alert(title);
-      });
+      })
 
     /*
      * If your app is in background, you can listen for when a notification is clicked / tapped / opened as follows:
@@ -56,7 +55,7 @@ const App = () => {
       .notifications()
       .onNotificationOpened(notificationOpen => {
         const { title, body } = notificationOpen.notification;
-      });
+      })
 
     /*
      * If your app is closed, you can check if it was opened by a notification being clicked / tapped / opened as follows:
@@ -73,28 +72,28 @@ const App = () => {
      * */
     firebase.messaging().onMessage(message => {
       console.log('FCM Message Data:', message.data);
-    });
-  };
+    })
+  }
 
   useEffect(() => {
     checkPermission();
     messageListener();
-  }, []);
+  }, [])
 
   return (
-    <AppProvider>
-        <Navigator
-          screenProps={
-            {
-              notificationCount: notificationContext.notificationCount.get, 
-              setNotificationCount: notificationContext.notificationCount.set
-            }}
-          ref={navigationRef =>
-            NavigationService.setTopLevelNavigator(navigationRef)
-          }
-        />
-    </AppProvider>
-  );
-};
+    // <AppProvider>
+      <Navigator
+        screenProps={
+          {
+            notificationCount: notificationContext.notificationCount.get,
+            setNotificationCount: notificationContext.notificationCount.set
+          }}
+        ref={navigationRef =>
+          NavigationService.setTopLevelNavigator(navigationRef)
+        }
+      />
+    // </AppProvider>
+  )
+}
 
 export default App

@@ -11,15 +11,8 @@ import OrderDetailsScreen from './screens/orderhistory/OrderDetailsScreen'
 import FavoriteScreen from './screens/favorite/FavoriteScreen'
 import SpecialtyScreen from './screens/specialty/SpecialtyScreen'
 import LoginScreen from './screens/auth/LoginScreen'
-import ClinicScreen from './screens/clinic/ClinicScreen'
-import ClinicDetailsScreen from './screens/clinic/ClinicDetailsScreen'
-import MakeAppointmentScreen from './screens/booking/make-appointment/MakeAppointmentScreen'
-import ReviewAppointmentScreen from './screens/booking/review-appointment/ReviewAppointmentScreen'
-import BookingSuccessScreen from './screens/booking/booking-success/BookingSuccessScreen'
 import ListStoreScreen from './screens/doctor/StoreScreen'
-import DoctorDetailsScreen from './screens/doctor/DoctorDetailsScreen'
 import ChangePasswordScreen from './screens/changepassword/ChangePasswordScreen'
-import InitLocationScreen from './screens/location/InitLocationScreen'
 import FilterScreen from './screens/doctor/FilterScreen'
 import StoreScreen from './screens/store/StoreScreen'
 import PaymentScreen from './screens/store/PaymentScreen'
@@ -28,7 +21,9 @@ import CheckoutScreen from './screens/store/CheckoutScreen'
 import LocaltionPickerScreen from './screens/location/LocaltionPickerScreen'
 import AsyncStorage from '@react-native-community/async-storage'
 import AuthLoadingScreen from './screens/auth/AuthLoadingScreen'
-import { View } from 'react-native'
+import ChooseStoreScreen from './screens/choosestore/ChooseStoreScreen'
+import CreateStoreScreen from './screens/choosestore/CreateStoreScreen'
+import MenuManagementScreen from './screens/menu/MenuManagement'
 
 const FavoriteNavigator = createStackNavigator({
   Favorite: FavoriteScreen
@@ -63,28 +58,9 @@ OrderNavigator.navigationOptions = ({ navigation }) => {
   }
 }
 
-const ClinicNavigator = createStackNavigator(
-  {
-    Clinic: ClinicScreen,
-    ClinicDetails: ClinicDetailsScreen
-  },
-  {
-    headerMode: 'none'
-  },
-)
-
 const SpecialtyNavigator = createStackNavigator(
   {
     Specialty: SpecialtyScreen,
-  },
-  {
-    headerMode: 'none',
-  },
-)
-
-const HomeNavigator = createStackNavigator(
-  {
-    Home: HomeScreen
   },
   {
     headerMode: 'none',
@@ -111,15 +87,6 @@ OrderHisToryNavigator.navigationOptions = ({ navigation }) => {
   }
 }
 
-const NotificationNavigator = createStackNavigator(
-  {
-    Notification: NotificationScreen
-  },
-  {
-    headerMode: 'none',
-  },
-)
-
 const AccountNavigator = createStackNavigator(
   {
     Account: AccountScreen,
@@ -145,60 +112,57 @@ AccountNavigator.navigationOptions = ({ navigation }) => {
   }
 }
 
+const ManageStoreNavigator = createStackNavigator(
+  {
+    ChooseStore: ChooseStoreScreen,
+    CreateStore: CreateStoreScreen,
+  },
+  {
+    headerMode: 'none',
+    initialRouteName: 'ChooseStore'
+  }
+)
+
+const ManageMenuNavigator = createStackNavigator(
+  {
+    MenuManagement: MenuManagementScreen,
+  },
+  {
+    headerMode: 'none',
+    initialRouteName: 'MenuManagement'
+  }
+)
+
 const TabNavigator = createBottomTabNavigator(
   {
-    Home: {
-      screen: HomeNavigator,
-      navigationOptions: {
-        tabBarLabel: 'Browser',
-        tabBarIcon: ({ focused }) => (
-          <Icon
-            type='material-community'
-            name='home'
-            size={30}
-            color={focused ? theme.colors.primary : theme.colors.gray}
-          />
-        ),
-      },
-    },
-    Notification: {
-      screen: NotificationNavigator,
-      navigationOptions: ({ screenProps, navigation }) => ({
-        tabBarLabel: 'Notifications',
-        tabBarIcon: ({ focused }) => (
-          <View>
-            <Icon
-              type='material-community'
-              name='bell'
-              size={30}
-              color={focused ? theme.colors.primary : theme.colors.gray}
-            />
-            {screenProps.notificationCount > 0 && (
-              <Badge
-                value={screenProps.notificationCount}
-                status="error"
-                containerStyle={{ position: 'absolute', top: -4, right: -13 }}
-              />
-            )}
-          </View>
-        ),
-      }),
-    },
-    Appointment: {
+    Order: {
       screen: OrderHisToryNavigator,
       navigationOptions: {
-        tabBarLabel: 'History',
+        tabBarLabel: 'Order',
         tabBarIcon: ({ focused }) => (
           <Icon
             type='material-community'
-            name='history'
+            name='receipt'
             size={30}
             color={focused ? theme.colors.primary : theme.colors.gray}
           />
         ),
       },
     },
-
+    Menu: {
+      screen: ManageMenuNavigator,
+      navigationOptions: {
+        tabBarLabel: 'Menu',
+        tabBarIcon: ({ focused }) => (
+          <Icon
+            type='material-community'
+            name='silverware'
+            size={30}
+            color={focused ? theme.colors.primary : theme.colors.gray}
+          />
+        ),
+      },
+    },
     Account: {
       screen: AccountNavigator,
       navigationOptions: {
@@ -219,7 +183,7 @@ const TabNavigator = createBottomTabNavigator(
       activeTintColor: theme.colors.primary,
       inactiveTintColor: theme.colors.gray
     },
-    initialRouteName: 'Home'
+    initialRouteName: 'Order'
   }
 )
 
@@ -241,10 +205,10 @@ const AppNavigator = createStackNavigator(
   {
     Tab: TabNavigator,
     Specialty: SpecialtyNavigator,
-    Clinic: ClinicNavigator,
     Order: OrderNavigator,
     Stores: StoresNavigation,
     Favorite: FavoriteNavigator,
+    
   },
   {
     headerMode: 'none',
@@ -257,6 +221,7 @@ const AppSwitch = createSwitchNavigator(
   {
     AuthLoading: AuthLoadingScreen,
     Login: LoginScreen,
+    ManageStore: ManageStoreNavigator,
     App: AppNavigator,
   },
   {

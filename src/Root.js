@@ -1,13 +1,15 @@
-import React from 'react';
-import AppProvider from './AppProvider';
-import App from './App';
+import React from 'react'
+import App from './App'
 import NotificationProvider from './components/core/NotificationsContext'
+import AppProvider from './AppProvider'
 
 const Root = () => {
   return (
+    <AppProvider>
     <NotificationProvider>
-        <App/>
+      <App />
     </NotificationProvider>
+    </AppProvider>
   );
 };
 

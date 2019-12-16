@@ -1,27 +1,38 @@
 import React, { Fragment, useState, useEffect } from 'react'
-import { View, StyleSheet, Text, TouchableOpacity, ActivityIndicator } from 'react-native'
-import { TabView } from 'react-native-tab-view'
+import {
+  View,
+  StyleSheet,
+  Text,
+  ActivityIndicator,
+  Dimensions
+} from 'react-native'
+import {
+  TabView,
+  TabBar,
+  SceneMap
+} from 'react-native-tab-view'
 import theme from '../../styles/theme'
 import OrderList from './components/OrderList'
 import Header from '../../components/core/Header'
 import { OrderService } from '../../services/OrderService'
 import WithContext from '../../components/core/WithContext'
 
-const OrderHisToryScreen = props => {
-  const { context } = props
-  const { user, reloadOrderList } = context
-
+const StoreManagementScreen = props => {
+  const { context, navigation } = props
+  const { reloadOrderList, choosenRestaurant } = context
   const [tabBarConfig, setTabBarConfig] = useState({
     index: 0,
     routes: [
-      { key: 'Proccessing', title: 'Proccessing' },
-      { key: 'Done', title: 'Done' },
+      { key: 'New', title: 'New' },
+      { key: 'Confirmed', title: 'Confirmed' },
+      { key: 'Rejected', title: 'Rejected' },
     ],
-  });
+  })
   const [listOrder, setListOrder] = useState([])
-  const [isReloadList, setReloadList] = useState(reloadOrderList)
-  const [beforeDoneList, setBeforeDoneList] = useState([])
-  const [doneList, setDoneList] = useState([])
+  const [comingList, setComingList] = useState([])
+  const [confirmedList, setConfirmedList] = useState([])
+  const [rejectedList, setRejectedList] = useState([])
+  const [isLoading, setLoading] = useState(true)
 
   useEffect(() => {
     getOrders()
@@ -31,93 +42,105 @@ const OrderHisToryScreen = props => {
     getOrders()
   }, [reloadOrderList])
 
+  useEffect(() => {
+    getOrders()
+  }, [choosenRestaurant])
+
   const getOrders = () => {
-    OrderService.getOrdersOfUser(
-      user.userId,
-      res => {
-        setListOrder(res.data.data.ordersOfUser)
-        let _beforeDoneList = []
-        let _doneList = []
-        if(res.data.data.ordersOfUser) {  
-          _beforeDoneList = res.data.data.ordersOfUser.filter(item => item.status === 'waitting' || item.status === 'confirmed')
-          _doneList = res.data.data.ordersOfUser.filter(item => item.status === 'rejected' || item.status === 'done')
+    if (choosenRestaurant && choosenRestaurant._id) {
+      OrderService.getOrderByRestaurant(
+        choosenRestaurant._id,
+        res => {
+          setListOrder(res.data.data.ordersOfRestaurant)
+
+          let _comingList = []
+          let _confirmedList = []
+          let _rejectedList = []
+
+          if (res.data.data.ordersOfRestaurant) {
+            _comingList = res.data.data.ordersOfRestaurant.filter(item => item.status === 'waitting')
+            _confirmedList = res.data.data.ordersOfRestaurant.filter(item => item.status === 'confirmed')
+            _rejectedList = res.data.data.ordersOfRestaurant.filter(item => item.status === 'rejected')
+          }
+
+          setComingList(_comingList.reverse())
+          setConfirmedList(_confirmedList.reverse())
+          setRejectedList(_rejectedList.reverse())
+
+          setLoading(false)
+        },
+        err => {
+          alert(err)
         }
-        setDoneList(_doneList.reverse())
-        setBeforeDoneList(_beforeDoneList.reverse())
-      },
-      err => {
-        alert(err)
-      }
-    )
+      )
+    }
   }
 
-  const handleIndexChange = index => setTabBarConfig(...tabBarConfig, index);
+  const New = () => (
+    <>
+      {isLoading && <ActivityIndicator size={50} style={{ marginTop: 220 }} />}
+      <OrderList type="New" reload={getOrders} listOrder={comingList} navigation={props.navigation} />
+    </>
+  )
 
-  const renderScene = ({ route }) => {
+  const Confirmed = () => (
+    <>
+      {isLoading && <ActivityIndicator size={50} style={{ marginTop: 220 }} />}
+      <Text>sadjasd</Text>
+      <OrderList type="Confirmed" reload={getOrders} listOrder={confirmedList} navigation={props.navigation} />
+    </>
+  )
 
-    switch (route.key) {
-      case 'Proccessing':
-        return (
-          <>
-            {!listOrder.length > 0 && <ActivityIndicator size={50} style={{ marginTop: 220 }} />}
-            <OrderList type="Proccessing" listOrder={beforeDoneList} navigation={props.navigation} />
-          </>
-        );
-      case 'Done':
-        return (
-          <>
-            {!listOrder.length > 0 && <ActivityIndicator size={50} style={{ marginTop: 220 }} />}
-            <OrderList type="Done" listOrder={doneList} navigation={props.navigation} />
-          </>
-        );
-    }
-  };
+  const Rejected = () => (
+    <>
+      {!listOrder.length > 0 && <ActivityIndicator size={50} style={{ marginTop: 220 }} />}
+      <OrderList type="Rejected" reload={getOrders} listOrder={rejectedList} navigation={props.navigation} />
+    </>
+  )
 
-  const renderTabBar = props => {
-    return (
-      <View style={styles.tabBarContainer}>
-        <View style={styles.tabBar}>
-          {props.navigationState.routes.map((route, index) => {
-            const activeIndex = props.navigationState.index;
-            const color =
-              activeIndex === index ? theme.colors.black : theme.colors.gray;
-            const highlightColor =
-              activeIndex === index
-                ? theme.colors.primary
-                : theme.colors.lightGray;
-
-            return (
-              <TouchableOpacity
-                key={index}
-                activeOpacity={0.7}
-                style={styles.tabItem}
-                onPress={() => setTabBarConfig({ ...tabBarConfig, index })}>
-                <Text style={[{ color }, styles.tabItemText]}>{route.title}</Text>
-                <View
-                  style={[
-                    { backgroundColor: highlightColor },
-                    styles.highlight,
-                  ]}></View>
-              </TouchableOpacity>
-            );
-          })}
-        </View>
-        <View style={styles.divider}></View>
-      </View>
-    );
-  };
+  const renderEmpty = () => 
+    <View style={{ justifyContent: "center", alignSelf: 'center', marginTop: '60%' }}>
+      <Text style={{
+        fontSize: 30,
+        color: theme.colors.lightGray,
+        fontWeight: 'bold',
+        textAlign: "center"
+      }}>Order list is empty</Text>
+    </View>
 
   return (
     <Fragment>
-      <Header title='Order history' />
+      <Header title='Order Management' />
       <View style={styles.container}>
         <TabView
-          lazy
           navigationState={tabBarConfig}
-          renderScene={renderScene}
-          renderTabBar={renderTabBar}
-          onIndexChange={handleIndexChange}
-          style={styles.tabStyle}
+          renderScene={SceneMap({
+            New: comingList.length > 0 ? New : renderEmpty,
+            Confirmed: confirmedList.length > 0 ? Confirmed : renderEmpty,
+            Rejected: confirmedList.length > 0 ? rejectedList : renderEmpty
+          })}
+          renderTabBar={props => (
+            <TabBar
+              {...props}
+              style={{
+                backgroundColor: theme.colors.white,
+              }}
+              labelStyle={{
+                color: theme.colors.primary,
+                fontWeight: 'bold'
+              }}
+              indicatorStyle={{
+                backgroundColor: theme.colors.primary
+              }}
+            />
+          )}
+          onIndexChange={index => setTabBarConfig(prev => {
+            return {
+              ...prev,
+              index
+            }
+          })}
+          initialLayout={{ width: Dimensions.get('window').width }}
         />
       </View>
     </Fragment>
@@ -128,20 +151,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: 'white',
-    paddingHorizontal: 20
+    backgroundColor: 'white'
   },
   header: {
     fontSize: 34,
-    fontFamily: 'SF-Pro-Display-Bold',
+    fontFamily: 'SF-Pro-Display-Bold'
   },
   tabBarContainer: {
     flexDirection: 'column',
-    marginVertical: 10,
+    marginVertical: 10
   },
   tabBar: {
     flexDirection: 'row',
-    height: 44,
+    height: 44
   },
   tabItem: {
     paddingVertical: 5,
@@ -150,23 +172,23 @@ const styles = StyleSheet.create({
   },
   tabItemText: {
     fontSize: 18,
-    fontFamily: 'SF-Pro-Text-Regular',
+    fontFamily: 'SF-Pro-Text-Regular'
   },
   highlight: {
     width: '100%',
     marginTop: 10,
-    height: 2,
+    height: 2
   },
   divider: {
     width: '100%',
     height: 1,
     marginTop: -2,
     paddingHorizontal: 5,
-    backgroundColor: theme.colors.lightGray,
+    backgroundColor: theme.colors.lightGray
   },
   tabStyle: {
     flex: 1
   }
 });
 
-export default WithContext(OrderHisToryScreen);
+export default WithContext(StoreManagementScreen);

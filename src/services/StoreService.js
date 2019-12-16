@@ -66,6 +66,8 @@ const getStore = (storeId, responseCb, errorCb) => {
             name
             location {
               address
+              lat
+              long
             }
             menu_info{
               name
@@ -119,8 +121,105 @@ const getStoreInCategory = (query, responseCb, errorCb) => {
     .catch(errorCb)
 }
 
+const getRestaurantByMerchant = (merchantId, responseCb, errorCb) => {
+  axios({
+    url: API_URL,
+    method: 'post',
+    data: {
+      query: `
+        query RestaurentByMerChant($merchantId: ID!){
+          restaurantByMerchant(merchantId: $merchantId){
+            _id
+            name
+            location{
+              address
+              lat
+              long
+            }
+          }
+        }
+      `,
+      variables: {
+        merchantId
+      }
+    }
+  }).then(responseCb)
+    .catch(errorCb)
+}
+
+const createRestaurant = (restaurantInput, responseCb, errorCb) => {
+  console.log(restaurantInput)
+  axios({
+    url: API_URL,
+    method: 'post',
+    data: {
+      query: `
+        mutation CreateRestaurant($restaurantInput: RestaurantInput!){
+          createRestaurant(restaurantInput: $restaurantInput){
+            _id
+            cuisines
+            name
+            location {
+              address
+              lat
+              long
+            }
+          }
+        }
+      `,
+      variables: {
+        restaurantInput
+      }
+    }
+  }).then(responseCb)
+    .catch(errorCb)
+}
+
+const addDishType = (dishTypeInput, responseCb, errorCb) => {
+  axios({
+    url: API_URL,
+    method: 'post',
+    data: {
+      query: `
+        mutation CreateDishType($dishTypeInput: DishTypeInput!){
+          createDishType(dishTypeInput: $dishTypeInput){
+            name
+          }
+        }
+      `,
+      variables: {
+        dishTypeInput
+      }
+    }
+  }).then(responseCb)
+    .catch(errorCb)
+}
+
+const addFood = (foodInput, responseCb, errorCb) => {
+  axios({
+    url: API_URL,
+    method: 'post',
+    data: {
+      query: `
+        mutation CreateFood($foodInput: FoodInput!){
+          createFood(foodInput: $foodInput){
+            name
+            price
+          }
+        }
+      `,
+      variables: {
+        foodInput
+      }
+    }
+  }).then(responseCb)
+    .catch(errorCb)
+}
+
 const StoreService = {
-  getRestaurants, getMenu, getStore, getStoreInCategory
+  getRestaurants, getMenu, getStore, getStoreInCategory, getRestaurantByMerchant, createRestaurant,
+  addDishType, addFood
 }
 
 export default StoreService
+

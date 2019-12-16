@@ -30,7 +30,7 @@ const icons = {
 
 const theme = {
     colors: {
-        primary: "#F68A2B",
+        primary: "#3272A8",
         secondary: '#4CD964',
         black: "black",
         white: "white",

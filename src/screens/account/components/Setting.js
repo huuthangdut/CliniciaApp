@@ -11,17 +11,28 @@ import WithContext from '../../../components/core/WithContext'
 
 const Setting = (props) => {
   const { context, navigation } = props
-  const { logout } = context
+  const { logout, user } = context
 
   const listSetting = [
     {
-      title: 'Sign Out',
+      title: 'Sign out',
       icon: theme.tabIcons.signOut,
       onPress: () => {
         logout()
         navigation.navigate('Login')
       },
-      name: 'sign-out'
+      name: 'logout',
+      type: 'material-community'
+    },
+    {
+      title: 'Change store',
+      icon: theme.tabIcons.signOut,
+      onPress: () => {
+        logout()
+        navigation.navigate('ChooseStore', {userId: user.userId})
+      },
+      name: 'store',
+      type: 'material-community'
     },
   ]
 
@@ -34,11 +45,11 @@ const Setting = (props) => {
               <View style={styles.settingItem}>
                 <View>
                   <ListItem
-                    key={i}
+                    key={i.toString()}
                     title={item.title}
                     chevron
                     leftIcon={{
-                      type: 'font-awesome',
+                      type: 'material-community',
                       name: item.name,
                       color: theme.colors.white,
                       size: 20,
@@ -51,7 +62,7 @@ const Setting = (props) => {
                       }
                     }}
                     onPress={item.onPress}
-                    containerStyle={{backgroundColor: theme.colors.favorite.backgroundGray, borderRadius:10}}
+                    containerStyle={{backgroundColor: theme.colors.lightGray, borderRadius:10}}
                   />
                 </View>
               </View>
@@ -71,7 +82,7 @@ const styles = StyleSheet.create({
   },
   settingItem: {
     display: 'flex',
-    
+    marginBottom: 10,
   },
   settingList: {
 

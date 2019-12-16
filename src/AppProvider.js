@@ -1,11 +1,13 @@
 import React from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 import Geolocation from '@react-native-community/geolocation';
+import { thisExpression } from '@babel/types';
 
 const AppContext = React.createContext();
 class AppProvider extends React.PureComponent {
   constructor(props) {
     super(props);
+
     const getPersistedUser = async () => {
       try {
         let persistedUser = await AsyncStorage.getItem('user')
@@ -15,6 +17,17 @@ class AppProvider extends React.PureComponent {
         alert(error)
       }
     }
+
+    const getPersistedStore = async () => {
+      try {
+        let persistedStore = await AsyncStorage.getItem('choosenRestaurant')
+        const result = JSON.parse(persistedStore)
+        return result
+      } catch (error) {
+        alert(error)
+      }
+    }
+
     this.state = {
       user: getPersistedUser().then(value => this.setState({
         user: {...value}
@@ -22,11 +35,19 @@ class AppProvider extends React.PureComponent {
       temptLocation: this.getCurrentLocation(),
       carts: AsyncStorage.getItem('carts'),
       reloadOrderList: false,
+      choosenRestaurant: getPersistedStore().then(value => this.setState({
+        choosenRestaurant: {...value}
+      })),
+      loading: true,
       notifications: [],
       notificationsCount: [],
       isAuthenticated: async () => {
         const token = await AsyncStorage.getItem('@access_token')
         return token !== null;
+      },
+      isStoredRestaurant: async () => {
+        const restaurant = await AsyncStorage.getItem('choosenRestaurant')
+        return restaurant !== null;
       },
       login: async user => {
         try {
@@ -44,10 +65,7 @@ class AppProvider extends React.PureComponent {
       logout: async () => {
         await AsyncStorage.removeItem('@access_token')
         await AsyncStorage.removeItem('user')
-      },
-      signUp: async (user) => {
-        await AsyncStorage.setItem('@access_token', JSON.stringify(user.authToken))
-        await AsyncStorage.setItem('user', JSON.stringify(user))
+        await AsyncStorage.removeItem('choosenRestaurant')
       },
       changeTemptLocation: temptLocation => {
         this.setState({
@@ -83,6 +101,18 @@ class AppProvider extends React.PureComponent {
           notificationCount: count
         })
       },
+      storeRestaurant: async choosenStore => {
+        await AsyncStorage.setItem('choosenRestaurant', JSON.stringify(choosenStore))
+        this.setState({
+          choosenRestaurant: choosenStore
+        })
+      },
+      setLoaded: () => {
+        this.setState({
+          loading: false,
+          loaded: true
+        })
+      }
     };
   }
 

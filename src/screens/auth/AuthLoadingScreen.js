@@ -4,17 +4,25 @@ import WithContext from '../../components/core/WithContext'
 
 const AuthLoadingScreen = props => {
   const { navigation, context } = props
-  const { isAuthenticated } = context
+  const { isAuthenticated, isStoredRestaurant, user } = context
 
   useEffect(() => {
     isAuthenticated().then(isLogin => {
-      if(isLogin) {
-        navigation.navigate('App')
+      if (isLogin) {
+        isStoredRestaurant().then(savedStore => {
+          if (savedStore) {
+            navigation.navigate('App')
+          } else {
+            if (user.userId) {
+              navigation.navigate('ChooseStore')
+            }
+          }
+        })
       } else {
         navigation.navigate('Login')
       }
-    });
-  }, [])
+    })
+  }, [user])
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

@@ -105,6 +105,50 @@ const changeOrderStatus = (orderId, status , responseCb, errorCb) => {
     .catch(errorCb)
 }
 
+const getOrderByRestaurant = (restaurantId, responseCb, errorCb) => {
+  axios({
+    url: API_URL,
+    method: 'post',
+    data: {
+      query: `
+        query OrdersOfRestaurant($restaurantId: ID!){
+          ordersOfRestaurant(restaurantId: $restaurantId){
+            _id
+            user{
+              firstName
+              lastName
+            }
+            restaurant{
+              name
+              location{
+                address
+              }
+            }
+            delivery_address
+            status
+            payment_method
+            createdAt
+            items{
+              food{
+                name
+                price
+              }
+              qty
+            }
+            shipping_fee
+            distance
+          }
+        }
+      `,
+      variables: {
+        restaurantId
+      }
+    },
+  })
+    .then(responseCb)
+    .catch(errorCb)
+}
+
 export const OrderService = {
-  getOrdersOfUser, createOrder, changeOrderStatus
+  getOrdersOfUser, createOrder, changeOrderStatus, getOrderByRestaurant
 }

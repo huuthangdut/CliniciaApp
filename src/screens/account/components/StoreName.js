@@ -8,34 +8,27 @@ import {
 import { ListItem } from 'react-native-elements'
 import theme from '../../../styles/theme'
 import WithContext from '../../../components/core/WithContext'
-import { AuthService } from '../../../services/AuthService'
 
-const Address = props => {
+const StoreName = props => {
   const { context } = props
   const { choosenRestaurant } = context
 
-  const [ isLoading , setLooading] = useState(true)
-
-  useEffect(() => {
-    choosenRestaurant && setLooading(false)
-  })
-
   return (
     <View style={styles.setting}>
-      <Text style={styles.headerLabel}>Store Address</Text>
+      <Text style={styles.headerLabel}>Store Name</Text>
       <View style={styles.addressList}>
-        {!isLoading && <TouchableOpacity>
+        <TouchableOpacity>
           <View style={styles.addressItem}>
             <ListItem
               key={choosenRestaurant._id}
-              title={choosenRestaurant.location.address}
+              title={choosenRestaurant.name}
               titleProps={{
                 numberOfLines: 1
               }}
               containerStyle={styles.items}
             />
           </View>
-        </TouchableOpacity>}
+        </TouchableOpacity>
       </View>
     </View>
   )
@@ -72,4 +65,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default WithContext(Address)
+export default WithContext(StoreName)

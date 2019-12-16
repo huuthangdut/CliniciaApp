@@ -3,57 +3,83 @@ import ServerIP from './ServerIP'
 
 const API_URL = `http://${ServerIP}:8080/graphql`
 
-const login = (email, password, responseCb, errorCb) => {
+const login = (email, password, fcmToken, deviceId, merchantApp , responseCb, errorCb) => {
   axios({
     url: API_URL,
     method: 'post',
     data: {
       query: `
-        mutation Login($email: String!, $password: String!){
-        login( email: $email password: $password){
-          lName
-          fName
-          userId
-          email
-          authToken
-          location{
-            address
-            lat
-            long
+        mutation Login(
+            $email: String!, 
+            $password: String!, 
+            $fcmToken: String!, 
+            $deviceId: String!,
+            $merchantApp: Boolean!
+          ){
+          login( 
+            email: $email 
+            password: $password 
+            fcmToken: $fcmToken 
+            deviceId: $deviceId 
+            merchantApp: $merchantApp
+          ){
+            lastName
+            firstName
+            userId
+            email
+            createdRestaurants{
+              name
+              location{
+                address
+                lat
+                long
+              }
+              cuisines
+              _id
+            }
+            authToken
+            location{
+              address
+              lat
+              long
+            }
           }
         }
-      }
       `,
       variables: {
         email,
-        password
+        password,
+        fcmToken,
+        deviceId,
+        merchantApp
       }
     },
-    
+
   })
     .then(responseCb)
     .catch(errorCb)
 }
 
-const signUp = ( data ,responseCb, errorCb ) => {
+const signUp = (data, isMerchant, responseCb, errorCb) => {
   axios({
     url: API_URL,
     method: 'post',
     data: {
       query: `
-        mutation SignUp($userInput: UserInput!) {
-          createUser(userInput: $userInput)
+        mutation SignUp($userInput: UserInput!, $isMerchant: Boolean!) {
+          createUser(userInput: $userInput, isMerchant: $isMerchant)
           {
             _id
-            fName
-            lName
+            firstName
+            lastName
             email
             authToken
           }
         }
       `,
       variables: {
-        userInput: data
+        userInput: data,
+        isMerchant
       }
     },
   })
@@ -61,7 +87,7 @@ const signUp = ( data ,responseCb, errorCb ) => {
     .catch(errorCb)
 }
 
-const addAddress = ( data ,responseCb, errorCb ) => {
+const addAddress = (data, responseCb, errorCb) => {
   axios({
     url: API_URL,
     method: 'post',
@@ -89,7 +115,7 @@ const addAddress = ( data ,responseCb, errorCb ) => {
     .catch(errorCb)
 }
 
-const getLocations = (userId ,responseCb, errorCb ) => {
+const getLocations = (userId, responseCb, errorCb) => {
   axios({
     url: API_URL,
     method: 'post',
