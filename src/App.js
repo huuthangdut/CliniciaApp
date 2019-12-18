@@ -5,10 +5,11 @@ import { Platform, Alert } from 'react-native';
 import firebase from 'react-native-firebase';
 import NotificationProvider, { NotificationContext } from './components/core/NotificationsContext';
 import { NavigationService } from './services/NavigationService';
-
+import { getUniqueId } from 'react-native-device-info'
 
 const App = () => {
   const notificationContext = useContext(NotificationContext)
+  const deviceId = getUniqueId()
 
   const checkPermission = async () => {
     const enabled = await firebase.messaging().hasPermission();
@@ -22,8 +23,9 @@ const App = () => {
   const getFcmToken = async () => {
     const fcmToken = await firebase.messaging().getToken();
     if (fcmToken) {
-      Alert.alert(fcmToken);
       console.log(fcmToken);
+      notificationContext.fcmToken.set(fcmToken)
+      notificationContext.deviceId.set(deviceId)
       // const deviceUuid = DeviceInfo.getUniqueId();
       // await DeviceService.addOrUpdateDevice(fcmToken, Platform.OS, deviceUuid);
     } else {
@@ -75,9 +77,23 @@ const App = () => {
     })
   }
 
+  const createNotificationListeners = async () => {
+    firebase.notifications().onNotification(notification => {
+      notification.android.setChannelId('test-channel').setSound('default')
+      firebase.notifications().displayNotification(notification)
+    })
+  }
+
   useEffect(() => {
-    checkPermission();
-    messageListener();
+    const channel = new firebase.notifications.Android.Channel(
+      'test-channel',
+      'test channel',
+      firebase.notifications.Android.Importance.Max
+    )
+    firebase.notifications().android.createChannel(channel);
+    checkPermission()
+    messageListener()
+    createNotificationListeners()
   }, [])
 
   return (

@@ -165,8 +165,10 @@ const MenuManagementScreen = props => {
 
   return (
     <View style={{ flex: 1 }}>
-      <Header title='Menu Management' />
-      {menu.length> 0 ? (
+      <Header hasBackIcon={false} title='Menu Management' />
+      {loading && <ActivityIndicator size={50} style={{ justifyContent: 'center', marginTop: '70%'}} />}
+      <ScrollView>
+      {menu.length > 0 ? (
         <Accordion
         sections={menu}
         activeSections={activeSections}
@@ -175,8 +177,9 @@ const MenuManagementScreen = props => {
         onChange={_updateSections}
       />
       ) :
-      renderEmpty()
+      !loading && renderEmpty()
       }
+      
       
       {isAddDishOpen && <View style={styles.addDishTypeActionContainer}>
         <View>
@@ -213,6 +216,7 @@ const MenuManagementScreen = props => {
           </TouchableOpacity>
         </View>
       </View>}
+      </ScrollView>
       {!isAddDishOpen && <View style={styles.addBtnContainer}>
         <TouchableOpacity onPress={() => setAddDishOpen(true)}>
           <Icon
@@ -225,7 +229,7 @@ const MenuManagementScreen = props => {
           />
         </TouchableOpacity>
       </View>}
-      {loading && <ActivityIndicator size={50} style={{ justifyContent: 'center', marginTop: '70%' }} />}
+      
     </View>
   )
 }

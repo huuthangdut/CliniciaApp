@@ -24,6 +24,7 @@ import AuthLoadingScreen from './screens/auth/AuthLoadingScreen'
 import ChooseStoreScreen from './screens/choosestore/ChooseStoreScreen'
 import CreateStoreScreen from './screens/choosestore/CreateStoreScreen'
 import MenuManagementScreen from './screens/menu/MenuManagement'
+import { View } from 'react-native'
 
 const FavoriteNavigator = createStackNavigator({
   Favorite: FavoriteScreen
@@ -137,17 +138,26 @@ const TabNavigator = createBottomTabNavigator(
   {
     Order: {
       screen: OrderHisToryNavigator,
-      navigationOptions: {
+      navigationOptions: ({ screenProps, navigation }) => ({
         tabBarLabel: 'Order',
         tabBarIcon: ({ focused }) => (
-          <Icon
-            type='material-community'
-            name='receipt'
-            size={30}
-            color={focused ? theme.colors.primary : theme.colors.gray}
-          />
+          <View>
+            <Icon
+              type='material-community'
+              name='receipt'
+              size={30}
+              color={focused ? theme.colors.primary : theme.colors.gray}
+            />
+            {screenProps.notificationCount > 0 && (
+              <Badge
+                value={screenProps.notificationCount}
+                status="error"
+                containerStyle={{ position: 'absolute', top: 2, right: -7 }}
+              />
+            )}
+          </View>
         ),
-      },
+      }),
     },
     Menu: {
       screen: ManageMenuNavigator,

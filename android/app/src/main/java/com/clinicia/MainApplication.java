@@ -1,4 +1,4 @@
-package com.exfood;
+package com.exfood.merchant;
 
 import android.app.Application;
 import android.content.Context;

@@ -128,7 +128,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.exfood"
+        applicationId "com.exfood.merchant"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

@@ -1,4 +1,4 @@
-package com.exfood;
+package com.exfood.merchant;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivity;

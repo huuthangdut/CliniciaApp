@@ -32,7 +32,7 @@ const StoreManagementScreen = props => {
   const [comingList, setComingList] = useState([])
   const [confirmedList, setConfirmedList] = useState([])
   const [rejectedList, setRejectedList] = useState([])
-  const [isLoading, setLoading] = useState(true)
+  const [isLoading, setLoading] = useState(false)
 
   useEffect(() => {
     getOrders()
@@ -47,6 +47,8 @@ const StoreManagementScreen = props => {
   }, [choosenRestaurant])
 
   const getOrders = () => {
+    setLoading(true)
+
     if (choosenRestaurant && choosenRestaurant._id) {
       OrderService.getOrderByRestaurant(
         choosenRestaurant._id,
@@ -63,13 +65,14 @@ const StoreManagementScreen = props => {
             _rejectedList = res.data.data.ordersOfRestaurant.filter(item => item.status === 'rejected')
           }
 
-          setComingList(_comingList.reverse())
+          setComingList(_comingList)
           setConfirmedList(_confirmedList.reverse())
           setRejectedList(_rejectedList.reverse())
 
           setLoading(false)
         },
         err => {
+          setLoading(false)
           alert(err)
         }
       )
@@ -79,6 +82,7 @@ const StoreManagementScreen = props => {
   const New = () => (
     <>
       {isLoading && <ActivityIndicator size={50} style={{ marginTop: 220 }} />}
+      {!isLoading && comingList.length <= 0 && renderEmpty()}
       <OrderList type="New" reload={getOrders} listOrder={comingList} navigation={props.navigation} />
     </>
   )
@@ -86,14 +90,15 @@ const StoreManagementScreen = props => {
   const Confirmed = () => (
     <>
       {isLoading && <ActivityIndicator size={50} style={{ marginTop: 220 }} />}
-      <Text>sadjasd</Text>
+      {!isLoading && confirmedList.length <= 0 && renderEmpty()}
       <OrderList type="Confirmed" reload={getOrders} listOrder={confirmedList} navigation={props.navigation} />
     </>
   )
 
   const Rejected = () => (
     <>
-      {!listOrder.length > 0 && <ActivityIndicator size={50} style={{ marginTop: 220 }} />}
+      {isLoading && <ActivityIndicator size={50} style={{ marginTop: 220 }} />}
+      {!isLoading && rejectedList.length <= 0 && renderEmpty()}
       <OrderList type="Rejected" reload={getOrders} listOrder={rejectedList} navigation={props.navigation} />
     </>
   )
@@ -110,14 +115,14 @@ const StoreManagementScreen = props => {
 
   return (
     <Fragment>
-      <Header title='Order Management' />
+      <Header hasBackIcon={false} title='Order Management' />
       <View style={styles.container}>
         <TabView
           navigationState={tabBarConfig}
           renderScene={SceneMap({
-            New: comingList.length > 0 ? New : renderEmpty,
-            Confirmed: confirmedList.length > 0 ? Confirmed : renderEmpty,
-            Rejected: confirmedList.length > 0 ? rejectedList : renderEmpty
+            New: New,
+            Confirmed: Confirmed,
+            Rejected: Rejected
           })}
           renderTabBar={props => (
             <TabBar

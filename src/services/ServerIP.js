@@ -1,3 +1,3 @@
-const ServerIP = '192.168.0.102'
+const ServerIP = '192.168.1.7'
 
 export default ServerIP

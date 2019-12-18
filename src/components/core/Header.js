@@ -18,9 +18,11 @@ const CustomHeader = props => {
 
   return (
     <View style={styles.header}>
-        <TouchableOpacity style={styles.icon} >
-          {/* <Icon name="ios-arrow-back" type="ionicon" size={25} color={color}  /> */}
-        </TouchableOpacity>
+      <View style={styles.icon}>
+        {hasBackIcon && <TouchableOpacity onPress={goBack}>
+          <Icon name="ios-arrow-back" type="ionicon" size={25} color={theme.colors.white} />
+        </TouchableOpacity>}
+      </View>
       <View style={styles.title}>
         <Text style={[{ color }, styles.texTitle]}>{title}</Text>
       </View>

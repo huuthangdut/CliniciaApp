@@ -79,8 +79,7 @@ const OrderDetailsScreen = props => {
 
   return (
     <Fragment>
-      {console.log(orderDetail)}
-      <Header title='Order detail' />
+      <Header title='Order detail' navigation={navigation}/>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           <View style={styles.headerInfo}>

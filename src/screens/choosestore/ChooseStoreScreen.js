@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useContext } from 'react';
 import {
   View,
   StyleSheet,
@@ -13,11 +13,13 @@ import Header from '../../components/core/Header';
 import StoreService from '../../services/StoreService';
 import { ListItem, Icon } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { NotificationService } from '../../services/NotificationService';
+import { NotificationContext } from '../../components/core/NotificationsContext';
 
 const ChooseStoreScreen = props => {
   const { navigation } = props
   const { storeRestaurant, user } = props.context
-  
+  const notificationContext = useContext(NotificationContext)
 
   const [listStore, setListStore] = useState()
   const [loading, setLoading] = useState(false)
@@ -29,8 +31,8 @@ const ChooseStoreScreen = props => {
   }, [user])
 
   useEffect(() => {
-    ToastAndroid.show('Creat store successfully', ToastAndroid.SHORT)
     if (navigation.state.params && navigation.state.params.reload) {
+      ToastAndroid.show('Creat store successfully', ToastAndroid.SHORT)
       getUserStore()
     }
   }, [navigation.state.params])
@@ -56,18 +58,40 @@ const ChooseStoreScreen = props => {
       res => {
         storeRestaurant(res.data.data.restaurantById)
         navigation.navigate('App')
+        saveStoreDivice(choosenStore._id)
       },
       err => {
         alert(err)
       }
     )
   }
+  
+  const saveStoreDivice = storeId => {
+    let data = {
+      restaurant: storeId,
+      token: notificationContext.fcmToken.get,
+      deviceId: notificationContext.deviceId.get,
+      user: user.userId
+    }
+    console.log(data)
+    NotificationService.updateDevice(
+      data,
+      res => {
+        console.log(res.data.data)
+      },
+      err => {
+        alert(err)
+      }
+    )
+
+  }
 
   return (
     <View style={styles.root}>
       <>
         <View>
-          <Header title='Choose a Store' />
+          <Header hasBackIcon={false} title='Choose a Store' />
+          {loading && <ActivityIndicator size={50} style={{ marginTop: '70%' }} />}
           {listStore && listStore.length > 0 ?
             (<FlatList
               data={listStore}
@@ -85,7 +109,7 @@ const ChooseStoreScreen = props => {
             />)
             :
             (
-              <View style={{ justifyContent: "center", alignSelf: 'center', marginTop: '50%' }}>
+              !loading && <View style={{ justifyContent: "center", alignSelf: 'center', marginTop: '50%' }}>
                 <Text style={{
                   fontSize: 30,
                   color: theme.colors.lightGray,
@@ -113,7 +137,7 @@ const ChooseStoreScreen = props => {
           </TouchableOpacity>
         </View>
       </>
-      {loading && <ActivityIndicator />}
+
     </View>
   );
 };

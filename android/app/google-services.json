@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "590748960711",
-    "firebase_url": "https://exfood-666a4.firebaseio.com",
-    "project_id": "exfood-666a4",
-    "storage_bucket": "exfood-666a4.appspot.com"
+    "project_number": "47042985958",
+    "firebase_url": "https://exfoodmerchant.firebaseio.com",
+    "project_id": "exfoodmerchant",
+    "storage_bucket": "exfoodmerchant.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:590748960711:android:bbf141401e5eea38ca3be2",
+        "mobilesdk_app_id": "1:47042985958:android:65dee80d3f9c420c336027",
         "android_client_info": {
-          "package_name": "com.exfood"
+          "package_name": "com.exfood.merchant"
         }
       },
       "oauth_client": [
         {
-          "client_id": "590748960711-khdhsin218cp3vv1jid7vrfuvflbc7qq.apps.googleusercontent.com",
+          "client_id": "47042985958-nk78c8ibtksp08b1qcitov7h009d0lfe.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyACHdbMFyHlF6LiZFDTz_qyZiFWrpcpK0Y"
+          "current_key": "AIzaSyAwOpmUuoxqQsqfdx3xW00gW9HPjvqINKk"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "590748960711-khdhsin218cp3vv1jid7vrfuvflbc7qq.apps.googleusercontent.com",
+              "client_id": "47042985958-nk78c8ibtksp08b1qcitov7h009d0lfe.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
