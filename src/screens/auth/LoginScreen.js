@@ -59,7 +59,6 @@ const LoginScreen = props => {
           handleErr(res.data.errors)
         }
         if (res.data.data) {
-          console.log(res.data.data)
           props.context && login(res.data.data.login)
           setTempLocation(res.data.data.login.location[0])
           navigation.navigate('ChooseStore', {userId: res.data.data.login.userId})
@@ -101,7 +100,6 @@ const LoginScreen = props => {
       data,
       true,
       res => {
-        console.log(res.data)
         if (res.data.errors) {
           handleErr(res.data.errors)
         }

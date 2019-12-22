@@ -12,7 +12,7 @@ const NotificationProvider = props => {
   const [isReloadNotification, setReloadNotification] = useState(false)
   const [listNewNotice, setListNewNotive] = useState([])
 
-  const addNotification = notification => {
+  const addNotification = () => {
     setNotificationCount(count => count + 1)
     // setNotifications(_list =>  [notification, ..._list]);
   }

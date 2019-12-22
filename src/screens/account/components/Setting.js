@@ -11,7 +11,7 @@ import WithContext from '../../../components/core/WithContext'
 
 const Setting = (props) => {
   const { context, navigation } = props
-  const { logout, user } = context
+  const { logout, user, storeRestaurant } = context
 
   const listSetting = [
     {
@@ -30,6 +30,7 @@ const Setting = (props) => {
       onPress: () => {
         logout()
         navigation.navigate('ChooseStore', {userId: user.userId})
+        storeRestaurant('')
       },
       name: 'store',
       type: 'material-community'

@@ -70,7 +70,7 @@ const AutoComplete = props => {
 
         query={{
           // available options: https://developers.google.com/places/web-service/autocomplete
-          key: 'AIzaSyCrL7txc_1d2P83b0MpSSdZb378Sbkjgq4',
+          key: 'AIzaSyD8fv7iKhenaSeUhpzU2hbMmJ3ZaBhw4rI',
           language: 'vi', // language of the results
           // types: '(cities)' // default: 'geocode'
         }}

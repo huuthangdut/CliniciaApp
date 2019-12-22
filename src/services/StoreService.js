@@ -1,7 +1,7 @@
 import axios from 'axios'
-import ServerIP from './ServerIP'
+import API_URL_CONFIG from './ServerURL'
 
-const API_URL = `http://${ServerIP}:8080/graphql`
+const API_URL = `http://${API_URL_CONFIG.ServerIP}:${API_URL_CONFIG.PORT}/graphql`
 
 const getRestaurants = (responseCb, errorCb) => {
   axios({
@@ -42,6 +42,7 @@ const getMenu = (storeId, responseCb, errorCb) => {
             _id
             name
             price
+            is_available
           }
         }
       }
@@ -75,6 +76,7 @@ const getStore = (storeId, responseCb, errorCb) => {
                 name
                 price
                 _id
+                is_available
               }
             }
           }
@@ -148,7 +150,6 @@ const getRestaurantByMerchant = (merchantId, responseCb, errorCb) => {
 }
 
 const createRestaurant = (restaurantInput, responseCb, errorCb) => {
-  console.log(restaurantInput)
   axios({
     url: API_URL,
     method: 'post',
@@ -216,9 +217,28 @@ const addFood = (foodInput, responseCb, errorCb) => {
     .catch(errorCb)
 }
 
+const changeFoodState = (is_available, foodId , responseCb, errorCb) => {
+  axios({
+    url: API_URL,
+    method: 'post',
+    data: {
+      query: `
+        mutation changestatus($is_available: Boolean!, $foodId: ID!){
+          changeFoodAvailable(isAvailable: $is_available,  foodId: $foodId)
+        }
+      `,
+      variables: {
+        is_available,
+        foodId
+      }
+    }
+  }).then(responseCb)
+    .catch(errorCb)
+}
+
 const StoreService = {
   getRestaurants, getMenu, getStore, getStoreInCategory, getRestaurantByMerchant, createRestaurant,
-  addDishType, addFood
+  addDishType, addFood, changeFoodState
 }
 
 export default StoreService

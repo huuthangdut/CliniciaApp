@@ -1,7 +1,7 @@
 import axios from 'axios'
-import ServerIP from './ServerIP'
+import API_URL_CONFIG from './ServerURL'
 
-const API_URL = `http://${ServerIP}:8080/graphql`
+const API_URL = `http://${API_URL_CONFIG.ServerIP}:${API_URL_CONFIG.PORT}/graphql`
 
 const getOrdersOfUser = (userId, responseCb, errorCb) => {
   axios({

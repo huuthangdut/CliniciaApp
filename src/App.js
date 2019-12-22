@@ -23,7 +23,6 @@ const App = () => {
   const getFcmToken = async () => {
     const fcmToken = await firebase.messaging().getToken();
     if (fcmToken) {
-      console.log(fcmToken);
       notificationContext.fcmToken.set(fcmToken)
       notificationContext.deviceId.set(deviceId)
       // const deviceUuid = DeviceInfo.getUniqueId();
@@ -47,7 +46,8 @@ const App = () => {
       .notifications()
       .onNotification(notification => {
         const { title, body, data } = notification;
-        Alert.alert(title);
+        notificationContext.notifications.add()
+        notificationContext.reloadOrder.set(prev =>{ return !prev})
       })
 
     /*
@@ -56,7 +56,9 @@ const App = () => {
     const notificationOpenedListener = firebase
       .notifications()
       .onNotificationOpened(notificationOpen => {
-        const { title, body } = notificationOpen.notification;
+        const { title, body, data } = notificationOpen.notification;
+        notificationContext.notifications.add()
+        notificationContext.reloadOrder.set(prev =>{ return !prev})
       })
 
     /*

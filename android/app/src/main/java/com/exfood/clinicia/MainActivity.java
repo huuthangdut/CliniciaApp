@@ -18,6 +18,8 @@ public class MainActivity extends ReactActivity {
     return "Clinicia";
   }
 
+  
+
   @Override
   protected ReactActivityDelegate createReactActivityDelegate() {
     return new ReactActivityDelegate(this, getMainComponentName()) {

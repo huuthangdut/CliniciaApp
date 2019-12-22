@@ -10,6 +10,8 @@ const AuthLoadingScreen = props => {
     isAuthenticated().then(isLogin => {
       if (isLogin) {
         isStoredRestaurant().then(savedStore => {
+          console.log(savedStore);
+          
           if (savedStore) {
             navigation.navigate('App')
           } else {

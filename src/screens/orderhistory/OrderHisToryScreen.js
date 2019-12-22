@@ -1,4 +1,11 @@
-import React, { Fragment, useState, useEffect } from 'react'
+import 
+  React, 
+  { 
+    Fragment, 
+    useState, 
+    useEffect, 
+    useContext 
+} from 'react'
 import {
   View,
   StyleSheet,
@@ -16,8 +23,10 @@ import OrderList from './components/OrderList'
 import Header from '../../components/core/Header'
 import { OrderService } from '../../services/OrderService'
 import WithContext from '../../components/core/WithContext'
+import { NotificationContext } from '../../components/core/NotificationsContext'
 
 const StoreManagementScreen = props => {
+  const notificationContext = useContext(NotificationContext)
   const { context, navigation } = props
   const { reloadOrderList, choosenRestaurant } = context
   const [tabBarConfig, setTabBarConfig] = useState({
@@ -28,32 +37,59 @@ const StoreManagementScreen = props => {
       { key: 'Rejected', title: 'Rejected' },
     ],
   })
-  const [listOrder, setListOrder] = useState([])
   const [comingList, setComingList] = useState([])
   const [confirmedList, setConfirmedList] = useState([])
   const [rejectedList, setRejectedList] = useState([])
   const [isLoading, setLoading] = useState(false)
 
+  const [choosenStoreId, setChoosenStoreId] = useState('') 
+
   useEffect(() => {
-    getOrders()
+    if(navigation.state.params && navigation.state.params.pickStore) {
+      setChoosenStoreId(navigation.state.params.pickStore)
+    }
+    if(choosenRestaurant && choosenRestaurant._id) {
+      setChoosenStoreId(choosenRestaurant._id)
+    }
   }, [])
 
   useEffect(() => {
+    reset()
     getOrders()
   }, [reloadOrderList])
 
   useEffect(() => {
     getOrders()
+  }, [choosenStoreId])
+
+  useEffect(() => {
+    if(choosenRestaurant && choosenRestaurant._id) {
+      setChoosenStoreId(choosenRestaurant._id)
+    }
   }, [choosenRestaurant])
+
+  useEffect(() => {
+    if(navigation.state.params && navigation.state.params.pickStore) {
+      setChoosenStoreId(navigation.state.params.pickStore)
+    }
+  }, [navigation.state.params])
+  
+  useEffect(() => {
+    getOrders()
+  }, [notificationContext.reloadOrder.get])
+
+  const reset = () => {
+    setComingList([])
+    setConfirmedList([])
+    setRejectedList([])
+  }
 
   const getOrders = () => {
     setLoading(true)
-
-    if (choosenRestaurant && choosenRestaurant._id) {
+    if (choosenStoreId) {
       OrderService.getOrderByRestaurant(
-        choosenRestaurant._id,
+        choosenStoreId,
         res => {
-          setListOrder(res.data.data.ordersOfRestaurant)
 
           let _comingList = []
           let _confirmedList = []
@@ -83,7 +119,7 @@ const StoreManagementScreen = props => {
     <>
       {isLoading && <ActivityIndicator size={50} style={{ marginTop: 220 }} />}
       {!isLoading && comingList.length <= 0 && renderEmpty()}
-      <OrderList type="New" reload={getOrders} listOrder={comingList} navigation={props.navigation} />
+      {!isLoading && <OrderList type="New" reload={getOrders} listOrder={comingList} navigation={props.navigation} />}
     </>
   )
 
@@ -91,7 +127,7 @@ const StoreManagementScreen = props => {
     <>
       {isLoading && <ActivityIndicator size={50} style={{ marginTop: 220 }} />}
       {!isLoading && confirmedList.length <= 0 && renderEmpty()}
-      <OrderList type="Confirmed" reload={getOrders} listOrder={confirmedList} navigation={props.navigation} />
+      {!isLoading && <OrderList type="Confirmed" reload={getOrders} listOrder={confirmedList} navigation={props.navigation} />}
     </>
   )
 
@@ -99,7 +135,7 @@ const StoreManagementScreen = props => {
     <>
       {isLoading && <ActivityIndicator size={50} style={{ marginTop: 220 }} />}
       {!isLoading && rejectedList.length <= 0 && renderEmpty()}
-      <OrderList type="Rejected" reload={getOrders} listOrder={rejectedList} navigation={props.navigation} />
+      {!isLoading && <OrderList type="Rejected" reload={getOrders} listOrder={rejectedList} navigation={props.navigation} />}
     </>
   )
 

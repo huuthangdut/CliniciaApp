@@ -16,7 +16,7 @@ import ChangePasswordScreen from './screens/changepassword/ChangePasswordScreen'
 import FilterScreen from './screens/doctor/FilterScreen'
 import StoreScreen from './screens/store/StoreScreen'
 import PaymentScreen from './screens/store/PaymentScreen'
-import { Icon } from 'react-native-elements'
+import { Icon, Badge } from 'react-native-elements'
 import CheckoutScreen from './screens/store/CheckoutScreen'
 import LocaltionPickerScreen from './screens/location/LocaltionPickerScreen'
 import AsyncStorage from '@react-native-community/async-storage'
@@ -200,7 +200,7 @@ const TabNavigator = createBottomTabNavigator(
 TabNavigator.navigationOptions = ({screenProps, navigation}) => {
   const {setNotificationCount, notificationCount} = screenProps;
 
-  if(navigation.state.index === 2) {
+  if(navigation.state.index === 0) {
     setNotificationCount(0);
   }
 

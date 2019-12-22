@@ -88,7 +88,6 @@ const CreateStoreScreen = props => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <>
-        {console.log(name)}
         <Header title='Create a new store' />
         <View style={styles.form}>
           <ScrollView style={{ flex: 1, paddingHorizontal: 20 }}>

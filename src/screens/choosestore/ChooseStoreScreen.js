@@ -18,7 +18,7 @@ import { NotificationContext } from '../../components/core/NotificationsContext'
 
 const ChooseStoreScreen = props => {
   const { navigation } = props
-  const { storeRestaurant, user } = props.context
+  const { storeRestaurant, user, loadOrderList } = props.context
   const notificationContext = useContext(NotificationContext)
 
   const [listStore, setListStore] = useState()
@@ -57,7 +57,7 @@ const ChooseStoreScreen = props => {
       choosenStore._id,
       res => {
         storeRestaurant(res.data.data.restaurantById)
-        navigation.navigate('App')
+        navigation.navigate('OrderHisTory', {pickStore : res.data.data.restaurantById._id})
         saveStoreDivice(choosenStore._id)
       },
       err => {
@@ -73,11 +73,9 @@ const ChooseStoreScreen = props => {
       deviceId: notificationContext.deviceId.get,
       user: user.userId
     }
-    console.log(data)
     NotificationService.updateDevice(
       data,
       res => {
-        console.log(res.data.data)
       },
       err => {
         alert(err)

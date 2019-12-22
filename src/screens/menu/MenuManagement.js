@@ -63,6 +63,25 @@ const MenuManagementScreen = props => {
     ToastAndroid.show('Add ' + res[0].name + ' to ' + dishtype.name + ' successfully !', ToastAndroid.SHORT)
   }
 
+  const handleFood = (value, item, dishType, foodIndex, foodId) => {
+    let _menu = [...menu]
+    let _dishType = {...dishType}
+    let dishTypeIndex = _menu.indexOf(dishType)
+    _dishType.foods.splice(foodIndex, 1, {...item, is_available: value}); 
+    _menu.splice(dishTypeIndex, 1, {..._dishType}); 
+    setMenu(_menu) 
+    StoreService.changeFoodState(
+      value,
+      foodId,
+      res => {
+
+      },
+      err => {
+        alert(err)
+      }
+    )
+  }
+
   const _renderContent = section => {
     return (
       <View style={styles.content}>
@@ -75,13 +94,17 @@ const MenuManagementScreen = props => {
         >
           <AddDishTypeModal sendData={getFoodData} choosenDishtype={choosenDishtype} />
         </Overlay>
-        {section.foods.map(item => (
+        {section.foods.map((item, foodIndex) => (
           <ListItem
             title={item.name}
             subtitle={item.price + ' d'}
             bottomDivider
             containerStyle={{
               // backgroundColor: theme.colors.lightGray
+            }}
+            switch={{
+              onValueChange: value => handleFood(value, item, section, foodIndex, item._id),
+              value: item.is_available
             }}
             key={item._id}
           />
@@ -148,7 +171,7 @@ const MenuManagementScreen = props => {
   }
 
   const renderEmpty = () => 
-    <View style={{ justifyContent: "center", alignSelf: 'center', marginTop: '60%' }}>
+    <View style={{ justifyContent: "center", alignSelf: 'center', marginTop: '60%' , flex: 1}}>
       <Text style={{
         fontSize: 30,
         color: theme.colors.lightGray,
@@ -159,7 +182,8 @@ const MenuManagementScreen = props => {
         fontSize: 30,
         color: theme.colors.lightGray,
         fontWeight: 'bold',
-        textAlign: "center"
+        textAlign: "center",
+        flex: 1
       }}>Create new</Text>
     </View>
 
@@ -168,7 +192,7 @@ const MenuManagementScreen = props => {
       <Header hasBackIcon={false} title='Menu Management' />
       {loading && <ActivityIndicator size={50} style={{ justifyContent: 'center', marginTop: '70%'}} />}
       <ScrollView>
-      {menu.length > 0 ? (
+      {!loading && menu.length > 0 ? (
         <Accordion
         sections={menu}
         activeSections={activeSections}

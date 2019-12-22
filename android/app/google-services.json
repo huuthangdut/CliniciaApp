@@ -8,6 +8,35 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:47042985958:android:433fd60bb85d4d20336027",
+        "android_client_info": {
+          "package_name": "com.exfood.clinicia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "47042985958-nk78c8ibtksp08b1qcitov7h009d0lfe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwOpmUuoxqQsqfdx3xW00gW9HPjvqINKk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "47042985958-nk78c8ibtksp08b1qcitov7h009d0lfe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:47042985958:android:65dee80d3f9c420c336027",
         "android_client_info": {
           "package_name": "com.exfood.merchant"

@@ -48,6 +48,7 @@ class AppProvider extends React.PureComponent {
       isStoredRestaurant: async () => {
         const restaurant = await AsyncStorage.getItem('choosenRestaurant')
         return restaurant !== null;
+        getPersistedStore().then(value => console.log(value))
       },
       login: async user => {
         try {
@@ -112,7 +113,10 @@ class AppProvider extends React.PureComponent {
           loading: false,
           loaded: true
         })
-      }
+      },
+      getLocalStore: () => getPersistedStore().then(value => this.setState({
+        choosenRestaurant: {...value}
+      }))
     };
   }
 
