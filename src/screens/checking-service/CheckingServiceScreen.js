@@ -10,7 +10,7 @@ const CheckingServiceScreen = props => {
 
     return (
         <Fragment>
-            <Header hasBackIcon={true} />
+            <Header hasBackIcon={true} navigation={navigation}/>
             <View style={styles.container}>
                 <Text style={styles.header}>Quản lý dịch vụ khám</Text>
                 <View style={styles.list}>

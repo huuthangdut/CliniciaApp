@@ -7,6 +7,7 @@ const login = (username, password) => {
     {
       username,
       password,
+      isUserLogin: false
     },
     false,
   );

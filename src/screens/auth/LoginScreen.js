@@ -13,6 +13,11 @@ import {AuthService} from '../../services/AuthService';
 import AsyncStorage from '@react-native-community/async-storage';
 import { AppContext } from '../../AppProvider';
 import {Utils} from '../../utilities/utils';
+import {DeviceService} from '../../services/DeviceService';
+import DeviceInfo from 'react-native-device-info';
+import { ApiErrorCode } from '../../common/enums';
+import validate from '../../common/validate';
+import { Toast } from '../../utilities/toast';
 
 const LoginScreen = props => {
   const {navigation} = props;
@@ -21,7 +26,9 @@ const LoginScreen = props => {
   const passwordRef = useRef();
 
   const [username, setUsername] = useState();
+  const [usernameError, setUsernameError] = useState();
   const [password, setPassword] = useState();
+  const [passwordError, setPasswordError] = useState();
   const [isLogging, setIsLogging] = useState(false);
 
   const focusPassword = () => passwordRef.current.focus();
@@ -31,13 +38,28 @@ const LoginScreen = props => {
     setUsername(value);
   };
 
-  const login = async () => {
+  const onChangePassword = (value) => {
+    setPassword(value);
+  }
+
+  const login = async () => { 
+    const userNameError = validate('phoneNumber', username);
+    const passwordError = validate('password', password);
+    setUsernameError(userNameError);
+    setPasswordError(passwordError);
+
+    if(usernameError || passwordError) {
+      return;
+    }
+
     try {
       setIsLogging(true);
       const result = await AuthService.login(username, password);
       if (result) {
         await AsyncStorage.setItem('@access_token', result.accessToken);
         context.authUser.set(Utils.getAuthUser(result.accessToken));
+
+        await DeviceService.addOrUpdateDevice(context.deviceToken.get, Platform.OS, DeviceInfo.getUniqueId());
         
         navigation.navigate('App');
       }
@@ -46,12 +68,13 @@ const LoginScreen = props => {
       if(error.errorCode === ApiErrorCode.RequireConfirmedPhoneNumber) {
         AuthService.request2fa(username).then(result => {
           setIsLogging(false);
+          // console.log(result);
           navigation.navigate('Verify', { token: result.token });
         });
         
       } else {
         setIsLogging(false);
-        console.log(error);
+        Toast.error(error.errorMessage);
       }
     }
   };
@@ -63,9 +86,11 @@ const LoginScreen = props => {
           <Text style={styles.heading}>Đăng nhập</Text>
           <Text style={styles.title}>Đăng nhập bằng số điện thoại</Text>
           <TextField
-            placeholder="Số điện thoại (+84)"
-            keyboardType="numeric"
+            placeholder="Số điện thoại"
+            keyboardType="phone-pad"
             onChangeText={value => onChangeUsername(value)}
+            onBlur={() => setUsernameError(validate('phoneNumber', username))}
+            error={usernameError}
             value={username}
             onSubmitEditing={focusPassword}
             returnKeyType="next"
@@ -73,7 +98,10 @@ const LoginScreen = props => {
           <TextField
             ref={passwordRef}
             placeholder="Mật khẩu"
-            onChangeText={value => setPassword(value)}
+            onChangeText={value => onChangePassword(value)}
+            onBlur={() => setPasswordError(validate('password', password))}
+            error={passwordError}
+            value={password}
             returnKeyType="done"
             secureTextEntry={true}
           />

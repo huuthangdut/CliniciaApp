@@ -9,6 +9,7 @@ const AppProvider = props => {
   const [notifications, setNotifications] = useState([]);
   const [notificationCount, setNotificationCount] = useState(0);
   const [authUser, setAuthUser] = useState();
+  const [deviceToken, setDeviceToken] = useState();
 
   const [shouldReloadAppointmentList, setShouldReloadAppointmentList] = useState(false);
   const [shouldReloadCheckingService, setShouldReloadCheckingService] = useState(false);
@@ -30,6 +31,7 @@ const AppProvider = props => {
     /**
      * global state
      */
+    deviceToken: {get: deviceToken, set: setDeviceToken},
     authUser: {get: authUser, set: setAuthUser},
     appointment: {get: appointment, set: setAppointment},
     notifications: {

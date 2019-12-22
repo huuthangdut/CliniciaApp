@@ -46,10 +46,15 @@ const AppointmentList = props => {
     setLoading(true);
     AppointmentService.getAppointments(page, pageSize, status)
       .then(result => {
-        setAppointments(prevAppointments => [
-          ...prevAppointments,
-          ...result.items,
-        ]);
+        if(page === 0) {
+          setAppointments(result.items);
+        } else {
+          setAppointments(prevAppointments => [
+            ...prevAppointments,
+            ...result.items,
+          ]);
+        }
+        
         setLoading(false);
         setHasMoreItems(result.hasNextPage);
       })

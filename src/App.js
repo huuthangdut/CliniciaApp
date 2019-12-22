@@ -23,8 +23,7 @@ const App = () => {
     const fcmToken = await firebase.messaging().getToken();
     if (fcmToken) {
       console.log(fcmToken);
-      const deviceUuid = DeviceInfo.getUniqueId();
-      await DeviceService.addOrUpdateDevice(fcmToken, Platform.OS, deviceUuid);
+      context.deviceToken.set(fcmToken);
     } else {
       console.log('No token received');
     }
@@ -38,7 +37,8 @@ const App = () => {
 
   const notificationCallback = useCallback((notification) => {
     const {title, body, data} = notification;
-    context.notifications.add({id: data.id, title: title, content: body, hasRead: false, notificationDate: data.notificationDate})
+    context.notifications.add({id: data.id, title: title, content: body, hasRead: false, notificationDate: data.notificationDate, image: data.image, appointmentId: data.appointmentId});
+    context.shouldReloadAppointmentList.set(val => !val);
   }, []);
 
   

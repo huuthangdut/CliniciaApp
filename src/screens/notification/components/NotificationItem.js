@@ -34,6 +34,11 @@ const NotificationItem = props => {
     }
   };
 
+  const onPressNotification = () => {
+    markAsRead();
+    navigation.navigate('AppointmentDetails', {id: item.appointmentId})
+  }
+
   let swipeBtns = [
     {
       text: 'Xoá',
@@ -48,7 +53,7 @@ const NotificationItem = props => {
   return (
     <Swipeout right={swipeBtns} autoClose={true} backgroundColor="transparent">
       <TouchableOpacity
-        onPress={() => markAsRead()}
+        onPress={() => onPressNotification()}
         style={[styles.container, {backgroundColor: item.hasRead ? 'white' : 'rgba(68, 134, 255, 0.1)'}]}
         activeOpacity={0.7}>
         <View style={styles.image}>

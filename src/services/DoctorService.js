@@ -71,7 +71,7 @@ const addCheckingService = ({name, description, durationInMinutes, price, doctor
   );
 }
 
-const updateCheckingService = ({id, name, description, durationInMinutes, price, doctorId}) => {
+const updateCheckingService = ({id, name, description, durationInMinutes, price}) => {
   return Api.put(
     `${CONFIG.API_ROOT}/v${CONFIG.API_VERSION}/${CONFIG.API_URL.CHECKING_SERVICES}`,
     {
@@ -79,8 +79,7 @@ const updateCheckingService = ({id, name, description, durationInMinutes, price,
       name,
       description,
       durationInMinutes,
-      price,
-      doctorId
+      price
     },
     true
   );
@@ -94,6 +93,24 @@ const deleteCheckingService = (id) => {
   );
 }
 
+const getWorkingSchedule = () => {
+  return Api.get(
+    `${CONFIG.API_ROOT}/v${CONFIG.API_VERSION}/${CONFIG.API_URL.WORKING_SCHEDULE}`,
+    null,
+    true
+  )
+}
+
+const updateWorkingHour = (scheduleId, hours) => {
+  return Api.post(
+    `${CONFIG.API_ROOT}/v${CONFIG.API_VERSION}/${CONFIG.API_URL.WORKING_SHEDULE_HOUR(scheduleId)}`,
+    {
+      hours
+    },
+    true
+  )
+}
+
 export const DoctorService = {
   getDoctors,
   getDoctor,
@@ -101,5 +118,7 @@ export const DoctorService = {
   getCheckingServices,
   addCheckingService,
   updateCheckingService,
-  deleteCheckingService
+  deleteCheckingService,
+  getWorkingSchedule,
+  updateWorkingHour
 };

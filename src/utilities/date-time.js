@@ -17,4 +17,8 @@ export class DateTime {
     static toTimeString(date, format = 'HH:mm') {
         return moment(date).format(format);
     }
+
+    static parseDate(value, format = 'HH:mm') {
+        return moment(value, format).toDate();
+    }
 }

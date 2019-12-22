@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
 import theme from '../../../styles/theme';
 import { Icon } from 'react-native-elements';
+import { Utils } from '../../../utilities/utils';
 
 const CheckingServiceItem = props => {
   const {item, navigation} = props;
@@ -10,7 +11,7 @@ const CheckingServiceItem = props => {
       <View style={styles.textWrapper}>
         <Text style={styles.doctorName}>{item.name}</Text>
         <Text numberOfLines={2} style={styles.clinicName}>{item.description}</Text>
-        <Text style={styles.date}>{item.price}đ - {item.durationInMinutes} phút</Text>
+        <Text style={styles.date}>{Utils.currencyFormat(item.price)} - {item.durationInMinutes} phút</Text>
       </View>
       <View style={styles.rightButton}>
         <Icon type="material" name="edit" color={theme.colors.primary}/>

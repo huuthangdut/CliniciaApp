@@ -22,6 +22,8 @@ export const CONFIG = {
         NOTIFICATION_UNSEEN_READ: 'notifications/unseen/read',
         USER_LOCATION: 'users/location',
         CHECKING_SERVICES: 'checkingServices',
-        CHECKING_SERVICE: (id) => `checkingServices/${id}`
+        CHECKING_SERVICE: (id) => `checkingServices/${id}`,
+        WORKING_SCHEDULE: 'workingSchedule',
+        WORKING_SHEDULE_HOUR: (id) => `workingSchedule/${id}/hour`
     }
 }

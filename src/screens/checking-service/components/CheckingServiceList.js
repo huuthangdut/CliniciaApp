@@ -11,6 +11,7 @@ import {AppContext} from '../../../AppProvider';
 import EmptyList from '../../../components/core/EmptyList';
 import { DoctorService } from '../../../services/DoctorService';
 import CheckingServiceItem from './CheckingServiceItem';
+import {Toast} from '../../../utilities/toast';
 
 const CheckingServiceList = props => {
   const {navigation} = props;
@@ -27,9 +28,9 @@ const CheckingServiceList = props => {
         setCheckingServices(result);
         setLoading(false);
       })
-      .catch(e => {
+      .catch(error => {
         setLoading(false);
-        console.log(e);
+        Toast.error(error.errorMessage);
       });
   };
 

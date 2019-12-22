@@ -8,12 +8,12 @@ import {DateTime} from '../../../utilities/date-time';
 const AppointmentItem = props => {
   const {item, navigation} = props;
   return (
-    <TouchableOpacity style={styles.container} activeOpacity={0.7} onPress={() => props.navigation.navigate('AppointmentDetails', { appointment: item })}>
+    <TouchableOpacity style={styles.container} activeOpacity={0.7} onPress={() => props.navigation.navigate('AppointmentDetails', { id: item.id })}>
       <View style={styles.image}>
         <Avatar
           size={75}
           rounded
-          source={{uri: item.imageProfile}}
+          source={{uri: item.patient.imageProfile}}
         />
       </View>
       <View style={styles.textWrapper}>

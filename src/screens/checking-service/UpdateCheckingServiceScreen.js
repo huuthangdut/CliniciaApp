@@ -8,6 +8,8 @@ import TextField from '../../components/core/TextField';
 import Button from '../../components/core/Button';
 import { AppContext } from '../../AppProvider';
 import { DoctorService } from '../../services/DoctorService';
+import validate from '../../common/validate';
+import { Toast } from '../../utilities/toast';
 
 const UpdateCheckingServiceScreen = props => {
   const {navigation} = props;
@@ -15,23 +17,35 @@ const UpdateCheckingServiceScreen = props => {
 
   const checkingService = navigation.getParam('checkingService');
 
-  console.log(checkingService);
-
   const serviceDescriptionRef = useRef();
   const serviceDurationRef = useRef();
   const servicePriceRef = useRef();
 
   const [serviceName, setServiceName] = useState(checkingService.name);
+  const [serviceNameError, setServiceNameError] = useState();
   const [serviceDescription, setServiceDescription] = useState(checkingService.description);
   const [serviceDuration, setServiceDuration] = useState(checkingService.durationInMinutes);
+  const [serviceDurationError, setServiceDurationError] = useState();
   const [servicePrice, setServicePrice] = useState(checkingService.price);
+  const [servicePriceError, setServicePriceError] = useState();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const focusServiceDescription = () => serviceDescriptionRef.current.focus();
   const focusServiceDuration = () => serviceDurationRef.current.focus();
   const focusServicePrice = () => servicePriceRef.current.focus();
 
-  const addCheckingService = () => {
+  const updateCheckingService = () => {
+    const serviceNameError = validate('checkingServiceName', serviceName);
+    const serviceDurationError = validate('checkingServiceDuration', serviceDuration);
+    const servicePriceError = validate('checkingServicePrice', servicePrice);
+    setServiceNameError(serviceNameError);
+    setServiceDurationError(serviceDurationError);
+    setServicePriceError(servicePriceError);
+
+    if(serviceNameError || serviceDurationError || servicePriceError) {
+      return;
+    }
+
     setIsSubmitting(true);
     DoctorService.updateCheckingService({
         id: checkingService.id,
@@ -39,31 +53,32 @@ const UpdateCheckingServiceScreen = props => {
         description: serviceDescription,
         durationInMinutes: serviceDuration,
         price: servicePrice,
-        doctorId: context.authUser.get.userId
     }).then(() => {
         setIsSubmitting(false);
         context.shouldReloadCheckingService.set(value => !value);
         navigation.navigate('CheckingService');
     }).catch((error) => {
         setIsSubmitting(false);
-        console.log(error);
+        Toast.error(error.errorMessage);
     });
   };
 
 
   return (
     <Fragment>
-      <Header hasBackIcon={true} />
+      <Header hasBackIcon={true} navigation={navigation}/>
       <View style={styles.container}>
         <Text style={styles.header}>Chỉnh sửa dịch vụ khám</Text>
         <View style={styles.form}>
           <TextField
-            placeholder="Tên dịch vụ"
-            keyboardType="default"
-            onChangeText={value => setServiceName(value)}
-            value={serviceName}
-            onSubmitEditing={focusServiceDescription}
-            returnKeyType="next"
+           placeholder="Tên dịch vụ"
+           keyboardType="default"
+           onChangeText={value => setServiceName(value)}
+           onBlur={() => setServiceNameError(validate('checkingServiceName', serviceName))}
+           error={serviceNameError}
+           value={serviceName}
+           onSubmitEditing={focusServiceDescription}
+           returnKeyType="next"
           />
           <TextField
             ref={serviceDescriptionRef}
@@ -71,6 +86,7 @@ const UpdateCheckingServiceScreen = props => {
             value={serviceDescription}
             onChangeText={value => setServiceDescription(value)}
             onSubmitEditing={focusServiceDuration}
+            value={serviceDescription}
             returnKeyType="next"
           />
           <TextField
@@ -79,6 +95,8 @@ const UpdateCheckingServiceScreen = props => {
             keyboardType="number-pad"
             placeholder="Thời gian (phút)"
             onChangeText={value => setServiceDuration(value)}
+            onBlur={() => setServiceDurationError(validate('checkingServiceDuration', serviceDuration))}
+            error={serviceDurationError}
             onSubmitEditing={focusServicePrice}
             returnKeyType="next"
           />
@@ -88,6 +106,8 @@ const UpdateCheckingServiceScreen = props => {
             keyboardType="decimal-pad"
             placeholder="Giá dịch vụ"
             onChangeText={value => setServicePrice(value)}
+            onBlur={() => setServicePriceError(validate('checkingServicePrice', servicePrice))}
+            error={servicePriceError}
             returnKeyType="done"
           />
           <View
@@ -99,7 +119,7 @@ const UpdateCheckingServiceScreen = props => {
           <Button
             title="Lưu"
             primary
-            onPress={addCheckingService}
+            onPress={updateCheckingService}
             loading={isSubmitting}
           />
         </View>

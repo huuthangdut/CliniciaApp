@@ -148,16 +148,32 @@ const TabNavigator = createBottomTabNavigator(
   {
     Appointment: {
       screen: AppointmentNavigator,
-      navigationOptions: ({screenProps, navigation}) => ({
+      navigationOptions: ({navigation}) => ({
         tabBarLabel: 'Lịch hẹn',
+        tabBarIcon: ({focused}) => (
+          <Image
+          style={{width: 24, height: 24}}
+          source={
+            focused
+            ? theme.tabIcons.appointmentFocus
+            : theme.tabIcons.appointment
+          }
+        />
+        ),
+      }),
+    },
+    Notification: {
+      screen: NotificationNavigator,
+      navigationOptions: ({screenProps, navigation}) => ({
+        tabBarLabel: 'Thông báo',
         tabBarIcon: ({focused}) => (
           <View>
             <Image
               style={{width: 24, height: 24}}
               source={
                 focused
-                ? theme.tabIcons.appointmentFocus
-                : theme.tabIcons.appointment
+                ? theme.tabIcons.notificationFocus
+                : theme.tabIcons.notification
               }
             />
             {screenProps.notificationCount > 0 && (
@@ -198,7 +214,7 @@ const TabNavigator = createBottomTabNavigator(
 TabNavigator.navigationOptions = ({screenProps, navigation}) => {
   const {setNotificationCount, notificationCount} = screenProps;
 
-  if(navigation.state.index === 2) {
+  if(navigation.state.index === 1) {
     setNotificationCount(0);
   }
 

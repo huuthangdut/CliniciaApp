@@ -1,9 +1,10 @@
-import React, {Fragment, useState, useContext} from 'react';
+import React, {Fragment, useState, useContext, useEffect} from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
+  ActivityIndicator,
   ScrollView,
   Linking,
   Platform,
@@ -20,11 +21,11 @@ import {AppContext} from '../../AppProvider';
 
 const AppointmentDetailsScreen = props => {
   const {navigation} = props;
-  const appointment = navigation.getParam('appointment');
+  const id = navigation.getParam('id');
 
   const context = useContext(AppContext);
 
-  const [status, setStatus] = useState(appointment.status);
+  const [appointment, setAppointment] = useState();
 
   const [isCancelling, setIsCancelling] = useState(false);
   const [isConfirming, setIsConfirming] = useState(false);
@@ -36,7 +37,10 @@ const AppointmentDetailsScreen = props => {
       AppointmentService.setStatus(id, status)
         .then(() => {
           setIsCancelling(false);
-          setStatus(status);
+          setAppointment(val => ({
+            ...val,
+            status: Status.Cancelled.value,
+          }));
           context.shouldReloadAppointmentList.set(value => !value);
         })
         .catch(e => {
@@ -48,7 +52,10 @@ const AppointmentDetailsScreen = props => {
       AppointmentService.setStatus(id, status)
         .then(() => {
           setIsConfirming(false);
-          setStatus(status);
+          setAppointment(val => ({
+            ...val,
+            status: Status.Confirmed.value,
+          }));
           context.shouldReloadAppointmentList.set(value => !value);
         })
         .catch(e => {
@@ -60,7 +67,10 @@ const AppointmentDetailsScreen = props => {
       AppointmentService.setStatus(id, status)
         .then(() => {
           setIsCompleting(false);
-          setStatus(status);
+          setAppointment(val => ({
+            ...val,
+            status: Status.Completed.value,
+          }));
           context.shouldReloadAppointmentList.set(value => !value);
         })
         .catch(e => {
@@ -82,104 +92,124 @@ const AppointmentDetailsScreen = props => {
     }
   };
 
+  useEffect(() => {
+    AppointmentService.getAppointment(id)
+      .then(result => {
+        if (result) {
+          setAppointment(result);
+        }
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  }, []);
+
   return (
     <Fragment>
-      <Header />
-      {/* <ScrollView showsVerticalScrollIndicator={false}> */}
-      <View style={styles.container}>
-        <View style={styles.headerInfo}>
-          <View style={styles.image}>
-            <Avatar
-              size={60}
-              rounded
-              source={{uri: appointment.patient.imageProfile}}
-            />
+      <Header navigation={navigation}/>
+      {
+        appointment ? (
+          <View style={styles.container}>
+          <View style={styles.headerInfo}>
+            <View style={styles.image}>
+              <Avatar
+                size={60}
+                rounded
+                source={{uri: appointment.patient.imageProfile}}
+              />
+            </View>
+            <View style={styles.headerTextWrapper}>
+              <Text style={styles.headerText}>{appointment.patient.name}</Text>
+              <AppointmentStatus type={appointment.status} />
+            </View>
+            <View style={styles.contact}>
+              <TouchableOpacity
+                style={styles.iconWrapper}
+                onPress={() => text(appointment.patient.phoneNumber)}>
+                <Icon
+                  iconStyle={styles.icon}
+                  size={25}
+                  name="message-circle"
+                  type="feather"></Icon>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.iconWrapper}
+                onPress={() => dial(appointment.patient.phoneNumber)}>
+                <Icon
+                  iconStyle={styles.icon}
+                  size={25}
+                  name="phone"
+                  type="font-awesome"></Icon>
+              </TouchableOpacity>
+            </View>
           </View>
-          <View style={styles.headerTextWrapper}>
-            <Text style={styles.headerText}>{appointment.patient.name}</Text>
-            <AppointmentStatus type={status} />
-          </View>
-          <View style={styles.contact}>
-            <TouchableOpacity
-              style={styles.iconWrapper}
-              onPress={() => text(appointment.patient.phoneNumber)}>
-              <Icon
-                iconStyle={styles.icon}
-                size={25}
-                name="message-circle"
-                type="feather"></Icon>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.iconWrapper}
-              onPress={() => dial(appointment.doctor.phoneNumber)}>
-              <Icon
-                iconStyle={styles.icon}
-                size={25}
-                name="phone"
-                type="font-awesome"></Icon>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={styles.divider}></View>
-        <ScrollView style={styles.content}>
-          <View style={styles.itemRow}>
-            <Text style={styles.smText}>Thời gian</Text>
-            <Text style={styles.lgText}>
-              {DateTime.toDateString(appointment.appointmentDate, 'DD/MM/YYYY')}
-            </Text>
-            <Text style={styles.smText}>
-              {DateTime.toDateString(appointment.appointmentDate, 'HH:mm')}
-            </Text>
-          </View>
-          <View style={styles.itemRow}>
-            <Text style={styles.smText}>Địa chỉ</Text>
-            <Text style={styles.lgText}>{appointment.patient.address}</Text>
-          </View>
-          <View style={styles.itemRow}>
-            <Text style={styles.smText}>Dịch vụ khám</Text>
-            <Text style={styles.lgText}>
-              {appointment.checkingService.name}
-            </Text>
-            <Text style={styles.smText}>
-              {appointment.checkingService.durationInMinutes}
-            </Text>
-          </View>
-        </ScrollView>
-        {status === Status.Confirming.value && (
-          <View>
+          <View style={styles.divider}></View>
+          <ScrollView style={styles.content}>
+            <View style={styles.itemRow}>
+              <Text style={styles.smText}>Thời gian</Text>
+              <Text style={styles.lgText}>
+                {DateTime.toDateString(appointment.appointmentDate, 'DD/MM/YYYY')}
+              </Text>
+              <Text style={styles.smText}>
+                {DateTime.toDateString(appointment.appointmentDate, 'HH:mm')}
+              </Text>
+            </View>
+            <View style={styles.itemRow}>
+              <Text style={styles.smText}>Địa chỉ</Text>
+              <Text style={styles.lgText}>{appointment.patient.address}</Text>
+            </View>
+            <View style={styles.itemRow}>
+              <Text style={styles.smText}>Dịch vụ khám</Text>
+              <Text style={styles.lgText}>
+                {appointment.checkingService.name}
+              </Text>
+              <Text style={styles.smText}>
+                {appointment.checkingService.durationInMinutes} phút
+              </Text>
+            </View>
+          </ScrollView>
+          {appointment.status === Status.Confirming.value && (
+            <View>
+              <Button
+                title="Xác nhận"
+                primary
+                style={styles.button}
+                onPress={() =>
+                  updateAppointmentStatus(appointment.id, Status.Confirmed.value)
+                }
+                loading={isConfirming}
+              />
+              <Button
+                title="Huỷ lịch hẹn"
+                secondary
+                style={styles.button}
+                onPress={() =>
+                  updateAppointmentStatus(appointment.id, Status.Cancelled.value)
+                }
+                loading={isCancelling}
+              />
+            </View>
+          )}
+          {appointment.status === Status.Confirmed.value && (
             <Button
-              title="Xác nhận"
+              title="Hoàn thành"
               primary
               style={styles.button}
               onPress={() =>
-                updateAppointmentStatus(appointment.id, Status.Confirmed.value)
+                updateAppointmentStatus(appointment.id, Status.Completed.value)
               }
               loading={isConfirming}
             />
-            <Button
-              title="Huỷ lịch hẹn"
-              secondary
-              style={styles.button}
-              onPress={() =>
-                updateAppointmentStatus(appointment.id, Status.Cancelled.value)
-              }
-              loading={isCancelling}
-            />
-          </View>
-        )}
-        {status === Status.Confirmed.value && (
-          <Button
-            title="Hoàn thành"
-            primary
-            style={styles.button}
-            onPress={() =>
-              updateAppointmentStatus(appointment.id, Status.Completed.value)
-            }
-            loading={isConfirming}
-          />
-        )}
-      </View>
-      {/* </ScrollView> */}
+          )}
+        </View>
+        ) : (
+          <ActivityIndicator
+          size={30}
+          style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}
+        />
+        )
+      }
+    
     </Fragment>
   );
 };

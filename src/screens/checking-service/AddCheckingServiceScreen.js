@@ -8,6 +8,8 @@ import TextField from '../../components/core/TextField';
 import Button from '../../components/core/Button';
 import { AppContext } from '../../AppProvider';
 import { DoctorService } from '../../services/DoctorService';
+import validate from '../../common/validate';
+import { Toast } from '../../utilities/toast';
 
 const AddCheckingServiceScreen = props => {
   const {navigation} = props;
@@ -18,9 +20,12 @@ const AddCheckingServiceScreen = props => {
   const servicePriceRef = useRef();
 
   const [serviceName, setServiceName] = useState();
+  const [serviceNameError, setServiceNameError] = useState();
   const [serviceDescription, setServiceDescription] = useState();
   const [serviceDuration, setServiceDuration] = useState();
+  const [serviceDurationError, setServiceDurationError] = useState();
   const [servicePrice, setServicePrice] = useState();
+  const [servicePriceError, setServicePriceError] = useState();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const focusServiceDescription = () => serviceDescriptionRef.current.focus();
@@ -28,6 +33,17 @@ const AddCheckingServiceScreen = props => {
   const focusServicePrice = () => servicePriceRef.current.focus();
 
   const addCheckingService = () => {
+    const serviceNameError = validate('checkingServiceName', serviceName);
+    const serviceDurationError = validate('checkingServiceDuration', serviceDuration);
+    const servicePriceError = validate('checkingServicePrice', servicePrice);
+    setServiceNameError(serviceNameError);
+    setServiceDurationError(serviceDurationError);
+    setServicePriceError(servicePriceError);
+
+    if(serviceNameError || serviceDurationError || servicePriceError) {
+      return;
+    }
+
     setIsSubmitting(true);
     DoctorService.addCheckingService({
         name: serviceName,
@@ -41,14 +57,14 @@ const AddCheckingServiceScreen = props => {
         navigation.navigate('CheckingService');
     }).catch((error) => {
         setIsSubmitting(false);
-        console.log(error);
+        Toast.error(error.errorMessage);
     });
   };
 
 
   return (
     <Fragment>
-      <Header hasBackIcon={true} />
+      <Header hasBackIcon={true} navigation={navigation}/>
       <View style={styles.container}>
         <Text style={styles.header}>Thêm mới dịch vụ khám</Text>
         <View style={styles.form}>
@@ -56,6 +72,8 @@ const AddCheckingServiceScreen = props => {
             placeholder="Tên dịch vụ"
             keyboardType="default"
             onChangeText={value => setServiceName(value)}
+            onBlur={() => setServiceNameError(validate('checkingServiceName', serviceName))}
+            error={serviceNameError}
             value={serviceName}
             onSubmitEditing={focusServiceDescription}
             returnKeyType="next"
@@ -65,6 +83,7 @@ const AddCheckingServiceScreen = props => {
             placeholder="Mô tả"
             onChangeText={value => setServiceDescription(value)}
             onSubmitEditing={focusServiceDuration}
+            value={serviceDescription}
             returnKeyType="next"
           />
           <TextField
@@ -72,6 +91,9 @@ const AddCheckingServiceScreen = props => {
             keyboardType="number-pad"
             placeholder="Thời gian (phút)"
             onChangeText={value => setServiceDuration(value)}
+            onBlur={() => setServiceDurationError(validate('checkingServiceDuration', serviceDuration))}
+            error={serviceDurationError}
+            value={serviceDuration}
             onSubmitEditing={focusServicePrice}
             returnKeyType="next"
           />
@@ -80,6 +102,9 @@ const AddCheckingServiceScreen = props => {
             keyboardType="decimal-pad"
             placeholder="Giá dịch vụ"
             onChangeText={value => setServicePrice(value)}
+            onBlur={() => setServicePriceError(validate('checkingServicePrice', servicePrice))}
+            error={servicePriceError}
+            value={servicePrice}
             returnKeyType="done"
           />
           <View
