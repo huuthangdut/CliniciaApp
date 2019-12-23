@@ -9,8 +9,8 @@ const InitLocation = props => {
   return(
     <View style= {styles.container}>
       <Image source={theme.tabIcons.marker} style={styles.icon}/>
-      <Text numberOfLines={2} style= {styles.greeting}>Chào, Thắng!</Text>
-      <Text style= {styles.constructor}>Thiết lập địa chỉ của bạn và bắt đầu tìm kiếm bác sĩ xung quanh bạn</Text>
+      <Text numberOfLines={2} style= {styles.greeting}>Welcome</Text>
+      <Text style= {styles.constructor}>Thiết lập địa chỉ phòng khám để người dùng có thể tìm thấy bạn</Text>
       <Button style= {styles.button} primary title='Bắt đầu' onPress={() => navigation.navigate('SetLocation')}/>
     </View>
   )

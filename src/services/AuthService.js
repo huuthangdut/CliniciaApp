@@ -13,12 +13,13 @@ const login = (username, password) => {
   );
 };
 
-const register = ({firstName, lastName, phoneNumber, email, password}) => {
+const register = ({firstName, lastName, clinic, phoneNumber, email, password}) => {
   return Api.post(
     `${CONFIG.API_ROOT}/v${CONFIG.API_VERSION}/${CONFIG.API_URL.REGISTER}`,
     {
       firstName, 
       lastName, 
+      clinic,
       phoneNumber, 
       email, 
       password

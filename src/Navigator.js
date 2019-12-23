@@ -133,6 +133,7 @@ const CheckingServiceNavigator = createStackNavigator({
   headerMode: 'none'
 });
 
+
 const AccountNavigator = createStackNavigator(
   {
     Account: AccountScreen,
@@ -143,6 +144,16 @@ const AccountNavigator = createStackNavigator(
     headerMode: 'none',
   },
 );
+
+AccountNavigator.navigationOptions = ({navigation}) => {
+  let tabBarVisible = true;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+  return {
+    tabBarVisible,
+  };
+};
 
 const TabNavigator = createBottomTabNavigator(
   {

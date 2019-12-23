@@ -438,7 +438,7 @@ const LocationPickerScreen = props => {
       <View style={styles.placeContainer}>
         <GooglePlacesAutocomplete
           ref={placeInputRef}
-          placeholder="Nhập địa chỉ của bạn"
+          placeholder="Nhập địa chỉ phòng khám"
           minLength={2}
           autoFocus={true}
           returnKeyType={'search'}
@@ -514,7 +514,7 @@ const LocationPickerScreen = props => {
             <Text style={styles.addressText}>{selectedCoords.formattedAddress}</Text>
           </View>
           <Button
-              title="Đặt làm địa chỉ của tôi"
+              title="Đặt làm địa chỉ của phòng khám"
               primary
               style={styles.bottomButton}
               titleStyle={styles.buttonTitle}

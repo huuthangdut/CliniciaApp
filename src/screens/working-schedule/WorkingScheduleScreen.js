@@ -261,7 +261,7 @@ const WorkingScheduleScreen = props => {
 
   return (
     <Fragment>
-      <Header hasBackIcon={true} />
+      <Header navigation={navigation} hasBackIcon={true} />
       <View style={styles.container}>
         <Text style={styles.header}>Quản lý giờ làm việc</Text>
         <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
@@ -272,13 +272,6 @@ const WorkingScheduleScreen = props => {
             renderContent={_renderContent}
             onChange={_updateSections}
           />
-          <View style={{marginTop: 20}}>
-            <Button
-                onPress={() => onSave()}
-                title="Lưu thay đổi"
-                primary
-                />
-          </View>
         </ScrollView>
         { showTimePicker && <DateTimePicker value={timePickerValue}
                     mode='time'
@@ -288,6 +281,9 @@ const WorkingScheduleScreen = props => {
                     />
         }
       </View>
+      <TouchableOpacity style={styles.addButton} activeOpacity={0.7} onPress={() => onSave()}>
+                <Icon type="entypo" name="save" size={45} color={theme.colors.primary} style={{marginRight: 10, marginBottom: 5}}/>
+            </TouchableOpacity>
     </Fragment>
   );
 };
@@ -360,6 +356,12 @@ const styles = StyleSheet.create({
     marginRight: 5,
     marginTop: 5,
   },
+  addButton: {
+    position: 'absolute',
+    bottom: 10,
+    right: 20,
+    zIndex: 9999
+}
 });
 
 export default WorkingScheduleScreen;

@@ -9,6 +9,11 @@ const validation = {
         message: '^Vui lòng nhập tên'
       }
     },
+    clinic: {
+      presence: {
+        message: '^Vui lòng nhập tên phòng khám'
+      }
+    },
     phoneNumber: {
       presence: {
         message: '^Vui lòng nhập số điện thoại',

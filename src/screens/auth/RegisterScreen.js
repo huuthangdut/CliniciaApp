@@ -22,11 +22,14 @@ const RegisterScreen = props => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const phoneNumberRef = useRef();
+  const clinicRef = useRef();
 
   const [firstName, setFirstName] = useState();
   const [firstNameError, setFirstNameError] = useState();
   const [lastName, setLastName] = useState();
   const [lastNameError, setLastNameError] = useState();
+  const [clinic, setClinic] = useState();
+  const [clinicError, setClinicError] = useState();
   const [email, setEmail] = useState();
   const [emailError, setEmailError] = useState();
   const [password, setPassword] = useState();
@@ -36,6 +39,7 @@ const RegisterScreen = props => {
   const [isRegistering, setIsRegistering] = useState(false);
 
   const focusLastName = () => lastNameRef.current.focus();
+  const focusClinic = () => clinicRef.current.focus();
   const focusEmail = () => emailRef.current.focus();
   const focusPassword = () => passwordRef.current.focus();
   const focusPhoneNumber = () => phoneNumberRef.current.focus();
@@ -48,14 +52,16 @@ const RegisterScreen = props => {
     const phoneNumberError = validate('phoneNumber', phoneNumber);
     const passwordError = validate('password', password);
     const emailError = validate('email', email);
+    const clinicError = validate('clinic', clinic);
 
     setFirstNameError(firstNameError);
     setLastNameError(lastNameError);
     setPhoneNumberError(phoneNumberError);
     setPasswordError(passwordError);
     setEmailError(emailError);
+    setClinicError(clinicError);
 
-    if(firstNameError || lastNameError || phoneNumberError || passwordError || emailError) {
+    if(firstNameError || lastNameError || phoneNumberError || passwordError || emailError || clinicError) {
       return;
     }
 
@@ -64,6 +70,7 @@ const RegisterScreen = props => {
       const result = await AuthService.register({
         firstName,
         lastName,
+        clinic,
         email,
         password,
         phoneNumber,
@@ -100,9 +107,19 @@ const RegisterScreen = props => {
               placeholder="Tên"
               onChangeText={value => setLastName(value)}
               onBlur={() => setLastNameError(validate('lastName', lastName))}
-              onSubmitEditing={focusEmail}
+              onSubmitEditing={focusClinic}
               value={lastName}
               error={lastNameError}
+              returnKeyType="next"
+            />
+             <TextField
+              ref={clinicRef}
+              placeholder="Tên phòng khám"
+              onChangeText={value => setClinic(value)}
+              onBlur={() => setClinicError(validate('clinic', clinic))}
+              onSubmitEditing={focusEmail}
+              value={clinic}
+              error={clinicError}
               returnKeyType="next"
             />
             <TextField
