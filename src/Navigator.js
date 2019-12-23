@@ -33,6 +33,7 @@ import CheckingServiceScreen from './screens/checking-service/CheckingServiceScr
 import WorkingScheduleScreen from './screens/working-schedule/WorkingScheduleScreen';
 import AddCheckingServiceScreen from './screens/checking-service/AddCheckingServiceScreen';
 import UpdateCheckingServiceScreen from './screens/checking-service/UpdateCheckingServiceScreen';
+import SetSpecialtyScreen from './screens/set-specialty/SetSpecialtyScreen';
 
 const FavoriteNavigator = createStackNavigator(
   {
@@ -242,6 +243,7 @@ const AppNavigator = createStackNavigator(
     Tab: TabNavigator,
     InitLocation: InitLocationScreen,
     SetLocation: LocationPickerScreen,
+    SetSpecialty: SetSpecialtyScreen,
     Specialty: SpecialtyNavigator,
     Clinic: ClinicNavigator,
     Booking: BookingNavigator,

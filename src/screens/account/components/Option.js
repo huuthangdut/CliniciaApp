@@ -13,6 +13,10 @@ const Option = props => {
 
   const listOption = [
     {
+      title: 'Chuyên khoa',
+      screen: 'SetSpecialty'
+    },
+    {
       title: 'Giờ làm việc',
       screen: 'WorkingSchedule'
     },

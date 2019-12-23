@@ -393,7 +393,7 @@ const LocationPickerScreen = props => {
           navigation.goBack();
         } else {
           await DeviceService.addOrUpdateDevice(context.deviceToken.get, Platform.OS, DeviceInfo.getUniqueId());
-          navigation.navigate('Tab');
+          navigation.navigate('SetSpecialty');
         }
       }).catch(e => {
         setIsSubmitting(false);

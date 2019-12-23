@@ -24,6 +24,7 @@ export const CONFIG = {
         CHECKING_SERVICES: 'checkingServices',
         CHECKING_SERVICE: (id) => `checkingServices/${id}`,
         WORKING_SCHEDULE: 'workingSchedule',
-        WORKING_SHEDULE_HOUR: (id) => `workingSchedule/${id}/hour`
+        WORKING_SHEDULE_HOUR: (id) => `workingSchedule/${id}/hour`,
+        SET_SPECIALTIE: 'doctors/specialty'
     }
 }

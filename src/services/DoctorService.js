@@ -111,6 +111,16 @@ const updateWorkingHour = (scheduleId, hours) => {
   )
 }
 
+const setSpecialty = (specialtyId) => {
+  return Api.post(
+    `${CONFIG.API_ROOT}/v${CONFIG.API_VERSION}/${CONFIG.API_URL.SET_SPECIALTIE}`,
+    {
+      specialtyId
+    },
+    true
+  )
+}
+
 export const DoctorService = {
   getDoctors,
   getDoctor,
@@ -120,5 +130,6 @@ export const DoctorService = {
   updateCheckingService,
   deleteCheckingService,
   getWorkingSchedule,
-  updateWorkingHour
+  updateWorkingHour,
+  setSpecialty
 };
