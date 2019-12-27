@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { StyleSheet, View, Image, Text, TouchableOpacity  } from "react-native"
 import theme from '../../styles/theme'
 import Button from '../../components/core/Button'
+import {AppContext} from '../../AppProvider';
 
 const InitLocation = props => {
   const { navigation } = props;
@@ -9,7 +10,7 @@ const InitLocation = props => {
   return(
     <View style= {styles.container}>
       <Image source={theme.tabIcons.marker} style={styles.icon}/>
-      <Text numberOfLines={2} style= {styles.greeting}>Chào, Thắng!</Text>
+      <Text numberOfLines={2} style= {styles.greeting}>Welcome!</Text>
       <Text style= {styles.constructor}>Thiết lập địa chỉ của bạn và bắt đầu tìm kiếm bác sĩ xung quanh bạn</Text>
       <Button style= {styles.button} primary title='Bắt đầu' onPress={() => navigation.navigate('SetLocation')}/>
     </View>

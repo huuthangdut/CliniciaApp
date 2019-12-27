@@ -315,7 +315,7 @@ const MakeAppointmentScreen = props => {
                         checked={
                           selectedService && item.id == selectedService.id
                         }
-                        onPress={() => setSelectedService(item)}
+                        onPress={() => onSelectService(item)}
                       />
                     </TouchableOpacity>
                     {index != checkingServices.length - 1 ? (

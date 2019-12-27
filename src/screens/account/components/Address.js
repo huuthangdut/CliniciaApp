@@ -14,7 +14,7 @@ const Address = (props) => {
       <Text style={styles.headerLabel}>Địa chỉ</Text>
       <View style={styles.addressList}>
         {
-          <TouchableOpacity onPress={() => navigation.navigate('SetLocation', {shouldGoBack: true})}>
+          <TouchableOpacity onPress={() => navigation.navigate('ResetLocation', {shouldGoBack: true})}>
             <View style={styles.addressItem}>
               <View>
                 <ListItem

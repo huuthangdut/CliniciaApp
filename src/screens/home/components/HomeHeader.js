@@ -11,7 +11,7 @@ const HomeHeader = props => {
 
   return (
     <View style={styles.header}>
-      <TouchableOpacity style={styles.location} onPress={() => navigation.navigate('SetLocation', {shouldGoBack: true})}>
+      <TouchableOpacity style={styles.location} onPress={() => navigation.navigate('ResetLocation', {shouldGoBack: true})}>
         <View style={styles.iconContainer}>
           <Image
             style={{width: 22, height: 24}}

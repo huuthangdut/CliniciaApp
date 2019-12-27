@@ -200,8 +200,6 @@ TabNavigator.navigationOptions = ({screenProps, navigation}) => {
 const AppNavigator = createStackNavigator(
   {
     Tab: TabNavigator,
-    InitLocation: InitLocationScreen,
-    SetLocation: LocationPickerScreen,
     DoctorMap: DoctorMap,
     Specialty: SpecialtyScreen,
     Doctor: DoctorScreen,
@@ -210,6 +208,7 @@ const AppNavigator = createStackNavigator(
     MakeAppointment: MakeAppointmentScreen,
     ReviewAppointment: ReviewAppointmentScreen,
     BookingSuccess: BookingSuccessScreen,
+    ResetLocation: LocationPickerScreen,
 
     
     // Specialty: SpecialtyNavigator,
@@ -219,7 +218,7 @@ const AppNavigator = createStackNavigator(
   },
   {
     headerMode: 'none',
-    // initialRouteName: 'Tab',
+    initialRouteName: 'Tab'
   },
 );
 
@@ -240,6 +239,8 @@ const AppSwitch = createSwitchNavigator(
     AuthLoading: AuthLoadingScreen,
     App: AppNavigator,
     Auth: AuthNavigator,
+    InitLocation: InitLocationScreen,
+    SetLocation: LocationPickerScreen,
   },
   {
     initialRouteName: 'AuthLoading',
